@@ -2,7 +2,7 @@
 
 If you need your application to scale beyond the cores available on a single Grace CPU node, you will likely encounter MPI (Message Passing Interface). 
 
-In this exercise, we will measure the latency performance of the interconnect network between two compute nodes using the OSU Micro-Benchmarks.
+In this exercise, we will measure the bandwidth of the interconnect network between two compute nodes using the OSU Micro-Benchmarks.
 
 ## Finding the software
 
@@ -54,7 +54,7 @@ Once the job is completed or running, inspect the output:
 cat test_osu.out
 ```
 
-Since the job uses `srun osu_alltoall`, the output will show the measured latency (in microseconds) as various packet sizes are exchanged between the two inter-connected nodes. 
+Since the job uses `srun osu_bw`, the output will show the measured bandwidth (in MB/s) for various message sizes exchanged between the two nodes.
 
 ## Key Takeaway
 

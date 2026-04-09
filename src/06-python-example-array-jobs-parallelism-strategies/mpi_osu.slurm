@@ -9,4 +9,4 @@
 module load brics/osu-micro-benchmarks
 
 # Run the osu test across the allocations
-srun osu_alltoall
+srun osu_bw
