@@ -9,17 +9,17 @@ This workshop follows the HPC Showcase on 20 April.
 
 ## Schedule
 
-| # | Section | Duration | Time |
-|---|---------|----------|------|
-| 1 | Welcome + Start Login + System Architecture (overlapped) | 25 min | 10:00–10:25 |
-| 2 | Login Checkpoint + First Commands | 10 min | 10:25–10:35 |
-| 3 | First Batch Job (Slurm) | 25 min | 10:35–11:00 |
-| 4 | Break | 15 min | 11:00–11:15 |
-| 5 | Installing Software | 15 min | 11:15–11:30 |
-| 6 | Python Example + Array Jobs + Parallelism Strategies | 25 min | 11:30–11:55 |
-| 7 | Debugging Failed Jobs | 15 min | 11:55–12:10 |
-| 8 | Tips & Tricks | 10 min | 12:10–12:20 |
-| 9 | Wrap-Up, Q&A & Feedback | 10 min | 12:20–12:30 |
+| #   | Section                                                  | Duration | Time        |
+| --- | -------------------------------------------------------- | -------- | ----------- |
+| 1   | Welcome + Start Login + System Architecture (overlapped) | 25 min   | 10:00–10:25 |
+| 2   | Login Checkpoint + First Commands                        | 10 min   | 10:25–10:35 |
+| 3   | First Batch Job (Slurm)                                  | 25 min   | 10:35–11:00 |
+| 4   | Break                                                    | 15 min   | 11:00–11:15 |
+| 5   | Installing Software                                      | 15 min   | 11:15–11:30 |
+| 6   | Python Example + Array Jobs + Parallelism Strategies     | 25 min   | 11:30–11:55 |
+| 7   | Debugging Failed Jobs                                    | 15 min   | 11:55–12:10 |
+| 8   | Tips & Tricks                                            | 10 min   | 12:10–12:20 |
+| 9   | Wrap-Up, Q&A & Feedback                                  | 10 min   | 12:20–12:30 |
 
 ## Section Details
 
@@ -79,15 +79,16 @@ output files.
 
 **Part C — "Three ways to run many serial jobs" (~10 min):** Compare:
 
-| Approach | How | Good for | Watch out |
-|----------|-----|----------|-----------|
-| GNU Parallel (single node) | `module load parallel` | Hundreds of short tasks | Bound to 1 node |
-| Slurm job arrays | `--array=1-N` | Moderate independent tasks | Floods scheduler if N large; use `%throttle` |
-| MPI parallelism | `mpi4py` / compiled MPI | Multi-node, communicating tasks | Requires MPI-aware code |
+| Approach                   | How                     | Good for                        | Watch out                                    |
+| -------------------------- | ----------------------- | ------------------------------- | -------------------------------------------- |
+| GNU Parallel (single node) | `module load parallel`  | Hundreds of short tasks         | Bound to 1 node                              |
+| Slurm job arrays           | `--array=1-N`           | Moderate independent tasks      | Floods scheduler if N large; use `%throttle` |
+| MPI parallelism            | `mpi4py` / compiled MPI | Multi-node, communicating tasks | Requires MPI-aware code                      |
 
 ### 7. Debugging Failed Jobs (15 min)
 
 **Hands-on (10 min):** Pre-written broken job scripts:
+
 1. Wrong module name → check `.err` file
 2. Walltime too short → `sacct` shows `TIMEOUT`
 3. Write to non-existent directory → non-zero exit code
@@ -111,6 +112,7 @@ Recap, "where to go next" slide with links, open Q&A, feedback form QR code.
 ## Pre-Workshop Email
 
 Send ~1 week before. Ask attendees to:
+
 - Set their UNIX short name via the portal
 - Check they have an SSH key pair (or generate one)
 - Optionally install Clifton ahead of time
