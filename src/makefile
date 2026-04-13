@@ -2,19 +2,19 @@ MD = $(shell find . -type f -name "*.md" | sort)
 HTML = $(MD:.md=.html)
 PANDOC_ARGS = \
 	-f markdown-implicit_figures \
-	-M center=false \
-	-M css=/assets/theme.css \
-	-M hash=true \
-	-M height=1080 \
-	-M margin=0.04 \
-	-M maxScale=2.0 \
-	-M minScale=0.1 \
-	-M slideNumber=true \
-	-M transition=slide \
-	-M width=1920 \
 	-s \
 	-t revealjs \
-	-V theme=white
+	-V center=false \
+	-V css=/assets/theme.css \
+	-V hash=true \
+	-V height=1080 \
+	-V margin=0.04 \
+	-V maxScale=2.0 \
+	-V minScale=0.1 \
+	-V slideNumber=true \
+	-V theme=white \
+	-V transition=slide \
+	-V width=1920
 
 all: assets tree html  ## Build all HTML files and the index.html tree
 
