@@ -1,0 +1,9 @@
+[workspace]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "linux-aarch64", "osx-64", "osx-arm64"]
+
+[dependencies]
+python = ">=3.12,<3.13"
+numpy = ">=2,<3"
+numba = ">=0.61,<0.62"
+mpi4py = ">=4,<5"
