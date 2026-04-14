@@ -17,7 +17,7 @@ direnv enabled the env activates on `cd`. Otherwise use `pixi run <task>` or `pi
 
 The root `pyproject.toml` declares both a PEP 621 project (`isambard3-workshop`) and a Pixi workspace. The project is
 installed editably into the Pixi env, so Python modules under `src/section_*/` are importable by their
-`section_NN_*` package names (e.g. `python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy`).
+`section_NN_*` package names (e.g. `python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy`).
 
 ## Common commands
 
@@ -50,9 +50,9 @@ There is no test suite. "Quality" means: formatters are idempotent, docs build, 
 
 ## Repository layout
 
-- `src/section_NN_<slug>/` — one directory per workshop section. Numbering matches the schedule in `README.md`
-  (there is no `section_04` — that is the break slot). Each directory is a Python package (`__init__.py`) and
-  contains the section's walkthroughs, example scripts, and its own `README.md` with presenter/attendee notes.
+- `src/section_NN_<slug>/` — one directory per workshop section. Numbering matches the schedule in `README.md`.
+  Each directory is a Python package (`__init__.py`) and contains the section's walkthroughs, example scripts, and its
+  own `README.md` with presenter/attendee notes.
 - `src/assets/` — shared slide theme (`theme.css`), template (`template.markdown`), images, and a sub-makefile.
 - `src/makefile` — top-level slide build. `make all` discovers every `*.markdown` under `src/` and compiles it.
 - `bin/` — repo-local tooling (`md_formatter.py`, `sh_formatter.sh`) invoked by Pixi tasks.

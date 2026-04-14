@@ -30,11 +30,11 @@ Core design principles:
 | 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | 30 min   | 10:00–10:30 |
 | 2   | Login Checkpoint + First Commands                          | 10 min   | 10:30–10:40 |
 | 3   | First Batch Job (Slurm)                                    | 25 min   | 10:40–11:05 |
-| 4   | Break                                                      | 10 min   | 11:05–11:15 |
-| 5   | Installing Software                                        | 15 min   | 11:15–11:30 |
-| 6   | Python Example + Array Jobs + Parallelism Strategies       | 25 min   | 11:30–11:55 |
-| 7   | Debugging Failed Jobs                                      | 20 min   | 11:55–12:15 |
-| 8   | Tips, Help, Wrap-Up, Q&A & Feedback                        | 15 min   | 12:15–12:30 |
+|     | Break                                                      | 10 min   | 11:05–11:15 |
+| 4   | Installing Software                                        | 15 min   | 11:15–11:30 |
+| 5   | Python Example + Array Jobs + Parallelism Strategies       | 25 min   | 11:30–11:55 |
+| 6   | Debugging Failed Jobs                                      | 20 min   | 11:55–12:15 |
+| 7   | Tips, Help, Wrap-Up, Q&A & Feedback                        | 15 min   | 12:15–12:30 |
 
 ## Section Details
 
@@ -148,11 +148,7 @@ TODOs:
 - [ ] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
 - [ ] Keep the beginner path free of partition changes and `--mail-type=END`
 
-### 4. Break (10 min)
-
-Short break.
-
-### 5. Installing Software (15 min)
+### 4. Installing Software (15 min)
 
 Keep this section tightly scoped.
 
@@ -171,19 +167,19 @@ briefly and move on.
 TODOs:
 
 - [x] Create a modules-first exercise and decision-order note in
-  [src/section_05_installing_software/01-modules-first.md](src/section_05_installing_software/01-modules-first.md)
+  [src/section_04_installing_software/01-modules-first.md](src/section_04_installing_software/01-modules-first.md)
 - [x] Create a conda/mamba environment exercise in
-  [src/section_05_installing_software/02-conda-environment.md](src/section_05_installing_software/02-conda-environment.md)
+  [src/section_04_installing_software/02-conda-environment.md](src/section_04_installing_software/02-conda-environment.md)
 - [x] Add an example environment file in
-  [src/section_05_installing_software/environment.yml](src/section_05_installing_software/environment.yml)
+  [src/section_04_installing_software/environment.yml](src/section_04_installing_software/environment.yml)
 - [x] Add a minimal Python verification script in
-  [src/section_05_installing_software/check_scipy.py](src/section_05_installing_software/check_scipy.py)
+  [src/section_04_installing_software/check_scipy.py](src/section_04_installing_software/check_scipy.py)
 - [x] Add a batch job example for the Python environment in
-  [src/section_05_installing_software/run_python_env_check.sh](src/section_05_installing_software/run_python_env_check.sh)
+  [src/section_04_installing_software/run_python_env_check.sh](src/section_04_installing_software/run_python_env_check.sh)
 - [x] Add a containers follow-up note in
-  [src/section_05_installing_software/03-containers-follow-up.md](src/section_05_installing_software/03-containers-follow-up.md)
+  [src/section_04_installing_software/03-containers-follow-up.md](src/section_04_installing_software/03-containers-follow-up.md)
 - [x] Add a section README in
-  [src/section_05_installing_software/README.md](src/section_05_installing_software/README.md)
+  [src/section_04_installing_software/README.md](src/section_04_installing_software/README.md)
 - [ ] Confirm the exact Isambard 3 module names to use for the taught path
 - [ ] Confirm the preferred conda/mamba initialisation method for interactive and batch use on Isambard 3
 - [ ] Decide whether the root `pyproject.toml` Pixi workflow and editable `src/` package route should be mentioned in
@@ -191,7 +187,7 @@ TODOs:
 - [ ] Add the exact support/docs signposting for cases where attendee environments become bespoke
 - [ ] Keep containers as follow-up only and out of the core hands-on path
 
-### 6. Python Example + Array Jobs + Parallelism Strategies (25 min)
+### 5. Python Example + Array Jobs + Parallelism Strategies (25 min)
 
 **Part A — Single job (~8 min)**
 
@@ -228,7 +224,7 @@ Compare approaches conceptually:
 
 This part should remain comparative and practical rather than deep.
 
-### 7. Debugging Failed Jobs (20 min)
+### 6. Debugging Failed Jobs (20 min)
 
 This should stay hands-on and explicitly problem-solving focused.
 
@@ -260,7 +256,7 @@ Add a brief etiquette note:
 - do not aggressively poll `squeue`/`sinfo`
 - avoid `watch`-style hammering of scheduler commands
 
-### 8. Tips, Help, Wrap-Up, Q&A & Feedback (15 min)
+### 7. Tips, Help, Wrap-Up, Q&A & Feedback (15 min)
 
 Use this as a flexible closing block.
 

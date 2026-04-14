@@ -91,7 +91,7 @@ with `python monte_carlo_pi_numpy.py` if that is more convenient for the worksho
 Run the summary script from the repository root:
 
 ``` bash
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_parallel_strategies -d 2 -n 200000 -t 4
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_parallel_strategies -d 2 -n 200000 -t 4
 ```
 
 That summary runner imports the four non-MPI variants and prints one table. If you launch the same script under
@@ -100,10 +100,10 @@ That summary runner imports the four non-MPI variants and prints one table. If y
 Or run one implementation explicitly:
 
 ``` bash
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_pure_python -d 2 -n 50000
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy -d 2 -n 200000
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_numba -d 2 -n 200000
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_numba_parallel -d 2 -n 200000 -t 4
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_pure_python -d 2 -n 50000
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy -d 2 -n 200000
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_numba -d 2 -n 200000
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_numba_parallel -d 2 -n 200000 -t 4
 ```
 
 ## Run the hybrid MPI variant
@@ -114,7 +114,7 @@ Set the thread-related environment first, following `hybrid-MPI.md`, then launch
 export NUM_THREADS=4
 export NUMBA_NUM_THREADS=${NUM_THREADS}
 
-pixi run mpiexec -n 4 python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_mpi_hybrid \
+pixi run mpiexec -n 4 python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_mpi_hybrid \
   -d 2 \
   -n 2000000 \
   -t ${NUM_THREADS}
@@ -132,15 +132,15 @@ In this hybrid setup:
 Create a notebook from one of the percent scripts:
 
 ``` bash
-pixi run python -m jupytext --to ipynb src/section_06_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.py
+pixi run python -m jupytext --to ipynb src/section_05_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.py
 ```
 
 After both files exist, keep them synchronised with:
 
 ``` bash
 pixi run python -m jupytext --sync \
-  src/section_06_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.ipynb \
-  src/section_06_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.py
+  src/section_05_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.ipynb \
+  src/section_05_python_array_jobs_parallelism_strategies/monte_carlo_pi_numba_parallel.py
 ```
 
 ## Array jobs hook
@@ -148,7 +148,7 @@ pixi run python -m jupytext --sync \
 For a Slurm array job, use the task ID as a per-run seed:
 
 ``` bash
-pixi run python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy \
+pixi run python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_numpy \
   -d 2 \
   -n 200000 \
   -s "${SLURM_ARRAY_TASK_ID}"

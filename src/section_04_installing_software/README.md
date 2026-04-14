@@ -1,4 +1,4 @@
-# Section 5: Installing Software
+# Section 4: Installing Software
 
 This section is the main home for the original tutorial’s software-installation material, adapted for Isambard 3 and for
 this workshop schedule.
