@@ -143,19 +143,13 @@ prefer another editor, including desktop VS Code, can use it instead but should 
 
 TODOs:
 
-- [x] Create a first-commands walkthrough covering `whoami`, `hostname`, `pwd`, storage variables, and basic module
-  commands in
-  [src/section_02_login_checkpoint_first_commands/01-first-commands.md](src/section_02_login_checkpoint_first_commands/01-first-commands.md)
-- [x] Create a storage-orientation exercise in
-  [src/section_02_login_checkpoint_first_commands/02-storage-check.md](src/section_02_login_checkpoint_first_commands/02-storage-check.md)
-- [x] Create a minimal modules exercise in
-  [src/section_02_login_checkpoint_first_commands/03-modules-basics.md](src/section_02_login_checkpoint_first_commands/03-modules-basics.md)
+- [x] Create the section 2 slide deck covering login checkpoint, storage orientation (`$HOME`/`$PROJECTDIR`/
+  `$SCRATCHDIR`), modules preview, a consolidated “try these now” commands slide, and a Q&A slide in
+  [src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown](src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown)
 - [x] Add a section README in
   [src/section_02_login_checkpoint_first_commands/README.md](src/section_02_login_checkpoint_first_commands/README.md)
-- [ ] Add exact live-teaching prompts for the login checkpoint and helper mop-up
-- [ ] Replace placeholder module examples with confirmed Isambard 3 module names if needed
-- [ ] Add the short spoken reminder about storage not being archival
-- [ ] Add the short spoken VS Code tunnel signpost for attendees following the browser-based editor path
+- [ ] Add exact live-teaching prompts for the login checkpoint and helper mop-up (speaker notes on slide 1)
+- [ ] Tighten the spoken VS Code tunnel signpost on slide 1 for attendees following the browser-based editor path
 
 ### 3. First Batch Job — Slurm (25 min)
 

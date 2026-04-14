@@ -204,6 +204,16 @@ Call-to-action text
 :::
 :::::
 
+## TEMPLATE: Q&A slide {#template-qa-slide .qa-slide}
+
+::: qa-mark
+Q&A
+:::
+
+::: qa-subtitle
+Optional prompt line below the big Q&A --- e.g. "Ask now, or grab a helper during the break."
+:::
+
 ## TEMPLATE: Case study {#template-case-study .case-study-slide}
 
 ::::::: case-study-wrap
