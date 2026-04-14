@@ -19,14 +19,50 @@ Core design principles:
   over broad coverage.
 - Avoid going deep on participants’ own custom software stacks during the session.
 - Treat anything outside the prepared exercises as follow-up support rather than in-room troubleshooting.
-- Require all attendees to complete the [BriCS setup
-  tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event. Treat incomplete setup as
-  a pre-workshop support issue, not something to recover in the room.
+- Unify novice and advanced material within each section rather than running two tracks. Put the simpler content first
+  and let later parts go deeper; novices focus on the earlier parts while faster attendees stretch into the rest. Avoid
+  explicit two-track splits that would fragment the room.
+- Follow a short-presentation → dedicated try-time → debrief / Q&A rhythm for each hands-on section. Skip this rhythm
+  only when the section is obviously not suited to interactive work.
+
+## Registration snapshot (as of 2026-04-14)
+
+- **21 of 40** registered, one week before the workshop.
+- **Experience mix:** 3 completely new, 7 beginner, 7 intermediate, 4 advanced. Split roughly 10 novice / 11 confident —
+  the “novice-leaning” framing is real but the advanced contingent is non-trivial.
+- **Domains:** life and biomedical sciences are well represented (≈8 of 21, including Clinical & Biomedical Sciences,
+  DCBS, Biosciences, Health and Life Sciences). Also Water Systems, Engineering, Computer Science, RSA / Research IT /
+  Research Software, Mathematics and Statistics, Business Economics, and EI CDT.
+- **Learning goals (ranked by share of registrants):** system architecture 21/21 (100%), job submission 16/21 (76%),
+  login / access 14/21 (67%), using the portal 12/21 (57%), debugging jobs 11/21 (52%).
+- **Accessibility requests:** none flagged.
+
+Named signals worth baking into delivery:
+
+- A DCBS attendee (multiplex imaging, 130 cases) is a textbook parameter-sweep / many-independent-tasks case; use this
+  framing in Section 5 where it helps.
+- An intermediate attendee explicitly asked whether VS Code can be used — the VS Code browser-tunnel answer belongs in
+  the pre-workshop email and in Section 1 / Section 2 signposting, not discovered live.
+
+## Pre-workshop setup (settled)
+
+The access gap between registration and a working login is a known constraint. The plan below is what we can do within
+it. **Do not re-raise this as an open planning concern.**
+
+- The workshop project is being created by organisers; invitations go out to registered attendees shortly. Account
+  provisioning is not a planning concern.
+- The [Pre-Workshop Email](#pre-workshop-email) is sent on the Tuesday or Wednesday one week before the workshop (the
+  earliest the organisers can send it). It links the minimal setup steps we expect every attendee to complete.
+- Doors open at **09:30** for tea, coffee, and optional account-setup support. A single on-screen slide shows the setup
+  steps so attendees can self-serve while helpers circulate. Workshop teaching starts at 10:00.
+- The 09:30–10:00 window is a buffer, not a dedicated setup session. Attendees are told in the email to complete setup
+  before arrival where possible and to reply early if something has gone wrong.
 
 ## Schedule
 
 | \#  | Section                                                    | Duration | Time        |
 |-----|------------------------------------------------------------|----------|-------------|
+| –   | Doors open: tea, coffee, optional account-setup support    | 30 min   | 09:30–10:00 |
 | 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | 30 min   | 10:00–10:30 |
 | 2   | Login Checkpoint + First Commands                          | 10 min   | 10:30–10:40 |
 | 3   | First Batch Job (Slurm)                                    | 25 min   | 10:40–11:05 |
@@ -44,10 +80,9 @@ The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by
 overview then run in parallel: attendees begin the Clifton login process (`clifton auth`, then `ssh`) while the
 presenter gives a lightweight system overview and helpers circulate.
 
-**Planning assumption: all attendees will have completed the [BriCS setup
-tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event**, covering portal login,
-policy acceptance, invitation acceptance, UNIX username, SSH key pair, and Clifton installation. Incomplete setup should
-be resolved before the day via BriCS support, not recovered in the room.
+**Planning assumption: attendees follow the minimal setup steps in the [Pre-Workshop Email](#pre-workshop-email) before
+arrival** — initial setup, Clifton/SSH, and the VS Code CLI. The 09:30 doors-open window (see [Pre-workshop setup
+(settled)](#pre-workshop-setup-settled)) is a buffer for final setup, not a dedicated setup session.
 
 Default editor path for the workshop: use VS Code via the browser-based tunnel workflow described in the BriCS
 documentation. Treat this as the standard taught route so participants are all following the same setup unless they
@@ -69,7 +104,7 @@ TODOs:
 
 - [x] Create presenter-facing system overview notes covering what Isambard 3 is, Arm/aarch64, CPU-only positioning,
   Slurm, and storage areas in
-  [src/section_01_welcome_login_overview/01-system-overview.md](src/section_01_welcome_login_overview/01-system-overview.md)
+  [src/section_01_welcome_login_overview/01-system-overview.markdown](src/section_01_welcome_login_overview/01-system-overview.markdown)
 - [x] Create a short attendee storage exercise in
   [src/section_01_welcome_login_overview/02-storage-worksheet.md](src/section_01_welcome_login_overview/02-storage-worksheet.md)
 - [x] Add a section README in
@@ -79,6 +114,12 @@ TODOs:
 - [ ] Add exact presenter wording for the Clifton login start and helper choreography
 - [ ] Add the VS Code browser-tunnel signposting that will be said live in the room
 - [ ] Document the passive follow-along contingency for the rare attendee with an access problem on the day
+- [ ] Create the single arrival/setup instructions slide (displayed on screen 09:30–10:00, covering the minimal setup
+  steps from the pre-workshop email)
+- [ ] Find and embed an NVIDIA Grace CPU image on a single CPU-architecture slide (one slide, within the system
+  overview)
+- [ ] Add a single portal slide with a `TODO: add image of the portal` placeholder — the portal only shows project
+  membership and account balance, so one slide is enough
 
 ### 2. Login Checkpoint + First Commands (10 min)
 
@@ -275,30 +316,24 @@ Important distinction to make clear:
 
 ## Pre-Workshop Email
 
-Send on Thursday before the event.
+Sent on the Tuesday or Wednesday one week before the workshop (the earliest the organisers can send it).
 
-**Completion of the [BriCS setup tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the
-event is mandatory.** Attendees who arrive without a working login will not be able to complete the hands-on exercises
-and helpers will not have time to recover incomplete setups during the session.
+**Minimal setup we expect every participant to complete before arrival:**
 
-The setup tutorial covers:
+1.  Follow the initial setup tutorial: <https://docs.isambard.ac.uk/user-documentation/tutorials/setup/>
+2.  Set up Clifton for SSH access: <https://docs.isambard.ac.uk/user-documentation/guides/login/>
+3.  Install the VS Code CLI and launch VS Code in the browser — just the “Install VS Code CLI” subsection:
+    <https://docs.isambard.ac.uk/user-documentation/guides/vscode/#install-vs-code-cli>
 
-- logging into the BriCS portal
-- accepting access terms and policies
-- accepting the project invitation
-- setting a UNIX username
-- generating an SSH key pair (if needed)
-- installing Clifton
+Advanced users are welcome to bootstrap their own environment and text editor (desktop VS Code, vim, etc.) before the
+workshop instead of the browser-based VS Code path.
 
 In addition, ask attendees to:
 
-- install the VS Code CLI ahead of time if possible
-- expect the taught editing path to use VS Code in a web browser
-- bring their own preferred text editor set up in advance if they do not want to use the browser-based VS Code route
 - bring a laptop that can open a terminal and a web browser
-
-Any attendee who has not been able to complete setup before the event should contact BriCS support ahead of time, not
-arrive expecting in-room help.
+- arrive from 09:30 for tea, coffee, and optional account-setup support — workshop teaching starts at 10:00
+- reply to the pre-workshop email ahead of time if the project invitation has not arrived or anything else has gone
+  wrong, so organisers can help before the day
 
 ## Workshop Material Design Notes
 
@@ -306,6 +341,9 @@ arrive expecting in-room help.
 
 - slide deck
 - onboarding/run-of-show notes for presenter and helpers
+- arrival / minimal-setup slide for 09:30–10:00
+- single CPU-architecture slide (NVIDIA Grace image)
+- single portal slide
 - first Slurm job script
 - multi-task Slurm job script
 - Monte Carlo Pi Python script
@@ -320,16 +358,17 @@ arrive expecting in-room help.
 - [ ] Pre-workshop email draft
 - [ ] Slide deck outline
 - [ ] Broken job scripts for debugging exercise (3 scripts)
-- [ ] First Slurm job script
-- [ ] Multi-task Slurm job script
-- [ ] Monte Carlo Pi Python script
+- [x] First Slurm job script
+- [x] Multi-task Slurm job script
+- [x] Monte Carlo Pi Python script
 - [ ] Array job version of the Python example
 - [ ] GNU Parallel example or confirm whether to keep it conceptual only
 - [ ] Stretch goals for each hands-on section
 - [ ] Confirm module names used in exercises
 - [ ] Confirm project ID format shown in examples
 - [ ] Confirm path for workshop materials
-- [ ] Confirm workshop account provisioning timeline with BriCS
+- [x] Confirm workshop account provisioning timeline with BriCS (project being created; invitations going out to
+  registered attendees shortly)
 - [ ] Set up a project on the portal for the workshop
 - [ ] Put a reservation in place on Isambard 3 for the workshop duration
 - [ ] Confirm if there are any remote participants
@@ -357,6 +396,8 @@ These may be mentioned briefly, but are not teaching goals for this session:
 - interactive notebooks / JupyterHub workflows
 - advanced multi-node MPI implementation details
 - long discussion of architecture-specific optimisation
+- extended portal walkthroughs — the portal only shows project membership and account balance, so it gets a single slide
+  rather than teaching time
 
 ## Instructor Guidance
 
