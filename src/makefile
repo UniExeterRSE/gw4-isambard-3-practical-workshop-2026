@@ -5,7 +5,6 @@ PANDOC_ARGS = \
 	-s \
 	-t revealjs \
 	-V center=false \
-	-V css=/assets/theme.css \
 	-V hash=true \
 	-V height=1080 \
 	-V margin=0.04 \
@@ -28,7 +27,7 @@ index.html: html
 
 html: $(HTML)
 %.html: %.markdown
-	pandoc $(PANDOC_ARGS) -o $@ $<
+	pandoc $(PANDOC_ARGS) -V css=$(shell python -c "from pathlib import Path; import os; print(os.path.relpath('assets/theme.css', start=str(Path('$(dir $@)')) or '.'))") -o $@ $<
 
 clean:  ## Clean all generated files
 	rm -f $(HTML) index.html

@@ -2,7 +2,7 @@
 
 :::::::::: hero-grid
 :::::::: hero-left
-![University of Exeter logo](/assets/uoe-logo.png){.hero-uoe}
+![University of Exeter logo](uoe-logo.png){.hero-uoe}
 
 ::: hero-title
 Presentation Title Here
@@ -21,7 +21,7 @@ describing the presentation
 :::
 
 ::: docs-qr-block
-![QR code](/assets/docs-qr.png)
+![QR code](docs-qr.png)
 
 [Link text](https://example.com)
 :::
@@ -30,11 +30,11 @@ describing the presentation
 Presenter name - Team/Unit - Date
 :::
 
-![GW4 logo](/assets/gw4-logo.png){.hero-gw4}
+![GW4 logo](gw4-logo.png){.hero-gw4}
 ::::::::
 
 ::: hero-right
-![Hero image](/assets/isambard-exterior.jpeg)
+![Hero image](isambard-exterior.jpeg)
 :::
 ::::::::::
 
@@ -98,7 +98,7 @@ Description of the second topic.
 :::
 
 ::: grid-image
-![Optional image (Image caption here)](/assets/isambard-exterior.jpeg)
+![Optional image (Image caption here)](isambard-exterior.jpeg)
 :::
 :::::
 
@@ -198,7 +198,7 @@ Docs: <https://example.com>
 :::
 
 ::: cta-card
-![QR code](/assets/docs-qr.png)
+![QR code](docs-qr.png)
 
 Call-to-action text
 :::
@@ -207,7 +207,7 @@ Call-to-action text
 ## TEMPLATE: Case study {#template-case-study .case-study-slide}
 
 ::::::: case-study-wrap
-![Background image](/assets/isambard-exterior.jpeg){.low-density}
+![Background image](isambard-exterior.jpeg){.low-density}
 
 ::: pi-line
 PI: Dr. Name --- Institution
@@ -221,7 +221,7 @@ Description paragraph one explaining the research and its context.
 Description paragraph two with results or impact.
 :::
 
-![Detail image](/assets/machine-room.jpeg){.high-density}
+![Detail image](machine-room.jpeg){.high-density}
 
 ::: {.label .low}
 Low-density label

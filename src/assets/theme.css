@@ -31,7 +31,7 @@
 
 .reveal-viewport {
   background-color: #fff !important;
-  background-image: url('/assets/background-right.png') !important;
+  background-image: url('background-right.png') !important;
   background-size: auto 100% !important;
   background-position: right top !important;
   background-repeat: no-repeat !important;
@@ -44,7 +44,7 @@
   left: 80px;
   width: 265px;
   height: 50px;
-  background-image: url('/assets/Technician_Commitment.png');
+  background-image: url('Technician_Commitment.png');
   background-size: contain;
   background-position: left bottom;
   background-repeat: no-repeat;
@@ -59,7 +59,7 @@
   right: 80px;
   width: 200px;
   height: 55px;
-  background-image: url('/assets/gw4-logo.png');
+  background-image: url('gw4-logo.png');
   background-size: contain;
   background-position: right bottom;
   background-repeat: no-repeat;
@@ -111,7 +111,7 @@ body .reveal-viewport .reveal,
   top: 20px;
   width: 220px;
   height: 75px;
-  background-image: url('/assets/uoe-logo.png');
+  background-image: url('uoe-logo.png');
   background-size: contain;
   background-position: left top;
   background-repeat: no-repeat;
