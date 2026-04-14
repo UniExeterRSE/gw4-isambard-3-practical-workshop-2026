@@ -10,13 +10,35 @@ emphasis on memory bandwidth, power efficiency, and a relatively simple NUMA lay
 
 The NVIDIA Grace CPU Superchip combines **two NVIDIA Grace CPUs** in a single compact module.
 
+<figure>
+<img src="../media/NVidia/Grace-CPU-Superchip/image-001-000.jpg"
+alt="The NVIDIA Grace CPU Superchip module, with two Grace CPUs co-packaged on a single board." />
+<figcaption aria-hidden="true">The NVIDIA Grace CPU Superchip module, with two Grace CPUs co-packaged on a single
+board.</figcaption>
+</figure>
+
 - **The cores:** Across the Superchip, you have **144 Arm Neoverse V2 cores** total, with **72 cores per Grace CPU**.
 - **The interconnect:** The two CPUs are connected with **NVLink-C2C (Chip-to-Chip)**, which provides **900 GB/s of
   bidirectional bandwidth** between them.
 
+<figure>
+<img src="../media/NVidia/Grace-CPU-Superchip/image-005-002.jpg"
+alt="A closer view of the two Grace CPU dies and surrounding LPDDR5X memory packages." />
+<figcaption aria-hidden="true">A closer view of the two Grace CPU dies and surrounding LPDDR5X memory
+packages.</figcaption>
+</figure>
+
 ## **Topology and the NUMA Layout**
 
 Compared with many conventional dual-socket server designs, Grace presents a simpler topology to software.
+
+<figure>
+<img src="../media/NVidia/Grace-CPU-Superchip/image-006-004.png"
+alt="Left: the Grace CPU Superchip with two Grace CPUs linked by NVLink-C2C at 900 GB/s, each with its own LPDDR5X memory at 500 GB/s, forming just two NUMA nodes. Right: a conventional dual-socket system for comparison, with multiple NUMA nodes per socket and DDR4 memory channels." />
+<figcaption aria-hidden="true">Left: the Grace CPU Superchip with two Grace CPUs linked by NVLink-C2C at 900 GB/s, each
+with its own LPDDR5X memory at 500 GB/s, forming just two NUMA nodes. Right: a conventional dual-socket system for
+comparison, with multiple NUMA nodes per socket and DDR4 memory channels.</figcaption>
+</figure>
 
 - **The Scalable Coherency Fabric (SCF):** Within each 72-core Grace CPU, cores, distributed cache, memory, and system
   I/O are connected by the **NVIDIA Scalable Coherency Fabric (SCF)**, which NVIDIA describes as a **high-bandwidth mesh
@@ -26,6 +48,14 @@ Compared with many conventional dual-socket server designs, Grace presents a sim
   Grace CPU.
 - **Why this matters:** The high-bandwidth **NVLink-C2C** link between the two CPUs helps reduce the cross-socket
   bottlenecks commonly associated with traditional dual-socket systems.
+
+<figure>
+<img src="../media/NVidia/Grace-CPU-Superchip/image-007-006.png"
+alt="A single Grace CPU die: 72 Arm Neoverse V2 cores, 114 MB of L3 cache, 3.2 TB/s NVIDIA Scalable Coherency Fabric, 500 GB/s LPDDR5X with ECC, and the 900 GB/s NVLink-C2C link to the neighbouring CPU." />
+<figcaption aria-hidden="true">A single Grace CPU die: 72 Arm Neoverse V2 cores, 114 MB of L3 cache, 3.2 TB/s NVIDIA
+Scalable Coherency Fabric, 500 GB/s LPDDR5X with ECC, and the 900 GB/s NVLink-C2C link to the neighbouring
+CPU.</figcaption>
+</figure>
 
 ## **Memory Subsystem**
 
@@ -43,6 +73,14 @@ practice, treat the machine as **two NUMA nodes with roughly 120 GB attached to 
 ## **Vectorization: How It Crunches Numbers**
 
 To get maximum performance from HPC applications, vectorization matters.
+
+<figure>
+<img src="../media/NVidia/Grace-CPU-Superchip/image-009-010.jpg"
+alt="Inside a single Arm Neoverse V2 core: an Armv9-A 64-bit CPU with 4×128-bit SVE2 SIMD units, 64 KB L1 I-cache with parity and 64 KB L1 D-cache with ECC, and 1 MB of private L2 cache with ECC connecting to the NVIDIA Scalable Coherency Fabric." />
+<figcaption aria-hidden="true">Inside a single Arm Neoverse V2 core: an Armv9-A 64-bit CPU with 4×128-bit SVE2 SIMD
+units, 64 KB L1 I-cache with parity and 64 KB L1 D-cache with ECC, and 1 MB of private L2 cache with ECC connecting to
+the NVIDIA Scalable Coherency Fabric.</figcaption>
+</figure>
 
 - **The vector units:** Each Neoverse V2 core has **four 128-bit SIMD units**.
 - **The instruction sets:** These units support both **NEON** and **SVE2 (Scalable Vector Extension 2)**.
