@@ -46,6 +46,10 @@ sync = { cmd = "jupytext --sync '**/*.ipynb' '**/*.py'", description = "Synchron
 monte-carlo-pi-summary = { cmd = "python -m section_06_python_array_jobs_parallelism_strategies.monte_carlo_pi_parallel_strategies", cwd = "." }
 docs = { cmd = "cd src; make all", description = "Make HTMLs." }
 serve = { cmd = "python -m http.server 8001 --bind 127.0.0.1 --directory src", description = "Serve the presentation.", depends-on = ["docs"] }
+format-md = { cmd = "python bin/md_formatter.py '**/*.md' -t gfm", description = "Format .md files via pandoc (GFM)." }
+format-markdown = { cmd = "python bin/md_formatter.py '**/*.markdown' -t markdown", description = "Format .markdown files via pandoc." }
+format-py = { cmd = "ruff check --fix src/ bin/ && ruff format src/ bin/", description = "Lint-fix and format .py and .ipynb files with ruff." }
+format = { depends-on = ["format-md", "format-markdown", "format-py"], description = "Run all formatters." }
 
 [tool.pixi.dependencies]
 python = ">=3.12,<3.13"
@@ -56,9 +60,20 @@ jupytext = ">=1.18.1,<2"
 pandoc = ">=3.9,<4"
 qrcode = ">=8.2,<9"
 pillow = ">=12.1.1,<13"
+ruff = ">=0.11,<1"
 
 [tool.pixi.pypi-dependencies]
 isambard3-workshop = { path = ".", editable = true }
+
+[tool.ruff]
+line-length = 120
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["I", "F401", "F841", "F601", "F602", "F405"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
