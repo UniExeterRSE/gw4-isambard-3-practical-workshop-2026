@@ -95,6 +95,14 @@ storage areas they will use in the workshop.
 Do **not** spend long here on architecture-specific software discussion. Keep that for the software section when it is
 directly relevant.
 
+**Compiler guidance (for the Grace CPU Superchip slide deck and any compiler discussion):** The correct flag for
+targeting the Grace CPU is `-mcpu=neoverse-v2`, not `-march` (which is an x86 convention). This matches the [official
+Isambard 3 modules documentation](https://docs.isambard.ac.uk/user-documentation/guides/modules/). The recommended and
+only taught compiler is **GNU** (`PrgEnv-gnu` / `gcc-native`). Do **not** recommend the NVIDIA compiler (NVHPC / `nvc`):
+in practice it causes compilation errors for many workloads, does not offer a meaningful performance advantage, and is
+not the happy path for workshop attendees. LLVM/Clang and other compilers are not called out in the official docs and
+should not be mentioned in the taught path.
+
 Slides should stay low-demand: large diagrams, minimal text, clear signposting.
 
 Keep a passive follow-along contingency in reserve for the rare attendee who still has an access problem on the day
