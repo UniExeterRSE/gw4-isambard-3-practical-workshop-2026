@@ -205,7 +205,8 @@ Use `-mcpu=neoverse-v2` with the **GNU compiler** (the recommended path on Isamb
 - **GCC:** `-mcpu=neoverse-v2`
 - Via Cray wrappers (`cc`, `CC`, `ftn`): add `-mcpu=neoverse-v2` to your flags
 
-`-mcpu` sets both the architecture target and the tuning in one flag --- it is the correct flag for Arm, unlike `-march` which is the x86 convention.
+`-mcpu` sets both the architecture target and the tuning in one flag --- it is the correct flag for Arm, unlike `-march`
+which is the x86 convention.
 :::
 
 ::: grid-image
@@ -217,10 +218,13 @@ L2](/media/NVidia/Grace-CPU-Superchip/image-009-010.jpg)
 ::: notes
 - On V2, SVE2 vector length is fixed at 128 bits --- same physical width as NEON on this chip
 - SVE2's length-agnostic programming model means code written for V2 could run unmodified on future wider cores
-- The official docs (docs.isambard.ac.uk/user-documentation/guides/modules/) recommend -mcpu=neoverse-v2 with GNU compilers
+- The official docs (docs.isambard.ac.uk/user-documentation/guides/modules/) recommend -mcpu=neoverse-v2 with GNU
+  compilers
 - Stick to GNU (PrgEnv-gnu / gcc-native): it is the reliable, well-tested path on Isambard 3
-- Do not recommend the NVIDIA compiler (NVHPC/nvc): based on practical experience it leads to compilation errors and does not offer a performance advantage; it is not the happy path for most users
-- Do not recommend LLVM/Clang or Arm Compiler for Linux here --- they are not the taught route and the docs do not call them out
+- Do not recommend the NVIDIA compiler (NVHPC/nvc): based on practical experience it leads to compilation errors and
+  does not offer a performance advantage; it is not the happy path for most users
+- Do not recommend LLVM/Clang or Arm Compiler for Linux here --- they are not the taught route and the docs do not call
+  them out
 :::
 
 ## Peak FP64 performance: 7.1 TFLOPS {#peak-flops .shell-slide}
