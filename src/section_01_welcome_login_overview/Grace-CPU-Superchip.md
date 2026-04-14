@@ -31,18 +31,14 @@ Compared with many conventional dual-socket server designs, Grace presents a sim
 
 Grace is built around server-class **LPDDR5X with ECC**, co-packaged with the CPU.
 
-- A **single Grace CPU** supports **120 GB, 240 GB, or 480 GB** of LPDDR5X, depending on configuration.
-- A **Grace CPU Superchip** supports **240 GB, 480 GB, or 960 GB** of on-module memory, depending on configuration.
-- For a **240 GB Superchip**, the most likely layout is **2 × 120 GB**, one **120 GB NUMA node per Grace CPU**. NVIDIA’s
-  public documents do **not** state this as explicitly as a NUMA map, but it follows directly from the per-CPU and
-  per-Superchip capacity options they publish.
-- Bandwidth depends on memory capacity: NVIDIA lists **up to 512 GB/s per Grace CPU** and **up to 1024 GB/s per Grace
-  CPU Superchip** at some capacities, while the whitepaper summarizes the Superchip as **up to 1 TB/s raw memory
-  bandwidth**.
+- This Superchip is the **240 GB** configuration, giving **240 GB of on-module LPDDR5X** in total.
+- The layout is **2 × 120 GB**, one **120 GB NUMA node per Grace CPU**. NVIDIA’s public documents do **not** state this
+  as an explicit NUMA map, but it follows directly from the per-CPU and per-Superchip capacity options they publish.
+- At this capacity, NVIDIA lists **up to 512 GB/s per Grace CPU** and **up to 1024 GB/s per Grace CPU Superchip**, which
+  the whitepaper summarizes as **up to 1 TB/s raw memory bandwidth**.
 
-This memory design is a major part of Grace’s value proposition: high bandwidth with strong power efficiency. For your
-specific **240 GB** system, it is reasonable to treat the machine as **two NUMA nodes with roughly 120 GB attached to
-each node**.
+This memory design is a major part of Grace’s value proposition: high bandwidth with strong power efficiency. In
+practice, treat the machine as **two NUMA nodes with roughly 120 GB attached to each node**.
 
 ## **Vectorization: How It Crunches Numbers**
 
@@ -102,7 +98,7 @@ The Grace CPU Superchip gives you:
 - **144 Arm Neoverse V2 cores**
 - **2 NUMA nodes total**
 - **900 GB/s NVLink-C2C** between the two CPUs
-- **Up to 960 GB LPDDR5X with ECC**
+- **240 GB LPDDR5X with ECC**
 - **Up to 1 TB/s raw memory bandwidth**
 - **SVE2-capable SIMD units** for highly vectorized workloads
 
