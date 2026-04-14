@@ -8,30 +8,30 @@ See `hello_world.sh`.
 
 ## Submit it
 
-```bash
+``` bash
 sbatch hello_world.sh
 ```
 
 ## Monitor it
 
-```bash
+``` bash
 squeue --me
 ```
 
 ## Read the output
 
-```bash
+``` bash
 cat hello_world.out
 ```
 
 ## Cancel if needed
 
-```bash
+``` bash
 scancel <jobid>
 ```
 
 ## Questions
 
-1. What job ID did Slurm assign?
-2. What host ran the job?
-3. Where did standard output go?
+1.  What job ID did Slurm assign?
+2.  What host ran the job?
+3.  Where did standard output go?

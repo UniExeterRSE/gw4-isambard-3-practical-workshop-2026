@@ -201,10 +201,7 @@ def format_results_table(results: list[ExperimentResult]) -> str:
 
 
 def print_results(config: ExperimentConfig, results: list[ExperimentResult]) -> None:
-    print(
-        f"d={config.d} N={config.n} num_threads={config.num_threads} "
-        f"seed={config.seed}"
-    )
+    print(f"d={config.d} N={config.n} num_threads={config.num_threads} seed={config.seed}")
     print(format_results_table(results))
 
 

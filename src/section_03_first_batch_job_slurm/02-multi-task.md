@@ -8,13 +8,13 @@ See `multi_task.sh`.
 
 ## Submit it
 
-```bash
+``` bash
 sbatch multi_task.sh
 ```
 
 ## Observe the output
 
-```bash
+``` bash
 cat multi_task.out
 ```
 
@@ -22,7 +22,7 @@ You should see one line from each task.
 
 ## Inspect accounting data
 
-```bash
+``` bash
 sacct --format=JobID,JobName,State,Elapsed
 ```
 

@@ -1,6 +1,7 @@
 # Section 2: Login Checkpoint and First Commands
 
-This section turns the orientation material from the original tutorial into a short, hands-on first-commands exercise for Isambard 3.
+This section turns the orientation material from the original tutorial into a short, hands-on first-commands exercise
+for Isambard 3.
 
 Files in this section:
 

@@ -15,15 +15,18 @@ Core design principles:
 
 - Keep the core path accessible to genuine beginners.
 - Preserve stretch goals for faster and more experienced attendees.
-- Prioritise login, first-job workflows, parallelism patterns for serial work, debugging, and practical software setup over broad coverage.
-- Avoid going deep on participants' own custom software stacks during the session.
+- Prioritise login, first-job workflows, parallelism patterns for serial work, debugging, and practical software setup
+  over broad coverage.
+- Avoid going deep on participants’ own custom software stacks during the session.
 - Treat anything outside the prepared exercises as follow-up support rather than in-room troubleshooting.
-- Require all attendees to complete the [BriCS setup tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event. Treat incomplete setup as a pre-workshop support issue, not something to recover in the room.
+- Require all attendees to complete the [BriCS setup
+  tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event. Treat incomplete setup as
+  a pre-workshop support issue, not something to recover in the room.
 
 ## Schedule
 
-| #   | Section                                                    | Duration | Time        |
-| --- | ---------------------------------------------------------- | -------- | ----------- |
+| \#  | Section                                                    | Duration | Time        |
+|-----|------------------------------------------------------------|----------|-------------|
 | 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | 30 min   | 10:00–10:30 |
 | 2   | Login Checkpoint + First Commands                          | 10 min   | 10:30–10:40 |
 | 3   | First Batch Job (Slurm)                                    | 25 min   | 10:40–11:05 |
@@ -37,25 +40,40 @@ Core design principles:
 
 ### 1. BriCS Intro + Welcome + Login + System Overview (30 min)
 
-The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by BriCS staff. Login and the system overview then run in parallel: attendees begin the Clifton login process (`clifton auth`, then `ssh`) while the presenter gives a lightweight system overview and helpers circulate.
+The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by BriCS staff. Login and the system
+overview then run in parallel: attendees begin the Clifton login process (`clifton auth`, then `ssh`) while the
+presenter gives a lightweight system overview and helpers circulate.
 
-**Planning assumption: all attendees will have completed the [BriCS setup tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event**, covering portal login, policy acceptance, invitation acceptance, UNIX username, SSH key pair, and Clifton installation. Incomplete setup should be resolved before the day via BriCS support, not recovered in the room.
+**Planning assumption: all attendees will have completed the [BriCS setup
+tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event**, covering portal login,
+policy acceptance, invitation acceptance, UNIX username, SSH key pair, and Clifton installation. Incomplete setup should
+be resolved before the day via BriCS support, not recovered in the room.
 
-Default editor path for the workshop: use VS Code via the browser-based tunnel workflow described in the BriCS documentation. Treat this as the standard taught route so participants are all following the same setup unless they deliberately choose an alternative editor.
+Default editor path for the workshop: use VS Code via the browser-based tunnel workflow described in the BriCS
+documentation. Treat this as the standard taught route so participants are all following the same setup unless they
+deliberately choose an alternative editor.
 
-Keep the system overview deliberately light and focused on what attendees need immediately: what Isambard 3 is, where it sits in the UK HPC landscape, Grace CPU nodes / Arm/aarch64 at a high level, Slurm as the scheduler, and the main storage areas they will use in the workshop.
+Keep the system overview deliberately light and focused on what attendees need immediately: what Isambard 3 is, where it
+sits in the UK HPC landscape, Grace CPU nodes / Arm/aarch64 at a high level, Slurm as the scheduler, and the main
+storage areas they will use in the workshop.
 
-Do **not** spend long here on architecture-specific software discussion. Keep that for the software section when it is directly relevant.
+Do **not** spend long here on architecture-specific software discussion. Keep that for the software section when it is
+directly relevant.
 
 Slides should stay low-demand: large diagrams, minimal text, clear signposting.
 
-Keep a passive follow-along contingency in reserve for the rare attendee who still has an access problem on the day despite completing pre-event setup, but treat this as an edge case.
+Keep a passive follow-along contingency in reserve for the rare attendee who still has an access problem on the day
+despite completing pre-event setup, but treat this as an edge case.
 
 TODOs:
 
-- [x] Create presenter-facing system overview notes covering what Isambard 3 is, Arm/aarch64, CPU-only positioning, Slurm, and storage areas in [src/section_01_welcome_login_overview/01-system-overview.md](src/section_01_welcome_login_overview/01-system-overview.md)
-- [x] Create a short attendee storage exercise in [src/section_01_welcome_login_overview/02-storage-worksheet.md](src/section_01_welcome_login_overview/02-storage-worksheet.md)
-- [x] Add a section README in [src/section_01_welcome_login_overview/README.md](src/section_01_welcome_login_overview/README.md)
+- [x] Create presenter-facing system overview notes covering what Isambard 3 is, Arm/aarch64, CPU-only positioning,
+  Slurm, and storage areas in
+  [src/section_01_welcome_login_overview/01-system-overview.md](src/section_01_welcome_login_overview/01-system-overview.md)
+- [x] Create a short attendee storage exercise in
+  [src/section_01_welcome_login_overview/02-storage-worksheet.md](src/section_01_welcome_login_overview/02-storage-worksheet.md)
+- [x] Add a section README in
+  [src/section_01_welcome_login_overview/README.md](src/section_01_welcome_login_overview/README.md)
 - [ ] Coordinate with BriCS staff on the 10-minute Introduction to BriCS/Isambard 3 (content, speaker, slides)
 - [ ] Turn the overview notes into actual slide deck content
 - [ ] Add exact presenter wording for the Clifton login start and helper choreography
@@ -66,22 +84,33 @@ TODOs:
 
 Quick checkpoint that everyone is in. Helpers mop up stragglers.
 
-This section should be a short guided orientation around shell basics, the main storage variables, and the idea that modules are part of the normal workflow on Isambard 3.
+This section should be a short guided orientation around shell basics, the main storage variables, and the idea that
+modules are part of the normal workflow on Isambard 3.
 
-Key teaching point here is not just naming directories, but _what goes where_: `$HOME` for config, scripts, and small outputs, `$PROJECTDIR` for shared project material, and `$SCRATCHDIR` for working data and temporary job data.
+Key teaching point here is not just naming directories, but *what goes where*: `$HOME` for config, scripts, and small
+outputs, `$PROJECTDIR` for shared project material, and `$SCRATCHDIR` for working data and temporary job data.
 
-Also remind attendees that storage is working storage, not archival, scratch is temporary, and filling `$HOME` can cause avoidable problems.
+Also remind attendees that storage is working storage, not archival, scratch is temporary, and filling `$HOME` can cause
+avoidable problems.
 
-Do **not** spend workshop time on the portal beyond whatever is strictly necessary for account setup before the event. For many attendees it will add little value because they may not yet have a project, and even those who do are likely to have only one.
+Do **not** spend workshop time on the portal beyond whatever is strictly necessary for account setup before the event.
+For many attendees it will add little value because they may not yet have a project, and even those who do are likely to
+have only one.
 
-Include a short signpost that the workshop editing workflow will follow the BriCS VS Code tunnel guide. Participants who prefer another editor, including desktop VS Code, can use it instead but should bring it set up in advance.
+Include a short signpost that the workshop editing workflow will follow the BriCS VS Code tunnel guide. Participants who
+prefer another editor, including desktop VS Code, can use it instead but should bring it set up in advance.
 
 TODOs:
 
-- [x] Create a first-commands walkthrough covering `whoami`, `hostname`, `pwd`, storage variables, and basic module commands in [src/section_02_login_checkpoint_first_commands/01-first-commands.md](src/section_02_login_checkpoint_first_commands/01-first-commands.md)
-- [x] Create a storage-orientation exercise in [src/section_02_login_checkpoint_first_commands/02-storage-check.md](src/section_02_login_checkpoint_first_commands/02-storage-check.md)
-- [x] Create a minimal modules exercise in [src/section_02_login_checkpoint_first_commands/03-modules-basics.md](src/section_02_login_checkpoint_first_commands/03-modules-basics.md)
-- [x] Add a section README in [src/section_02_login_checkpoint_first_commands/README.md](src/section_02_login_checkpoint_first_commands/README.md)
+- [x] Create a first-commands walkthrough covering `whoami`, `hostname`, `pwd`, storage variables, and basic module
+  commands in
+  [src/section_02_login_checkpoint_first_commands/01-first-commands.md](src/section_02_login_checkpoint_first_commands/01-first-commands.md)
+- [x] Create a storage-orientation exercise in
+  [src/section_02_login_checkpoint_first_commands/02-storage-check.md](src/section_02_login_checkpoint_first_commands/02-storage-check.md)
+- [x] Create a minimal modules exercise in
+  [src/section_02_login_checkpoint_first_commands/03-modules-basics.md](src/section_02_login_checkpoint_first_commands/03-modules-basics.md)
+- [x] Add a section README in
+  [src/section_02_login_checkpoint_first_commands/README.md](src/section_02_login_checkpoint_first_commands/README.md)
 - [ ] Add exact live-teaching prompts for the login checkpoint and helper mop-up
 - [ ] Replace placeholder module examples with confirmed Isambard 3 module names if needed
 - [ ] Add the short spoken reminder about storage not being archival
@@ -89,11 +118,14 @@ TODOs:
 
 ### 3. First Batch Job — Slurm (25 min)
 
-This section should give attendees two quick wins: a first successful batch submission, then a small extension to multiple tasks. The teaching emphasis is the submit-check-read-output loop, not Slurm feature breadth.
+This section should give attendees two quick wins: a first successful batch submission, then a small extension to
+multiple tasks. The teaching emphasis is the submit-check-read-output loop, not Slurm feature breadth.
 
-The beginner path should stay narrow: submit with `sbatch`, monitor with `squeue --me`, inspect output files, use `scancel` when needed, then compare that with a simple multi-task `srun` example and a first look at `sacct`.
+The beginner path should stay narrow: submit with `sbatch`, monitor with `squeue --me`, inspect output files, use
+`scancel` when needed, then compare that with a simple multi-task `srun` example and a first look at `sacct`.
 
-Stretch goals for fast finishers can include changing walltime, changing the job name or output filename, changing `--ntasks`, and adding a small `sleep` so they can observe queue and running states more clearly.
+Stretch goals for fast finishers can include changing walltime, changing the job name or output filename, changing
+`--ntasks`, and adding a small `sleep` so they can observe queue and running states more clearly.
 
 Do **not** include partition changes in the beginner path.
 
@@ -101,11 +133,16 @@ Do **not** include `--mail-type=END` as a stretch goal.
 
 TODOs:
 
-- [x] Create a hello-world walkthrough in [src/section_03_first_batch_job_slurm/01-hello-world.md](src/section_03_first_batch_job_slurm/01-hello-world.md)
-- [x] Create a starter batch script in [src/section_03_first_batch_job_slurm/hello_world.sh](src/section_03_first_batch_job_slurm/hello_world.sh)
-- [x] Create a multi-task walkthrough in [src/section_03_first_batch_job_slurm/02-multi-task.md](src/section_03_first_batch_job_slurm/02-multi-task.md)
-- [x] Create a multi-task `srun` example in [src/section_03_first_batch_job_slurm/multi_task.sh](src/section_03_first_batch_job_slurm/multi_task.sh)
-- [x] Add a section README in [src/section_03_first_batch_job_slurm/README.md](src/section_03_first_batch_job_slurm/README.md)
+- [x] Create a hello-world walkthrough in
+  [src/section_03_first_batch_job_slurm/01-hello-world.md](src/section_03_first_batch_job_slurm/01-hello-world.md)
+- [x] Create a starter batch script in
+  [src/section_03_first_batch_job_slurm/hello_world.sh](src/section_03_first_batch_job_slurm/hello_world.sh)
+- [x] Create a multi-task walkthrough in
+  [src/section_03_first_batch_job_slurm/02-multi-task.md](src/section_03_first_batch_job_slurm/02-multi-task.md)
+- [x] Create a multi-task `srun` example in
+  [src/section_03_first_batch_job_slurm/multi_task.sh](src/section_03_first_batch_job_slurm/multi_task.sh)
+- [x] Add a section README in
+  [src/section_03_first_batch_job_slurm/README.md](src/section_03_first_batch_job_slurm/README.md)
 - [ ] Add presenter notes for walking through the first script line by line
 - [ ] Confirm whether the example output filenames and shell choices match local workshop conventions
 - [ ] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
@@ -119,26 +156,38 @@ Short break.
 
 Keep this section tightly scoped.
 
-The core story is simple: try modules first, then use a prepared user-managed environment route if needed, and avoid turning the workshop into open-ended custom environment debugging.
+The core story is simple: try modules first, then use a prepared user-managed environment route if needed, and avoid
+turning the workshop into open-ended custom environment debugging.
 
-This section should help attendees understand the decision order without trying to teach every possible tool. If a participant's own stack does not fit the prepared path, point them to support and follow-up documentation after the workshop.
+This section should help attendees understand the decision order without trying to teach every possible tool. If a
+participant’s own stack does not fit the prepared path, point them to support and follow-up documentation after the
+workshop.
 
 Containers should only be mentioned briefly as a follow-up route and should not be taught hands-on in this session.
 
-Keep VS Code and other remote-development tooling out of the taught path for this section. If raised in Q&A, answer briefly and move on.
+Keep VS Code and other remote-development tooling out of the taught path for this section. If raised in Q&A, answer
+briefly and move on.
 
 TODOs:
 
-- [x] Create a modules-first exercise and decision-order note in [src/section_05_installing_software/01-modules-first.md](src/section_05_installing_software/01-modules-first.md)
-- [x] Create a conda/mamba environment exercise in [src/section_05_installing_software/02-conda-environment.md](src/section_05_installing_software/02-conda-environment.md)
-- [x] Add an example environment file in [src/section_05_installing_software/environment.yml](src/section_05_installing_software/environment.yml)
-- [x] Add a minimal Python verification script in [src/section_05_installing_software/check_scipy.py](src/section_05_installing_software/check_scipy.py)
-- [x] Add a batch job example for the Python environment in [src/section_05_installing_software/run_python_env_check.sh](src/section_05_installing_software/run_python_env_check.sh)
-- [x] Add a containers follow-up note in [src/section_05_installing_software/03-containers-follow-up.md](src/section_05_installing_software/03-containers-follow-up.md)
-- [x] Add a section README in [src/section_05_installing_software/README.md](src/section_05_installing_software/README.md)
+- [x] Create a modules-first exercise and decision-order note in
+  [src/section_05_installing_software/01-modules-first.md](src/section_05_installing_software/01-modules-first.md)
+- [x] Create a conda/mamba environment exercise in
+  [src/section_05_installing_software/02-conda-environment.md](src/section_05_installing_software/02-conda-environment.md)
+- [x] Add an example environment file in
+  [src/section_05_installing_software/environment.yml](src/section_05_installing_software/environment.yml)
+- [x] Add a minimal Python verification script in
+  [src/section_05_installing_software/check_scipy.py](src/section_05_installing_software/check_scipy.py)
+- [x] Add a batch job example for the Python environment in
+  [src/section_05_installing_software/run_python_env_check.sh](src/section_05_installing_software/run_python_env_check.sh)
+- [x] Add a containers follow-up note in
+  [src/section_05_installing_software/03-containers-follow-up.md](src/section_05_installing_software/03-containers-follow-up.md)
+- [x] Add a section README in
+  [src/section_05_installing_software/README.md](src/section_05_installing_software/README.md)
 - [ ] Confirm the exact Isambard 3 module names to use for the taught path
 - [ ] Confirm the preferred conda/mamba initialisation method for interactive and batch use on Isambard 3
-- [ ] Decide whether the root `pyproject.toml` Pixi workflow and editable `src/` package route should be mentioned in the taught path or left out to keep the section tighter
+- [ ] Decide whether the root `pyproject.toml` Pixi workflow and editable `src/` package route should be mentioned in
+  the taught path or left out to keep the section tighter
 - [ ] Add the exact support/docs signposting for cases where attendee environments become bespoke
 - [ ] Keep containers as follow-up only and out of the core hands-on path
 
@@ -171,11 +220,11 @@ Goals:
 
 Compare approaches conceptually:
 
-| Approach                   | How                       | Good for                            | Watch out                                                            |
-| -------------------------- | ------------------------- | ----------------------------------- | -------------------------------------------------------------------- |
-| GNU Parallel (single node) | One-node launcher pattern | Hundreds of short tasks on one node | Bound to one node; confirm module availability in prep               |
-| Slurm job arrays           | `--array=1-N`             | Moderate independent tasks          | Large arrays can place extra strain on the scheduler; use throttling |
-| MPI parallelism            | `mpi4py` / compiled MPI   | Multi-node communicating tasks      | Requires MPI-aware code                                              |
+| Approach | How | Good for | Watch out |
+|----|----|----|----|
+| GNU Parallel (single node) | One-node launcher pattern | Hundreds of short tasks on one node | Bound to one node; confirm module availability in prep |
+| Slurm job arrays | `--array=1-N` | Moderate independent tasks | Large arrays can place extra strain on the scheduler; use throttling |
+| MPI parallelism | `mpi4py` / compiled MPI | Multi-node communicating tasks | Requires MPI-aware code |
 
 This part should remain comparative and practical rather than deep.
 
@@ -187,9 +236,9 @@ This should stay hands-on and explicitly problem-solving focused.
 
 Prepared broken examples:
 
-1. Wrong module name → inspect `.err`
-2. Walltime too short → inspect `sacct`, see `TIMEOUT`
-3. Write to non-existent directory → inspect exit code / error output
+1.  Wrong module name → inspect `.err`
+2.  Walltime too short → inspect `sacct`, see `TIMEOUT`
+3.  Write to non-existent directory → inspect exit code / error output
 
 Participants submit, diagnose, fix, and resubmit.
 
@@ -232,7 +281,9 @@ Important distinction to make clear:
 
 Send on Thursday before the event.
 
-**Completion of the [BriCS setup tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the event is mandatory.** Attendees who arrive without a working login will not be able to complete the hands-on exercises and helpers will not have time to recover incomplete setups during the session.
+**Completion of the [BriCS setup tutorial](https://docs.isambard.ac.uk/user-documentation/tutorials/setup/) before the
+event is mandatory.** Attendees who arrive without a working login will not be able to complete the hands-on exercises
+and helpers will not have time to recover incomplete setups during the session.
 
 The setup tutorial covers:
 
@@ -250,7 +301,8 @@ In addition, ask attendees to:
 - bring their own preferred text editor set up in advance if they do not want to use the browser-based VS Code route
 - bring a laptop that can open a terminal and a web browser
 
-Any attendee who has not been able to complete setup before the event should contact BriCS support ahead of time, not arrive expecting in-room help.
+Any attendee who has not been able to complete setup before the event should contact BriCS support ahead of time, not
+arrive expecting in-room help.
 
 ## Workshop Material Design Notes
 
@@ -295,15 +347,17 @@ Any attendee who has not been able to complete setup before the event should con
 - **Audience is mixed but novice-leaning** — keep the core route beginner-safe, but preserve stretch goals.
 - **Debugging is high demand** — this is why it has a dedicated section and should not be squeezed.
 - **System architecture is also high demand** — include it, but keep it lightweight and relevant.
-- **Biomedical sciences are well represented** — use examples like image processing, parameter sweeps, and many-small-job workflows where useful.
-- **Fallback for anyone who cannot log in:** follow along on the projector. Setup is required before the event, so this should be rare.
+- **Biomedical sciences are well represented** — use examples like image processing, parameter sweeps, and
+  many-small-job workflows where useful.
+- **Fallback for anyone who cannot log in:** follow along on the projector. Setup is required before the event, so this
+  should be rare.
 
 ## Out of Scope for this workshop
 
 These may be mentioned briefly, but are not teaching goals for this session:
 
 - deep container workflows
-- bespoke package compilation/debugging for attendees' own research stacks
+- bespoke package compilation/debugging for attendees’ own research stacks
 - interactive notebooks / JupyterHub workflows
 - advanced multi-node MPI implementation details
 - long discussion of architecture-specific optimisation
@@ -314,5 +368,6 @@ When in doubt, optimise for momentum.
 
 - If many people are behind, keep the room together and trim optional depth.
 - If the room is moving fast, use stretch goals rather than introducing new topics.
-- If someone's personal environment issue becomes bespoke, stop early and redirect to docs/support after the session.
-- The workshop should leave attendees feeling they can log in, submit jobs, inspect results, fix common failures, and know where to go next.
+- If someone’s personal environment issue becomes bespoke, stop early and redirect to docs/support after the session.
+- The workshop should leave attendees feeling they can log in, submit jobs, inspect results, fix common failures, and
+  know where to go next.

@@ -16,9 +16,10 @@ Containers are useful, but they are not part of the core hands-on path for this 
 
 ## Important adaptation from the original tutorial
 
-The original tutorial includes GPU-oriented examples for Isambard AI. For Isambard 3, any batch script examples should be rewritten as CPU-only jobs and should not use GPU directives such as:
+The original tutorial includes GPU-oriented examples for Isambard AI. For Isambard 3, any batch script examples should
+be rewritten as CPU-only jobs and should not use GPU directives such as:
 
-```bash
+``` bash
 #SBATCH --gpus=1
 ```
 

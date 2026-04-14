@@ -1,6 +1,7 @@
 # Section 1: Welcome, Login, and System Overview
 
-This section adapts the introductory parts of the BriCS "Installing and Running Software" tutorial for the Isambard 3 workshop.
+This section adapts the introductory parts of the BriCS “Installing and Running Software” tutorial for the Isambard 3
+workshop.
 
 Use these files during the opening 30 minutes while attendees are logging in and getting oriented.
 

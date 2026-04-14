@@ -4,4 +4,4 @@
 #SBATCH --ntasks=4
 #SBATCH --time=00:02:00
 
-srun bash -c 'echo "Task $SLURM_PROCID running on $(hostname)"'
+srun bash -c 'echo "Task ${SLURM_PROCID} running on $(hostname)"'

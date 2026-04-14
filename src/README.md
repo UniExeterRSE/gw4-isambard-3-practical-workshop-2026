@@ -6,13 +6,13 @@ This sub-project creates the UoE presentation theme with a Pandoc + reveal.js de
 
 Build all HTMLs:
 
-```sh
+``` sh
 make all
 ```
 
 Serve:
 
-```sh
+``` sh
 pixi run serve
 ```
 

@@ -5,6 +5,6 @@
 #SBATCH --time=00:02:00
 
 echo "Hello from Isambard 3"
-echo "Job ID: $SLURM_JOB_ID"
+echo "Job ID: ${SLURM_JOB_ID}"
 echo "Host: $(hostname)"
 echo "Working directory: $(pwd)"

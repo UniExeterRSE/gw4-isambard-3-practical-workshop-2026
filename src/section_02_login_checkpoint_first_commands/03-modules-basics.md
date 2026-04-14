@@ -4,25 +4,26 @@ Modules provide access to software that has already been installed for users.
 
 ## Start clean
 
-```bash
+``` bash
 module reset
 module list
 ```
 
 ## Search for software
 
-```bash
+``` bash
 module spider python
 module spider openmpi
 ```
 
-If the workshop team want a concrete software example for the live system, replace the commands above with a specific module known to be available on Isambard 3.
+If the workshop team want a concrete software example for the live system, replace the commands above with a specific
+module known to be available on Isambard 3.
 
 ## Load something and inspect the environment
 
 Example pattern:
 
-```bash
+``` bash
 module load <module-name>
 module list
 which python

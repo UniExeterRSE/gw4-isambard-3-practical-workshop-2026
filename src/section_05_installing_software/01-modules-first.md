@@ -2,27 +2,27 @@
 
 The workshop decision order is:
 
-1. check whether the software is already available as a module
-2. if not, create an isolated user-managed environment
-3. if things become highly bespoke, take it offline after the workshop
+1.  check whether the software is already available as a module
+2.  if not, create an isolated user-managed environment
+3.  if things become highly bespoke, take it offline after the workshop
 
 ## Start clean
 
-```bash
+``` bash
 module reset
 module list
 ```
 
 ## Search for software
 
-```bash
+``` bash
 module spider python
 module spider miniconda
 ```
 
 You can also use:
 
-```bash
+``` bash
 module avail | head -n 20
 ```
 
@@ -30,7 +30,7 @@ module avail | head -n 20
 
 Replace `<module-name>` with a module known to be available on Isambard 3.
 
-```bash
+``` bash
 module load <module-name>
 module list
 which python
@@ -39,7 +39,7 @@ python --version
 
 ## Reset again
 
-```bash
+``` bash
 module reset
 ```
 

@@ -1,26 +1,31 @@
 # Stretch Goal: Multi-Node MPI Parallelism
 
-If you need your application to scale beyond the cores available on a single Grace CPU node, you will likely encounter MPI (Message Passing Interface). 
+If you need your application to scale beyond the cores available on a single Grace CPU node, you will likely encounter
+MPI (Message Passing Interface).
 
-In this exercise, we will measure the bandwidth of the interconnect network between two compute nodes using the OSU Micro-Benchmarks.
+In this exercise, we will measure the bandwidth of the interconnect network between two compute nodes using the OSU
+Micro-Benchmarks.
 
 ## Finding the software
 
-First, load the pre-built `osu-micro-benchmarks` module. Notice that loading this automatically brings in an MPI provider dependency (e.g., `openmpi` or `cray-mpich`).
+First, load the pre-built `osu-micro-benchmarks` module. Notice that loading this automatically brings in an MPI
+provider dependency (e.g., `openmpi` or `cray-mpich`).
 
-```bash
+``` bash
 module reset
 module load brics/osu-micro-benchmarks
 ```
 
-We can quickly verify the software is available by running the simplest test natively on the login node (it will run with just 1 process):
+We can quickly verify the software is available by running the simplest test natively on the login node (it will run
+with just 1 process):
 
-```bash
+``` bash
 osu_hello
 ```
 
 If successful, the output will look something like:
-```text
+
+``` text
 # OSU MPI Hello World Test v...
 This is a test with 1 processes
 ```
@@ -29,20 +34,20 @@ This is a test with 1 processes
 
 See `mpi_osu.sh` for the script. Note the directives that specifically request more than one node:
 
-```bash
+``` bash
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=1
 ```
 
 Submit the script:
 
-```bash
+``` bash
 sbatch mpi_osu.sh
 ```
 
 Check its status:
 
-```bash
+``` bash
 squeue --me
 ```
 
@@ -50,12 +55,14 @@ squeue --me
 
 Once the job is completed or running, inspect the output:
 
-```bash
+``` bash
 cat test_osu.out
 ```
 
-Since the job uses `srun osu_bw`, the output will show the measured bandwidth (in MB/s) for various message sizes exchanged between the two nodes.
+Since the job uses `srun osu_bw`, the output will show the measured bandwidth (in MB/s) for various message sizes
+exchanged between the two nodes.
 
 ## Key Takeaway
 
-Multi-node parallelism demands "MPI-aware" code. Unlike simple job arrays which dispatch identical independent tasks, MPI allows multiple processes on isolated nodes to communicate back and forth seamlessly during execution.
+Multi-node parallelism demands “MPI-aware” code. Unlike simple job arrays which dispatch identical independent tasks,
+MPI allows multiple processes on isolated nodes to communicate back and forth seamlessly during execution.
