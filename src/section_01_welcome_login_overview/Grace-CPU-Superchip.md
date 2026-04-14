@@ -1,101 +1,92 @@
 **Understanding the NVIDIA Grace CPU Superchip**
 
-Welcome! As you start submitting your first jobs, it is helpful to understand the hardware under the hood. Unlike
-traditional x86 clusters you might have used in the past, this system is powered by the **NVIDIA Grace CPU Superchip**.
+Welcome! As you start submitting jobs, it helps to understand the hardware underneath the system. This cluster is powered by the **NVIDIA Grace CPU Superchip**.
 
-This architecture brings some unique advantages to high-performance computing (HPC) workflows, especially regarding
-memory bandwidth, topology, and ease of programming. Here is a practical breakdown of what you are working with.
+This architecture is designed for high-performance computing (HPC), cloud, and enterprise workloads, with particular emphasis on memory bandwidth, power efficiency, and a relatively simple NUMA layout.
 
-## **The Big Picture: What is a “Superchip”?**
+## **The Big Picture: What Is a “Superchip”?**
 
-When we say “Superchip,” we are talking about two separate NVIDIA Grace CPUs tightly packaged together on a single
-board.
+The NVIDIA Grace CPU Superchip combines **two NVIDIA Grace CPUs** in a single compact module.
 
-- **The Cores:** Across the Superchip, you have access to **144 Arm Neoverse V2 cores** (72 cores per CPU). These are
-  64-bit Armv9-A cores, meaning they share the same base architecture family as the chips in modern smartphones or Apple
-  Silicon Macs, but scaled up massively for the data center.
-
-- **The Interconnect:** The two CPUs are joined by a dedicated connection called **NVLink-C2C** (Chip-to-Chip). This
-  acts as a massive data highway between the two halves of the chip, offering **900 GB/s** of bi-directional bandwidth.
+- **The cores:** Across the Superchip, you have **144 Arm Neoverse V2 cores** total, with **72 cores per Grace CPU**.
+- **The interconnect:** The two CPUs are connected with **NVLink-C2C (Chip-to-Chip)**, which provides **900 GB/s of bidirectional bandwidth** between them.
 
 ## **Topology and the NUMA Layout**
 
-If you are coming from traditional x86 servers, you might be familiar with ring or torus topologies that can create
-multiple non-uniform memory access (NUMA) domains even within a single die. The Grace CPU design handles this
-differently.
+Compared with many conventional dual-socket server designs, Grace presents a simpler topology to software.
 
-- **The Scalable Coherency Fabric (SCF):** Instead of a ring, each 72-core Grace CPU relies on a 2D mesh network called
-  the NVIDIA Scalable Coherency Fabric (SCF). The CPU cores and distributed cache partitions are spread evenly
-  throughout this mesh.
+- **The Scalable Coherency Fabric (SCF):** Within each 72-core Grace CPU, cores, distributed cache, memory, and system I/O are connected by the **NVIDIA Scalable Coherency Fabric (SCF)**, which NVIDIA describes as a **high-bandwidth mesh interconnect**.
+- **Per-CPU NUMA behavior:** A single Grace CPU is presented as **one NUMA node**.
+- **Superchip NUMA behavior:** Across the full Grace CPU Superchip, there are **two NUMA nodes total**, one for each Grace CPU.
+- **Why this matters:** The high-bandwidth **NVLink-C2C** link between the two CPUs helps reduce the cross-socket bottlenecks commonly associated with traditional dual-socket systems.
 
-- **No Internal NUMA:** Because this mesh provides a staggering **3.2 TB/s of bisection bandwidth** per chip, data flows
-  incredibly fast between the cores, cache, and memory. As a result, all 72 cores on a single die have uniform access to
-  the memory attached to that die. There is no sub-NUMA clustering—**each 72-core CPU acts as exactly one NUMA node**.
+## **Memory Subsystem**
 
-- **The Superchip NUMA:** Across the entire Superchip, you only have to manage **two NUMA nodes** in total (one for each
-  die). The 900 GB/s NVLink-C2C connection between them is so fast that it heavily minimizes the penalty for crossing
-  domains compared to traditional dual-socket servers.
+Grace is built around server-class **LPDDR5X with ECC**, co-packaged with the CPU.
 
-- **Memory:** The chip tackles memory bottlenecks by using server-class **LPDDR5X** memory co-packaged directly with the
-  CPUs. These nodes feature **2 × 120 GB** of memory (240 GB total), delivering up to 512 GB/s of bandwidth per CPU with
-  exceptional power efficiency.
+- A **single Grace CPU** supports **120 GB, 240 GB, or 480 GB** of LPDDR5X, depending on configuration.
+- A **Grace CPU Superchip** supports **240 GB, 480 GB, or 960 GB** of on-module memory, depending on configuration.
+- For a **240 GB Superchip**, the most likely layout is **2 × 120 GB**, one **120 GB NUMA node per Grace CPU**. NVIDIA’s public documents do **not** state this as explicitly as a NUMA map, but it follows directly from the per-CPU and per-Superchip capacity options they publish.
+- Bandwidth depends on memory capacity: NVIDIA lists **up to 512 GB/s per Grace CPU** and **up to 1024 GB/s per Grace CPU Superchip** at some capacities, while the whitepaper summarizes the Superchip as **up to 1 TB/s raw memory bandwidth**.
+
+This memory design is a major part of Grace’s value proposition: high bandwidth with strong power efficiency. For your specific **240 GB** system, it is reasonable to treat the machine as **two NUMA nodes with roughly 120 GB attached to each node**.
 
 ## **Vectorization: How It Crunches Numbers**
 
-To get maximum performance out of HPC code, you need to leverage vectorization—performing the same operation on multiple
-pieces of data simultaneously (SIMD).
+To get maximum performance from HPC applications, vectorization matters.
 
-- **The Vector Units:** Each Neoverse V2 core has **four 128-bit functional units**.
-
-- **The Instruction Set:** These units support both NEON and the newer **Scalable Vector Extension version 2 (SVE2)**.
-  SVE2 is fantastic for scientific codes, machine learning, and bioinformatics. Each of the four units can retire either
-  SVE2 or NEON instructions.
-
-- **Compiling:** To take advantage of this, ensure you compile your code targeting the Armv9 ISA and tune for the
-  Neoverse V2 microarchitecture. Modern open-source or vendor compilers (like GCC, LLVM, and NVHPC) can auto-vectorize
-  your code to utilize SVE2.
+- **The vector units:** Each Neoverse V2 core has **four 128-bit SIMD units**.
+- **The instruction sets:** These units support both **NEON** and **SVE2 (Scalable Vector Extension 2)**.
+- **Compiling:** For best performance, compile for the **Armv9-A ISA** and tune for the **Neoverse V2** microarchitecture. NVIDIA specifically calls out support from compilers such as **GCC, LLVM, NVHPC, Arm Compiler for Linux, and HPE Cray Compilers**.
 
 ## **Calculating FLOPS (Floating-Point Operations Per Second)**
 
-For those looking to understand the theoretical limits of their code, here is how we calculate the raw compute
-throughput per core and per chip.\
-The official peak double-precision (FP64) performance of the Superchip is **7.1 TFLOPS**. Let’s break down how many
-FLOPS you get per clock cycle.
+NVIDIA lists the Grace CPU Superchip at **7.1 TFLOPS FP64 peak**. Here is the standard back-of-the-envelope calculation for theoretical FP64 throughput.
 
-**Per-Core FP64 Math:**
+**Per-core FP64 math:**
 
-1.  **Vector Length:** 128 bits.
+1. **Vector length:** 128 bits  
+2. **FP64 element size:** 64 bits, so each 128-bit vector holds **2 FP64 elements**  
+3. **Functional units:** **4** per core  
+4. **FMA:** A fused multiply-add counts as **2 floating-point operations per element**
 
-2.  **Data Size:** A double-precision float (FP64) is 64 bits. Therefore, each vector holds $`128 / 64 = 2`$ FP64
-    elements.\
+Using the usual peak-throughput calculation:
 
-3.  **Functional Units:** There are 4 units per core.
-
-4.  **FMA:** Using Fused Multiply-Add instructions (which perform an addition and a multiplication in one step), you get
-    2 operations per element.
-
-Using standard calculations for theoretical peak performance:
-
-``` math
-\text{FLOPS/cycle per core} = (\text{Elements per vector}) \times (\text{Vector units}) \times (\text{Operations per FMA})
+```math
+\text{FLOPS/cycle per core} = (\text{elements per vector}) \times (\text{vector units}) \times (\text{operations per FMA})
 ```
 
-``` math
-\text{FLOPS/cycle per core} = 2 \times 4 \times 2 = 16 \text{ FP64 operations per clock cycle}
-```
-\
-**Total Superchip Performance:** The all-core SIMD frequency is **3.0 GHz**.
-
-``` math
-\text{Total FP64 Peak} = 144 \text{ cores} \times 3.0 \times 10^9 \text{ cycles/sec} \times 16 \text{ FLOPS/cycle}
+```math
+\text{FLOPS/cycle per core} = 2 \times 4 \times 2 = 16
 ```
 
-``` math
+So, each core can theoretically deliver **16 FP64 operations per cycle** when fully utilizing FMA.
+
+**Total Superchip performance at all-core SIMD frequency:**
+
+```math
+\text{Total FP64 Peak} = 144 \times 3.0 \times 10^9 \times 16
+```
+
+```math
 \text{Total FP64 Peak} \approx 6.91 \text{ TFLOPS}
 ```
 
-(Note: The advertised 7.1 TFLOPS peak factors in the base frequency of 3.1 GHz rather than the slightly lower 3.0 GHz
-SIMD frequency).
+NVIDIA’s published **7.1 TFLOPS** figure is consistent with using the **3.1 GHz base frequency** rather than the **3.0 GHz all-core SIMD frequency**:
 
-**Summary for your code:** If your code is fully vectorized and utilizing FMA instructions, you can theoretically
-squeeze 16 double-precision operations out of every single core, every single clock cycle.
+```math
+144 \times 3.1 \times 10^9 \times 16 \approx 7.14 \text{ TFLOPS}
+```
+
+## **Summary for Users**
+
+The Grace CPU Superchip gives you:
+
+- **144 Arm Neoverse V2 cores**
+- **2 NUMA nodes total**
+- **900 GB/s NVLink-C2C** between the two CPUs
+- **Up to 960 GB LPDDR5X with ECC**
+- **Up to 1 TB/s raw memory bandwidth**
+- **SVE2-capable SIMD units** for highly vectorized workloads
+
+In practice, that means a platform designed to be easier to optimize than many conventional dual-socket systems, especially for memory-bandwidth-sensitive HPC applications.
