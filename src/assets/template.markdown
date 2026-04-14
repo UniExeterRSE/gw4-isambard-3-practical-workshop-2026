@@ -48,12 +48,14 @@ Presenter name - Team/Unit - Date
 This is a default pandoc revealjs slide. No special class is needed.
 
 - Bullet one
+
 - Bullet two
+
 - Bullet three
 
-  Column A   Column B
-  ---------- ----------
-  Data       Data
+    Column A   Column B
+    ---------- ----------
+    Data       Data
 
 ## TEMPLATE: Plain slide with columns
 
