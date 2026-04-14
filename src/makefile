@@ -1,5 +1,5 @@
-MD = $(shell find . -type f -name "*.md" | sort)
-HTML = $(MD:.md=.html)
+MARKDOWN = $(shell find . -type f -name '*.markdown' | sort)
+HTML = $(MARKDOWN:.markdown=.html)
 PANDOC_ARGS = \
 	-f markdown-implicit_figures \
 	-s \
@@ -27,12 +27,15 @@ index.html: html
 	command tree -H ./ -P '*.html' --prune -o $@
 
 html: $(HTML)
-%.html: %.md
+%.html: %.markdown
 	pandoc $(PANDOC_ARGS) -o $@ $<
 
 clean:  ## Clean all generated files
 	rm -f $(HTML) index.html
 	$(MAKE) -C assets clean
+
+print-%:
+	$(info $* = $($*))
 
 .DEFAULT_GOAL = help
 .PHONY: help
