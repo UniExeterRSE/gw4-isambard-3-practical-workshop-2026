@@ -174,7 +174,9 @@ body .reveal-viewport .reveal,
   min-height: 0;
 }
 
-/* Pandoc columns — side-by-side layout inside a shell-slide */
+/* Pandoc columns — global side-by-side layout for any `::: columns` block.
+   The `.shell-slide > .columns` rule above additionally makes it fill the
+   slide height when used inside a shell-slide. */
 .reveal .columns {
   display: flex;
   gap: 1.4rem;
