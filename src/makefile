@@ -23,8 +23,10 @@ assets:  ## Build assets
 	$(MAKE) -C assets all
 
 tree: index.html  ## Build the index.html tree
-index.html: html
-	command tree -H ./ -P '*.html' --prune -o $@
+index.md: html
+	python -c 'import pathlib; print("\n".join(sorted(f"- [{p}]({p})" for p in pathlib.Path(".").rglob("*.html") if p.stem not in {"index", "template"})))' > $@
+index.html: index.md
+	pandoc -s -o $@ $<
 
 html: $(HTML)
 %.html: %.markdown
