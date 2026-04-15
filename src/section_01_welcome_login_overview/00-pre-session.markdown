@@ -99,7 +99,7 @@ This workshop uses **VS Code via the browser-based tunnel** as the standard edit
 If you installed the VS Code CLI during setup, launch it now:
 
 ``` bash
-TODO: add exact VS Code tunnel launch command from docs
+code tunnel --name isambard3
 ```
 
 Then open the URL shown in your terminal in a browser tab.
@@ -110,9 +110,8 @@ troubleshoot alternative editors during the session.
 ::::
 
 ::: notes
-TODO: add the exact spoken signpost line to say live in the room. Confirm the VS Code CLI launch command from
-<https://docs.isambard.ac.uk/user-documentation/guides/vscode/#install-vs-code-cli> and fill in the code block above.
-Keep this brief --- one minute at most. Attendees who followed the pre-workshop email will already have this ready.
+TODO: add the exact spoken signpost line to say live in the room. Keep this brief --- one minute at most. Attendees who
+followed the pre-workshop email will already have this ready.
 :::
 
 ## If you cannot log in {#follow-along-contingency .shell-slide}
