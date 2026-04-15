@@ -43,7 +43,7 @@ platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
 
 [tool.pixi.tasks]
 sync = { cmd = "jupytext --sync '**/*.ipynb' '**/*.py'", description = "Synchronize ipynb,py pairs using jupytext" }
-monte-carlo-pi-summary = { cmd = "python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_parallel_strategies", cwd = "." }
+monte-carlo-pi-summary = { cmd = "python -m section_05_python_array_jobs_parallelism_strategies.monte_carlo_pi_parallel_strategies", cwd = ".", description = "Run the Monte Carlo Pi pipelines." }
 docs = { cmd = "cd src; make all", description = "Make HTMLs." }
 serve = { cmd = "python -m http.server 8001 --bind 127.0.0.1 --directory src", description = "Serve the presentation.", depends-on = ["docs"] }
 format-md = { cmd = "python bin/md_formatter.py '**/*.md' -t gfm", description = "Format .md files via pandoc (GFM)." }
