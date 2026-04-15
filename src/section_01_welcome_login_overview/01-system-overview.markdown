@@ -2,7 +2,7 @@
 
 :::::::::: hero-grid
 :::::::: hero-left
-![University of Exeter logo](../assets/uoe-logo.png){.hero-uoe}
+![](../assets/uoe-logo.png){.hero-uoe alt="University of Exeter logo"}
 
 ::: hero-title
 Isambard 3 Practical Workshop
@@ -21,20 +21,19 @@ supercomputing on Isambard 3
 :::
 
 ::: docs-qr-block
-![Workshop QR code](../assets/workshop-qr.png)
-
-[Workshop site](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/)
+![[Workshop
+site](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/)](../assets/workshop-qr.png){alt="Workshop QR code"}
 :::
 
 ::: presenter-line
 Presenter name - Team/Unit - Date
 :::
 
-![GW4 logo](../assets/gw4-logo.png){.hero-gw4}
+![](../assets/gw4-logo.png){.hero-gw4 alt="GW4 logo"}
 ::::::::
 
 ::: hero-right
-![Isambard 3 exterior](../assets/isambard-exterior.jpeg)
+![](../assets/isambard-exterior.jpeg){alt="Isambard 3 exterior"}
 :::
 ::::::::::
 
@@ -89,7 +88,7 @@ Self-service software model: build your own stack (Spack / Conda / containers).
 :::
 
 ::: grid-image
-![Isambard 3 exterior](../assets/isambard-exterior.jpeg)
+![](../assets/isambard-exterior.jpeg){alt="Isambard 3 exterior"}
 :::
 :::::
 
@@ -162,7 +161,7 @@ system.
 :::
 
 ::: grid-image
-![Isambard machine room](../assets/machine-room.jpeg)
+![](../assets/machine-room.jpeg){alt="Isambard machine room"}
 :::
 :::::
 
@@ -206,8 +205,6 @@ Docs: <https://docs.isambard.ac.uk>
 :::
 
 ::: cta-card
-![Docs QR code](../assets/docs-qr.png)
-
-Isambard 3 documentation
+![Isambard 3 documentation](../assets/docs-qr.png){alt="Docs QR code"}
 :::
 :::::

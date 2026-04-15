@@ -2,7 +2,7 @@
 
 :::::::::: hero-grid
 :::::::: hero-left
-![University of Exeter logo](uoe-logo.png){.hero-uoe}
+![](uoe-logo.png){.hero-uoe alt="University of Exeter logo"}
 
 ::: hero-title
 Presentation Title Here
@@ -21,20 +21,18 @@ describing the presentation
 :::
 
 ::: docs-qr-block
-![QR code](docs-qr.png)
-
-[Link text](https://example.com)
+![[Link text](https://example.com)](docs-qr.png){alt="QR code"}
 :::
 
 ::: presenter-line
 Presenter name - Team/Unit - Date
 :::
 
-![GW4 logo](gw4-logo.png){.hero-gw4}
+![](gw4-logo.png){.hero-gw4 alt="GW4 logo"}
 ::::::::
 
 ::: hero-right
-![Hero image](isambard-exterior.jpeg)
+![](isambard-exterior.jpeg){alt="Hero image"}
 :::
 ::::::::::
 
@@ -98,7 +96,7 @@ Description of the second topic.
 :::
 
 ::: grid-image
-![Optional image (Image caption here)](isambard-exterior.jpeg)
+![Image caption here](isambard-exterior.jpeg){alt="Alt text here"}
 :::
 :::::
 
@@ -198,9 +196,7 @@ Docs: <https://example.com>
 :::
 
 ::: cta-card
-![QR code](docs-qr.png)
-
-Call-to-action text
+![Call-to-action text](docs-qr.png){alt="QR code to doc"}
 :::
 :::::
 
@@ -217,7 +213,7 @@ Optional prompt line --- e.g. "Questions? Comments? Anything you found interest
 ## TEMPLATE: Case study {#template-case-study .case-study-slide}
 
 ::::::: case-study-wrap
-![Background image](isambard-exterior.jpeg){.low-density}
+![](isambard-exterior.jpeg){.low-density alt="Background image"}
 
 ::: pi-line
 PI: Dr. Name --- Institution
@@ -231,7 +227,7 @@ Description paragraph one explaining the research and its context.
 Description paragraph two with results or impact.
 :::
 
-![Detail image](machine-room.jpeg){.high-density}
+![](machine-room.jpeg){.high-density alt="Detail image"}
 
 ::: {.label .low}
 Low-density label

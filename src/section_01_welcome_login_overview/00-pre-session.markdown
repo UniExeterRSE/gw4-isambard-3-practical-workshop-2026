@@ -2,7 +2,7 @@
 
 :::::::::: hero-grid
 :::::::: hero-left
-![University of Exeter logo](../assets/uoe-logo.png){.hero-uoe}
+![](../assets/uoe-logo.png){.hero-uoe alt="University of Exeter logo"}
 
 ::: hero-title
 Getting set up before we start
@@ -21,21 +21,19 @@ Doors open 09:30 --- workshop teaching starts at 10:00
 :::
 
 ::: docs-qr-block
-![Pre-session QR code](../assets/pre-session-qr.png)
-
-[This
-page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html)
+![[This
+page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html)](../assets/pre-session-qr.png){alt="Pre-session QR code"}
 :::
 
 ::: presenter-line
 If setup is already complete: grab a coffee and check you can open a terminal and reach the login node.
 :::
 
-![GW4 logo](../assets/gw4-logo.png){.hero-gw4}
+![](../assets/gw4-logo.png){.hero-gw4 alt="GW4 logo"}
 ::::::::
 
 ::: hero-right
-![Isambard 3 exterior](../assets/isambard-exterior.jpeg)
+![](../assets/isambard-exterior.jpeg){alt="Isambard 3 exterior"}
 :::
 ::::::::::
 

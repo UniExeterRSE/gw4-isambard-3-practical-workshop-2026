@@ -2,7 +2,7 @@ MARKDOWN = $(shell find . -type f -name '*.markdown' | sort)
 HTML = $(MARKDOWN:.markdown=.html)
 PANDOC_ARGS = \
 	--mathjax \
-	-f markdown-implicit_figures \
+	-f markdown \
 	-s \
 	-t revealjs \
 	-V center=false \
