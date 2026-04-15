@@ -60,6 +60,11 @@ The portal is a simple **project dashboard**:
 - **User dashboard** --- lists the projects you belong to. For most of you, that is one: the workshop project.
 - **Click into a project** --- shows compute usage and NHR (Node Hours Remaining) for that project.
 
+For this workshop, the dedicated project is
+[`exeter-workshop-260421`](https://portal.isambard.ac.uk/projects/b79459a0c1414c40b6ffaebfe827b726/).
+
+Its project ID is `e6c`, which is the alias you will use in SSH hostnames.
+
 Nothing hands-on here --- we mention it so you know where to look later.
 :::
 ::::
@@ -76,23 +81,50 @@ README "Out of Scope".
 Starting the login process together
 :::
 
-:::: shell-grid
-::: shell-text
+::::::: shell-grid
+:::::: shell-text
+::::: columns
+::: {.column width="50%"}
 Open a terminal and run:
 
 ``` bash
 clifton auth
 ```
 
-Then SSH in:
+On Isambard 3, the same portal user can appear with a **different UNIX username** inside each project environment. Your
+shell username (`$USER` / `whoami`) is prefixed by the UNIX name you chose during setup.
+
+For this workshop project, use the project alias host:
 
 ``` bash
-ssh <username>@login.isambard.ac.uk
+ssh e6c.3.isambard
 ```
 
 Helpers are circulating --- raise a hand if you see an error.
 :::
-::::
+
+::: {.column width="50%"}
+Example `clifton` output:
+
+``` console
+Successfully authenticated as **@exeter.ac.uk and downloaded SSH certificate for projects:
+- e6c
+Certificate valid for 11 hours and 59 minutes.
+
+SSH config appears to have changed.
+You may now want to run `clifton ssh-config write` to configure your SSH config aliases.
+clifton ssh-config write
+Updated ~/.ssh/config to contain Include line.
+Wrote SSH config to ~/.ssh/config_clifton.
+
+Available SSH host aliases:
+ - e6c.macs3.isambard
+ - e6c.3.isambard
+```
+:::
+:::::
+::::::
+:::::::
 
 ::: notes
 Spoken cue: "Everyone open a terminal now --- we will run clifton auth together." Helpers watch for: clifton auth
