@@ -26,7 +26,7 @@ tree: index.html  ## Build the index.html tree
 index.md: html
 	python -c 'import pathlib; print("\n".join(sorted(f"- [{p}]({p})" for p in pathlib.Path(".").rglob("*.html") if p.stem not in {"index", "template"})))' > $@
 index.html: index.md
-	pandoc -s -o $@ $<
+	pandoc -s -o $@ $< -M title="Isambard 3 Practical Workshop"
 
 html: $(HTML)
 %.html: %.markdown
