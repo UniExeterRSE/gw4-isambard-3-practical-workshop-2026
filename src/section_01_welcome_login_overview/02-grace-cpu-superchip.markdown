@@ -2,7 +2,7 @@
 
 :::::::: hero-grid
 :::::: hero-left
-![University of Exeter logo](/assets/uoe-logo.png){.hero-uoe}
+![](../assets/uoe-logo.png){.hero-uoe alt="University of Exeter logo"}
 
 ::: hero-title
 NVIDIA Grace CPU Superchip
@@ -16,12 +16,11 @@ The hardware powering every Isambard 3 node
 GW4 Isambard 3 Practical Workshop --- 21 April 2026
 :::
 
-![GW4 logo](/assets/gw4-logo.png){.hero-gw4}
+![](../assets/gw4-logo.png){.hero-gw4 alt="GW4 logo"}
 ::::::
 
 ::: hero-right
-![The NVIDIA Grace CPU Superchip module, with two Grace CPUs co-packaged on a single
-board](/media/NVidia/Grace-CPU-Superchip/image-001-000.jpg)
+![](../media/NVidia/Grace-CPU-Superchip/image-001-000.jpg){alt="The NVIDIA Grace CPU Superchip module, with two Grace CPUs co-packaged on a single board"}
 :::
 ::::::::
 
@@ -56,8 +55,7 @@ This tight coupling is why the Superchip behaves more like a single processor th
 :::
 
 ::: grid-image
-![A closer view of the two Grace CPU dies and surrounding LPDDR5X memory
-packages](/media/NVidia/Grace-CPU-Superchip/image-005-002.jpg)
+![](../media/NVidia/Grace-CPU-Superchip/image-005-002.jpg){alt="A closer view of the two Grace CPU dies and surrounding LPDDR5X memory packages"}
 :::
 :::::
 
@@ -90,7 +88,7 @@ notably simpler.
 
 ::: grid-image
 ![Left: Grace CPU Superchip with two NUMA nodes linked at 900 GB/s. Right: a conventional dual-socket server for
-comparison](/media/NVidia/Grace-CPU-Superchip/image-006-004.png)
+comparison](../media/NVidia/Grace-CPU-Superchip/image-006-004.png)
 :::
 :::::
 
@@ -130,7 +128,7 @@ comparison](/media/NVidia/Grace-CPU-Superchip/image-006-004.png)
 
 ::: grid-image
 ![A single Grace CPU die: 72 Neoverse V2 cores, 114 MB L3, 3.2 TB/s SCF fabric, 500 GB/s LPDDR5X, and the NVLink-C2C
-link](/media/NVidia/Grace-CPU-Superchip/image-007-006.png)
+link](../media/NVidia/Grace-CPU-Superchip/image-007-006.png)
 :::
 :::::
 
@@ -211,7 +209,7 @@ which is the x86 convention.
 
 ::: grid-image
 ![Inside a single Neoverse V2 core: 4×128-bit SVE2 SIMD units, L1 caches with parity/ECC, and 1 MB
-L2](/media/NVidia/Grace-CPU-Superchip/image-009-010.jpg)
+L2](../media/NVidia/Grace-CPU-Superchip/image-009-010.jpg)
 :::
 :::::
 
