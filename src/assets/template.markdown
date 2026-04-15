@@ -204,14 +204,14 @@ Call-to-action text
 :::
 :::::
 
-## TEMPLATE: Q&A slide {#template-qa-slide .qa-slide}
+## TEMPLATE: Discussion slide {#template-discussion-slide .qa-slide}
 
 ::: qa-mark
-Q&A
+Discussion
 :::
 
 ::: qa-subtitle
-Optional prompt line below the big Q&A --- e.g. "Ask now, or grab a helper during the break."
+Optional prompt line --- e.g. "Questions? Comments? Anything you found interesting?"
 :::
 
 ## TEMPLATE: Case study {#template-case-study .case-study-slide}

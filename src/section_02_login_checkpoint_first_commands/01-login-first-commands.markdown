@@ -126,12 +126,12 @@ docs](https://docs.isambard.ac.uk/user-documentation/information/system-storage/
 areas by substituting the variable.
 :::
 
-## Questions? {#section-2-qa .qa-slide}
+## Discussion {#section-2-discussion .qa-slide}
 
 ::: qa-mark
-Q&A
+Discussion
 :::
 
 ::: qa-subtitle
-Ask now, or grab a helper during the break.
+Questions? Comments? Anything you found interesting?
 :::
