@@ -23,7 +23,8 @@ Doors open 09:30 --- workshop teaching starts at 10:00
 ::: docs-qr-block
 ![Pre-session QR code](../assets/pre-session-qr.png)
 
-[This page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html)
+[This
+page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html)
 :::
 
 ::: presenter-line

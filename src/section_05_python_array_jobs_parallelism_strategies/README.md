@@ -1,5 +1,8 @@
 # Section 5: Python Example + Array Jobs + Parallelism Strategies
 
+**Section type: Active.** The section has three parts (A, B, C), each following the Present → Demo → Hands-on →
+Discussion rhythm. Part C (parallelism strategies comparison) is more conceptual and may be lighter on hands-on time.
+
 This section covers a prepared Monte Carlo Pi example, ways to run repeated simulations, and a stretch path into MPI
 execution.
 
