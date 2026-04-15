@@ -22,8 +22,19 @@ Core design principles:
 - Unify novice and advanced material within each section rather than running two tracks. Put the simpler content first
   and let later parts go deeper; novices focus on the earlier parts while faster attendees stretch into the rest. Avoid
   explicit two-track splits that would fragment the room.
-- Follow a short-presentation → dedicated try-time → debrief / Q&A rhythm for each hands-on section. Skip this rhythm
-  only when the section is obviously not suited to interactive work.
+- Active sections follow this four-step rhythm: (1) **Present** — brief framing of the topic; (2) **Demo** — presenter
+  demonstrates the workflow live, if applicable; (3) **Hands-on** — all participants try it themselves while helpers
+  circulate and answer questions; (4) **Discussion** — open questions from participants (invite others to answer first),
+  comments, anything interesting to share, and a brief conclusion if needed. Skip this rhythm only for sections that are
+  obviously not suited to interactive work (passive sections).
+
+## Section types
+
+Sections are classified as one of two kinds:
+
+- **Passive** — presenter-led, no dedicated hands-on try-time. Appropriate for introductions, overviews, and closing
+  wrap-ups.
+- **Active** — follows the four-step Present → Demo → Hands-on → Discussion rhythm. Most hands-on sections are active.
 
 ## Registration snapshot (as of 2026-04-14)
 
@@ -60,21 +71,21 @@ it. **Do not re-raise this as an open planning concern.**
 
 ## Schedule
 
-| \#  | Section                                                    | Duration | Time        |
-|-----|------------------------------------------------------------|----------|-------------|
-| –   | Doors open: tea, coffee, optional account-setup support    | 30 min   | 09:30–10:00 |
-| 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | 30 min   | 10:00–10:30 |
-| 2   | Login Checkpoint + First Commands                          | 10 min   | 10:30–10:40 |
-| 3   | First Batch Job (Slurm)                                    | 25 min   | 10:40–11:05 |
-|     | Break                                                      | 10 min   | 11:05–11:15 |
-| 4   | Installing Software                                        | 15 min   | 11:15–11:30 |
-| 5   | Python Example + Array Jobs + Parallelism Strategies       | 25 min   | 11:30–11:55 |
-| 6   | Debugging Failed Jobs                                      | 20 min   | 11:55–12:15 |
-| 7   | Tips, Help, Wrap-Up, Q&A & Feedback                        | 15 min   | 12:15–12:30 |
+| \#  | Section                                                    | Type    | Duration | Time        |
+|-----|------------------------------------------------------------|---------|----------|-------------|
+| –   | Doors open: tea, coffee, optional account-setup support    | –       | 30 min   | 09:30–10:00 |
+| 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | Passive | 30 min   | 10:00–10:30 |
+| 2   | Login Checkpoint + First Commands                          | Active  | 10 min   | 10:30–10:40 |
+| 3   | First Batch Job (Slurm)                                    | Active  | 25 min   | 10:40–11:05 |
+|     | Break                                                      | –       | 10 min   | 11:05–11:15 |
+| 4   | Installing Software                                        | Active  | 15 min   | 11:15–11:30 |
+| 5   | Python Example + Array Jobs + Parallelism Strategies       | Active  | 25 min   | 11:30–11:55 |
+| 6   | Debugging Failed Jobs                                      | Active  | 20 min   | 11:55–12:15 |
+| 7   | Tips, Help, Wrap-Up, Q&A & Feedback                        | Passive | 15 min   | 12:15–12:30 |
 
 ## Section Details
 
-### 1. BriCS Intro + Welcome + Login + System Overview (30 min)
+### 1. BriCS Intro + Welcome + Login + System Overview (30 min) — Passive
 
 The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by BriCS staff. Login and the system
 overview then run in parallel: attendees begin the Clifton login process (`clifton auth`, then `ssh`) while the
@@ -126,10 +137,10 @@ TODOs:
   steps from the pre-workshop email)
 - [ ] Find and embed an NVIDIA Grace CPU image on a single CPU-architecture slide (one slide, within the system
   overview)
-- [x] Add a single portal slide covering the portal's purpose (project dashboard, usage and NHR per project) — attendees
+- [x] Add a single portal slide covering the portal’s purpose (project dashboard, usage and NHR per project) — attendees
   have already seen it in pre-workshop setup Step 1, so the slide is a recap rather than new material
 
-### 2. Login Checkpoint + First Commands (10 min)
+### 2. Login Checkpoint + First Commands (10 min) — Active
 
 Quick checkpoint that everyone is in. Helpers mop up stragglers.
 
@@ -159,7 +170,7 @@ TODOs:
 - [ ] Add exact live-teaching prompts for the login checkpoint and helper mop-up (speaker notes on slide 1)
 - [ ] Tighten the spoken VS Code tunnel signpost on slide 1 for attendees following the browser-based editor path
 
-### 3. First Batch Job — Slurm (25 min)
+### 3. First Batch Job — Slurm (25 min) — Active
 
 This section should give attendees two quick wins: a first successful batch submission, then a small extension to
 multiple tasks. The teaching emphasis is the submit-check-read-output loop, not Slurm feature breadth.
@@ -191,7 +202,7 @@ TODOs:
 - [ ] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
 - [ ] Keep the beginner path free of partition changes and `--mail-type=END`
 
-### 4. Installing Software (15 min)
+### 4. Installing Software (15 min) — Active
 
 Keep this section tightly scoped.
 
@@ -230,7 +241,7 @@ TODOs:
 - [ ] Add the exact support/docs signposting for cases where attendee environments become bespoke
 - [ ] Keep containers as follow-up only and out of the core hands-on path
 
-### 5. Python Example + Array Jobs + Parallelism Strategies (25 min)
+### 5. Python Example + Array Jobs + Parallelism Strategies (25 min) — Active
 
 **Part A — Single job (~8 min)**
 
@@ -267,7 +278,7 @@ Compare approaches conceptually:
 
 This part should remain comparative and practical rather than deep.
 
-### 6. Debugging Failed Jobs (20 min)
+### 6. Debugging Failed Jobs (20 min) — Active
 
 This should stay hands-on and explicitly problem-solving focused.
 
@@ -299,7 +310,7 @@ Add a brief etiquette note:
 - do not aggressively poll `squeue`/`sinfo`
 - avoid `watch`-style hammering of scheduler commands
 
-### 7. Tips, Help, Wrap-Up, Q&A & Feedback (15 min)
+### 7. Tips, Help, Wrap-Up, Q&A & Feedback (15 min) — Passive
 
 Use this as a flexible closing block.
 

@@ -1,7 +1,9 @@
 # Section 2: Login Checkpoint and First Commands
 
+**Section type: Active.** Rhythm: Present → (no demo) → Hands-on → Discussion.
+
 Section 2 is a 10-minute bridge between login (Section 1) and the first Slurm job (Section 3). It is delivered as a
-single reveal.js deck using the short-presentation → try-time → Q&A rhythm.
+single reveal.js deck.
 
 Files in this section:
 

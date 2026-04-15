@@ -1,5 +1,8 @@
 # Section 1: Welcome, Login, and System Overview
 
+**Section type: Passive.** This section is presenter-led with no dedicated hands-on try-time. Attendees begin the login
+process during the talk, but there is no separate try block or discussion round; hands-on work begins in Section 2.
+
 This section covers the opening 30 minutes of the workshop: a 10-minute BriCS introduction (delivered by BriCS staff),
 followed by login and a lightweight system overview while attendees get connected.
 

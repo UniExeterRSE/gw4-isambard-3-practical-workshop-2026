@@ -1,5 +1,7 @@
 # Section 4: Installing Software
 
+**Section type: Active.** Rhythm: Present → Demo (show the modules workflow live) → Hands-on → Discussion.
+
 This section is the main home for the original tutorial’s software-installation material, adapted for Isambard 3 and for
 this workshop schedule.
 

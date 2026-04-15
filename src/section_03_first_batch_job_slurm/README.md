@@ -1,5 +1,7 @@
 # Section 3: First Batch Job with Slurm
 
+**Section type: Active.** Rhythm: Present → Demo (walk through the script live) → Hands-on → Discussion.
+
 This section adapts the Slurm parts of the source tutorial into beginner-friendly Isambard 3 exercises.
 
 Files in this section:
