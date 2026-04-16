@@ -1,81 +1,234 @@
-# Installing Softwares
+## Installing Software {#installing-software .hero-slide}
 
-TODO: hero slide
+::::::::: hero-grid
+::::::: hero-left
+![](../assets/uoe-logo.png){.hero-uoe alt="University of Exeter logo"}
 
-# Available softwares
+::: hero-title
+Installing Software
+:::
 
-```sh
-# list loaded softwares
+::: hero-subtitle
+Modules, conda/mamba environments,\
+and where to look next
+:::
+
+::: next-steps-card
+[Resources]{.card-title}
+
+- [Modules guide](https://docs.isambard.ac.uk/user-documentation/guides/modules/)
+- [Spack guide](https://docs.isambard.ac.uk/user-documentation/guides/spack/)
+- [Containers guide](https://docs.isambard.ac.uk/user-documentation/guides/containers/)
+:::
+
+::: presenter-line
+Section 4 --- 15 min
+:::
+
+![](../assets/gw4-logo.png){.hero-gw4 alt="GW4 logo"}
+:::::::
+
+::: hero-right
+![](../assets/isambard-exterior.jpeg){alt="Isambard 3 exterior"}
+:::
+:::::::::
+
+::: notes
+- 15-minute section: keep moving
+- Core message: try modules first, then use a prepared conda/mamba environment
+- Do NOT get drawn into bespoke attendee environment debugging here --- redirect to docs/support after the session
+- Containers are follow-up only; do not teach hands-on
+- If VS Code or other editor tooling is raised in Q&A, answer briefly and move on
+:::
+
+## Decision order {#decision-order .shell-slide}
+
+::: slide-subtitle
+Three routes, in priority order
+:::
+
+:::::: flow-row
+::: flow-card
+[1. Modules]{.flow-title}
+
+Pre-built, system-managed. Try `module avail` first --- if it is there, use it.
+:::
+
+::: flow-card
+[2. Conda / mamba]{.flow-title}
+
+User-managed environment. Install what you need in an isolated named environment.
+:::
+
+::: flow-card
+[3. Containers]{.flow-title}
+
+Singularity/Apptainer. Useful for complex or reproducible stacks --- follow-up route, not taught today.
+:::
+::::::
+
+::: slide-note
+Spack is an alternative for compiled software; see the [Spack
+guide](https://docs.isambard.ac.uk/user-documentation/guides/spack/) after the workshop.
+:::
+
+::: notes
+- Emphasise this is a decision order, not a hierarchy of complexity
+- Most attendees will find what they need in modules or a conda env
+- Redirect anyone whose stack does not fit either route to support after the session
+:::
+
+## Modules {#modules .shell-slide}
+
+::: slide-subtitle
+Pre-built software, loaded on demand --- the first place to look
+:::
+
+:::: shell-grid
+::: shell-text
+``` bash
+# What is currently loaded?
 module list
-# list all available softwares
-module avail
-# search
-module avail emacs
-# load
-module load brics/emacs
-# unload specific one
-module unload brics/emacs
-# reset to defaults
+
+# Reset to system defaults --- good habit at the top of a job script
 module reset
+
+# Browse everything available
+module avail
+
+# Search for a specific tool
+module avail python
+module avail gcc
+
+# Load a module
+module load brics/emacs
+
+# Unload one module
+module unload brics/emacs
 ```
 
-# How
+Stretch: try `module avail` and search for a tool you already use.
+:::
+::::
 
-Quick show of hand: how do you install softwares on a remote computer?
+::: notes
+- Demo live: run module list, module reset, module avail python
+- Give attendees \~2 min to try the commands themselves
+- If someone asks about a module that does not exist, point at the conda route on the next slides
+:::
 
-- copy and paste whatever command
-- brew
-- mise
-- conda/mamba/pixi
-- spack
-- others
+## How do you install software on a remote machine? {#how-install-software .shell-slide}
 
-# Trust
+::: slide-subtitle
+Quick show of hands
+:::
 
-mention supply chain attack risk when using mise, brew, etc.
+::::: shell-grid
+:::: shell-text
+Which of these have you used on a remote system?
 
-# Cloning our repo (fork)
+- Copy and paste commands from a tutorial / Stack Overflow
+- `brew` (Homebrew)
+- `mise`
+- `pip` directly into the system Python
+- `conda` or `mamba`
+- `pixi`
+- `modules`
+- `Spack`
+- Something else entirely
 
-TODO: envoy -> main
+::: slide-note
+There is no wrong answer here --- this tells us where to spend the next few minutes.
+:::
+::::
+:::::
 
-- Generates SSH key:
+::: notes
+- Hands-up slide: read the room
+- If most people have used conda/mamba, move quickly through the terminology
+- If most people are unfamiliar, slow down on the vocabulary slide
+- Key point to land: HPC systems are shared; you cannot install into system paths --- you need user-space tooling
+:::
 
-    ```sh
+## Why not just `pip install` or `sudo apt`? {#why-not-pip-or-apt .shell-slide}
+
+::: slide-subtitle
+Shared systems, supply chain risk, and reproducibility
+:::
+
+::::: fit-panels
+::: {.fit-panel .good}
+[Safer routes]{.fit-title}
+
+- **Modules** --- system-managed, vetted builds
+- **Conda / mamba** --- isolated named environments; easy to delete and recreate
+- **Containers** --- fully self-contained; portable across systems
+- **Spack** --- built from source with explicit dependencies
+:::
+
+::: {.fit-panel .bad}
+[Avoid on shared systems]{.fit-title}
+
+- `sudo apt install` / system-level installs (you do not have sudo)
+- `pip install` into the base Python (pollutes shared paths, breaks other jobs)
+- Scripts piped directly to `bash` from unknown sources (supply chain risk)
+- `brew`, `mise`, etc. without understanding what they pull in
+:::
+:::::
+
+::: slide-note
+"Supply chain attack": a malicious package masquerading as a popular one. Use trusted channels (conda-forge, PyPI with
+known package names) and pin versions in production.
+:::
+
+::: notes
+- Keep this brief --- 1--2 minutes
+- The "sudo" point lands immediately; the supply chain point is worth one sentence
+- Do not lecture; move on to the hands-on route
+:::
+
+## Clone the workshop repository {#clone-workshop-repo .shell-slide}
+
+::: slide-subtitle
+Get the bootstrap scripts onto Isambard 3
+:::
+
+::::: columns
+::: {.column width="50%"}
+**Option A --- Fork (save your own changes)**
+
+1.  Go to <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026> and click **Fork**
+
+2.  Generate an SSH key and load the agent:
+
+    ``` bash
     ssh-keygen -t ssh-ed25519 -C "${ISAMBARD_HOST}"
     . <(ssh-agent -s)
     ssh-add ~/.ssh/id_ed25519
     ```
 
-- Install `gh` and authenticate with GitHub
+3.  Install `gh` and authenticate:
 
-    ```sh
-    bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/envoy/bootstrap/install/gh.sh) install
+    ``` bash
+    bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/gh.sh) install
     gh auth login --git-protocol ssh --web
     ```
-- Go to workshop repo: <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026>
-- Click Fork
-- In your Fork, click Code > SSH > copy
-    -   which should have copied something like `git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git`
 
-Then run,
+4.  In your fork click **Code → SSH → copy**, then clone (replace `UniExeterRSE` with your username):
 
-```bash
-mkdir -p ~/git
-cd ~/git
-# replace with your Fork copy. I.e. replace UniExeterRSE with your GitHub username
-git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
-cd gw4-isambard-3-practical-workshop-2026
-# This is where your workshop repo is
-pwd
-```
+    ``` bash
+    mkdir -p ~/git
+    cd ~/git
+    git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
+    cd gw4-isambard-3-practical-workshop-2026
+    pwd
+    ```
+:::
 
-# Cloning our repo (read-only)
+::: {.column width="50%"}
+**Option B --- Read-only HTTPS clone (simpler, no GitHub account needed)**
 
-- Go to workshop repo: <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026>
-
-Then run,
-
-```bash
+``` bash
 mkdir -p ~/git
 cd ~/git
 git clone https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
@@ -83,65 +236,213 @@ cd gw4-isambard-3-practical-workshop-2026
 # This is where your workshop repo is
 pwd
 ```
+:::
+:::::
 
-# More softwares
+::: notes
+- Most attendees will use Option B; point Option A at anyone who wants to keep their own work
+- The curl-pipe-to-bash for gh.sh is from our own repo --- acceptable here
+- If someone has no internet, they can use the materials already on the workshop project share
+:::
 
-```sh
-# from now on we assume you are in this directory
+## Install mamba and tools {#install-mamba-tools .shell-slide}
+
+::: slide-subtitle
+Run the bootstrap scripts from inside the cloned repo
+:::
+
+:::: shell-grid
+::: shell-text
+All bootstrap scripts are in the `bootstrap/` subdirectory:
+
+``` bash
 cd bootstrap
-# VSCode CLI: you should have this already, if not, run
+
+# Install VS Code CLI (skip if already done in pre-workshop setup)
 install/code.sh install
-# install mamba, a drop-in replacement alternative of conda by the open source/scientific community  <- TODO: improve short intro on whom they are
+
+# Install miniforge (mamba + conda, using conda-forge by default)
 install/mamba.sh install
-# install some more binaries through conda-forge
+
+# Install a curated set of command-line tools into a "system" conda env
+# (includes gh, parallel, pandoc, git-delta, ripgrep, and more)
 NAME=system install/mamba-env.sh install
 ```
 
-# Anaconda vs. conda vs. mamba vs. pixi
+After `mamba.sh install`, open a new shell (or run `source ~/.bashrc`) so that `mamba` is on your path.
 
-TODO: enough time?
-
-# Unpacking
-
-`install/mamba.sh install` installed a **base** conda environment. You should never touch this. To upgrade, to latest version, rerun this script.
-
-`NAME=system install/mamba-env.sh install` installed an environment named `system`. You can see from a list of softwares inside it: `bootstrap/conda/system_linux-aarch64.yml`
-
-```sh
-# list available environments:
-mamba list --envs
-# load
-mamba activate system
-# list installed packages in this environment
-mamba list
+``` bash
+# Verify
+mamba --version
+mamba env list
 ```
+:::
+::::
 
-# Create your first environment
+::: notes
+- Demo live: run mamba.sh install and show the output
+- The `system` env is optional for the workshop; the key install is mamba itself
+- If someone already has conda or mamba from a previous session, they can skip mamba.sh
+- `source ~/.bashrc` is usually enough; a fresh login always works
+:::
 
-```sh
-# create and wait
+## Conda vocabulary in two minutes {#conda-vocabulary .shell-slide}
+
+::: slide-subtitle
+Anaconda, conda, mamba, miniforge --- what is what?
+:::
+
+::::: fit-panels
+::: {.fit-panel .good}
+[What we use]{.fit-title}
+
+- **mamba** --- a fast drop-in replacement for `conda` (same commands; written in C++)
+- **miniforge** --- a minimal community distribution using **conda-forge** by default (no Anaconda licence issues)
+- **conda-forge** --- the open-source package channel; over 25,000 packages
+- **named environment** --- an isolated software stack you can activate, deactivate, and delete cleanly
+:::
+
+::: {.fit-panel .bad}
+[What we avoid]{.fit-title}
+
+- **Anaconda (the distribution)** --- has licence restrictions for institutional use at scale; do not install on a
+  shared HPC system
+- **base environment** --- never install research packages into base; it is the container that holds mamba itself
+- **`pip install` into the active env without care** --- can conflict with conda-managed packages
+:::
+:::::
+
+::: notes
+- The Anaconda licence point is important for institutional users --- one sentence is enough
+- "Never touch base" is the single most useful conda habit to teach
+- Pixi is a newer Rust-based alternative with better project management; mention briefly if asked
+:::
+
+## Create and use an environment {#create-use-environment .shell-slide}
+
+::: slide-subtitle
+Hands-on: create a Python environment and activate it
+:::
+
+::::: columns
+::: {.column width="50%"}
+**Create from a prepared file** (used in later sections):
+
+``` bash
+# From the workshop repo bootstrap directory
 mamba env create -f conda/py314_linux-aarch64.yml -y
-# load
 mamba activate py314
 which python
-# try
-python
+python --version
 ```
 
+**Or build your own minimal environment**:
 
-Or play around with your own environment
+``` bash
+mamba create -n my_env python=3.14 numpy numba -y
+mamba activate my_env
+python -c "import numpy; print(numpy.__version__)"
+```
+:::
 
-```sh
-mamba create -n my_fancy_env python=3.14 numpy numba
+::: {.column width="50%"}
+**Useful environment commands**:
+
+``` bash
+mamba env list               # list all environments
+mamba list                   # packages in the active env
+mamba deactivate             # return to base
+mamba env remove -n my_env   # delete an environment
 ```
 
-# Pixi
+Stretch: use `mamba search <name>` to check whether a package you need is on conda-forge.
+:::
+:::::
 
-- direnv
-- pixi in this project
+::: slide-note
+Environments live under `~/.miniforge3/envs/`. They can be large --- check `$HOME` quota with `lfs quota` if space runs
+low.
+:::
 
-# Others
+::: notes
+- py314 is the full workshop environment used in later sections; creation takes several minutes --- start it and move on
+- Stretch: ask attendees to find a package they use with `mamba search <name>` and add it to a test env
+- If creation stalls or fails, fall back to whatever Python module is available from `module avail python`
+:::
 
-- [Spack](https://docs.isambard.ac.uk/user-documentation/guides/spack/)
-- [Containers](https://docs.isambard.ac.uk/user-documentation/guides/containers/)
-- [More examples from official documentation](https://docs.isambard.ac.uk/user-documentation/tutorials/intro-tour/)
+## Pixi and direnv {#pixi-direnv .shell-slide}
+
+::: slide-subtitle
+A newer approach: project-scoped environments
+:::
+
+:::: shell-grid
+::: shell-text
+[Pixi](https://pixi.sh) is a newer Rust-based package manager from the conda-forge ecosystem. It manages environments
+per project rather than globally.
+
+``` bash
+# If pixi is installed (it is in the "system" conda env):
+cd gw4-isambard-3-practical-workshop-2026
+pixi shell            # activate this project's environment
+pixi run format       # run a task defined in pyproject.toml
+```
+
+[direnv](https://direnv.net) pairs with pixi (or any tool) to activate an environment automatically on `cd`:
+
+``` bash
+# The project .envrc runs: eval "$(pixi shell-hook)"
+# After direnv allow, the env is live whenever you enter the directory
+direnv allow
+```
+
+This workshop repo uses pixi + direnv internally. You do not need to understand it for today's exercises.
+:::
+::::
+
+::: notes
+- This slide is context for the workshop repo itself, not a teaching requirement
+- If no one asks, move quickly through it --- 30 seconds is enough
+- Pixi is in the "system" conda env installed via bootstrap; attendees who did that step already have it
+:::
+
+## Other routes {#other-routes .shell-slide}
+
+::: slide-subtitle
+Beyond modules and conda --- where to look next
+:::
+
+:::: shell-grid
+::: shell-text
+**Spack** --- for compiled software with fine-grained control over flags and dependencies:
+
+<https://docs.isambard.ac.uk/user-documentation/guides/spack/>
+
+**Containers (Singularity / Apptainer)** --- for fully self-contained, portable stacks:
+
+<https://docs.isambard.ac.uk/user-documentation/guides/containers/>
+
+**Intro tour (official tutorials)** --- more worked examples on the BriCS docs site:
+
+<https://docs.isambard.ac.uk/user-documentation/tutorials/intro-tour/>
+
+If your own software stack does not fit modules or conda, do not spend workshop time on it. **Ask a helper to note it
+down and we will follow up after the session.**
+:::
+::::
+
+::: notes
+- One slide; do not teach Spack or containers in depth
+- The key takeaway: these routes exist, they are documented, and the helpers can follow up
+- Redirect any bespoke environment discussions explicitly --- "let us note that down and come back to you"
+:::
+
+## Discussion {#section-4-discussion .qa-slide}
+
+::: qa-mark
+Discussion
+:::
+
+::: qa-subtitle
+Questions? Anything that did not work, or a tool you use that we have not mentioned?
+:::
