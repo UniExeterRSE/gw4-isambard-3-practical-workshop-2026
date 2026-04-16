@@ -174,6 +174,16 @@ body .reveal-viewport .reveal,
   min-height: 0;
 }
 
+/* When .columns fills a shell-slide, stretch children to the available height
+   so tall content is clipped/scrolled rather than overflowing the slide. */
+.shell-slide > .columns {
+  align-items: stretch;
+}
+
+.shell-slide > .columns > .column {
+  overflow-y: auto;
+}
+
 /* Pandoc columns — global side-by-side layout for any `::: columns` block.
    The `.shell-slide > .columns` rule above additionally makes it fill the
    slide height when used inside a shell-slide. */
