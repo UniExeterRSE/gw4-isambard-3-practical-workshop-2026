@@ -19,7 +19,7 @@ mamba_install() {
     print_double_line
     echo Downloading to temp dir "${DOWNLOADDIR}"
     cd "${DOWNLOADDIR}" || exit 1
-    curl -L "${downloadUrl}" -o Miniforge3.sh
+    curl -fSL "${downloadUrl}" -o Miniforge3.sh
     chmod +x Miniforge3.sh
 
     print_double_line
