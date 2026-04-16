@@ -2,8 +2,6 @@
 
 set -eo pipefail
 
-__MAMBA_ENV_DOWNLOAD=1
-
 source ../lib/util/git.sh
 source ../lib/dotfiles.sh
 
