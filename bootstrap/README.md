@@ -9,3 +9,14 @@ bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-pra
 bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/mamba.sh) install
 NAME=... bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/mamba-env.sh) install
 ```
+
+Bootstrap all,
+
+``` sh
+mkdir -p ~/git/UniExeterRSE
+cd ~/git/UniExeterRSE
+git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
+cd gw4-isambard-3-practical-workshop-2026
+cd bootstrap
+install/bootstrap.sh
+```
