@@ -20,5 +20,5 @@ github_download_file_to() {
     file="${4}"
     dest="${5}"
     mkdir -p "${dest%/*}"
-    curl -L "https://raw.githubusercontent.com/${user}/${repo}/refs/heads/${branch}/${file}" -o "${dest}"
+    curl -fSL "https://raw.githubusercontent.com/${user}/${repo}/refs/heads/${branch}/${file}" -o "${dest}"
 }
