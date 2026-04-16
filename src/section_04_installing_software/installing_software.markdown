@@ -181,46 +181,41 @@ known package names) and pin versions in production.
 - Do not lecture; move on to the hands-on route
 :::
 
-## Clone the workshop repository {#clone-workshop-repo .shell-slide}
+## Clone the workshop repository option A --- Fork (save your own changes) {#clone-workshop-repo .shell-slide}
 
 ::: slide-subtitle
 Get the bootstrap scripts onto Isambard 3
 :::
 
-::::: columns
-::: {.column width="50%"}
-**Option A --- Fork (save your own changes)**
+Go to <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026> and click **Fork**
 
-1.  Go to <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026> and click **Fork**
+``` bash
+# Generate an SSH key and load the agent:
+ssh-keygen -t ssh-ed25519 -C "${ISAMBARD_HOST}"
+. <(ssh-agent -s)
+ssh-add ~/.ssh/id_ed25519
+# Install `gh` and authenticate:
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/gh.sh) install
+gh auth login --git-protocol ssh --web
+# clone (replace `UniExeterRSE` with your username)
+mkdir -p ~/git
+cd ~/git
+git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
+cd gw4-isambard-3-practical-workshop-2026
+pwd
+```
 
-2.  Generate an SSH key and load the agent:
-
-    ``` bash
-    ssh-keygen -t ssh-ed25519 -C "${ISAMBARD_HOST}"
-    . <(ssh-agent -s)
-    ssh-add ~/.ssh/id_ed25519
-    ```
-
-3.  Install `gh` and authenticate:
-
-    ``` bash
-    bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/gh.sh) install
-    gh auth login --git-protocol ssh --web
-    ```
+::: notes
+- Most attendees will use Option B; point Option A at anyone who wants to keep their own work
+- The curl-pipe-to-bash for gh.sh is from our own repo --- acceptable here
+- If someone has no internet, they can use the materials already on the workshop project share
 :::
 
-::: {.column width="50%"}
-4.  In your fork click **Code → SSH → copy**, then clone (replace `UniExeterRSE` with your username):
+## Clone the workshop repository option B --- Read-only HTTPS clone (simpler, no GitHub account needed) {#clone-workshop-repo .shell-slide}
 
-    ``` bash
-    mkdir -p ~/git
-    cd ~/git
-    git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
-    cd gw4-isambard-3-practical-workshop-2026
-    pwd
-    ```
-
-    **Option B --- Read-only HTTPS clone (simpler, no GitHub account needed)**
+::: slide-subtitle
+Get the bootstrap scripts onto Isambard 3
+:::
 
 ``` bash
 mkdir -p ~/git
@@ -230,8 +225,6 @@ cd gw4-isambard-3-practical-workshop-2026
 # This is where your workshop repo is
 pwd
 ```
-:::
-:::::
 
 ::: notes
 - Most attendees will use Option B; point Option A at anyone who wants to keep their own work
