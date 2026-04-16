@@ -276,7 +276,8 @@ main() {
     print_double_line
     echo 'Installing system environment via mamba'
     mamba_env_install
-    print_double_line
+    # shellcheck disable=SC1090
+    . ~/.bashrc || true
 
     print_double_line
     echo 'Generating SSH key and login to GitHub'
