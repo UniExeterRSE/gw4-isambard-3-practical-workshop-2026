@@ -2,8 +2,6 @@
 
 set -eo pipefail
 
-__MAMBA_ENV_DOWNLOAD=1
-
 # git 2.3.0 or later is required
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
