@@ -1,4 +1,4 @@
-All files in this directory is “compiled” from `src/` directory.
+All files in this directory are “compiled” from `src/` directory.
 
 Compilation is defined by line matching `^source FILEPATH$`, where `FILEPATH` is resolved from the basedir of current
 file relatively.
