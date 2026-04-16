@@ -798,7 +798,7 @@ body .reveal-viewport .reveal,
 }
 
 /* ───────────────────────────────────────────────────────────
-   13. Stat grid — key-metrics summary cards
+   14. Stat grid — key-metrics summary cards
    ─────────────────────────────────────────────────────────── */
 
 .stat-grid {
@@ -855,7 +855,23 @@ body .reveal-viewport .reveal,
 }
 
 /* ───────────────────────────────────────────────────────────
-   14. Figure captions
+   14. Code blocks — remove reveal.js default max-height cap
+   ─────────────────────────────────────────────────────────── */
+
+/* reveal.js white theme sets pre code { max-height: 400px } which clips
+   tall code blocks: the shaded background stops at the cap while text
+   overflows it. Remove the cap so the shaded box always encloses all lines. */
+.reveal pre {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reveal pre code {
+  max-height: none;
+}
+
+/* ───────────────────────────────────────────────────────────
+   16. Figure captions
    ─────────────────────────────────────────────────────────── */
 
 .reveal figcaption {
