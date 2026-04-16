@@ -9,8 +9,8 @@ Installing Software
 :::
 
 ::: hero-subtitle
-Modules, conda/mamba environments,\
-and where to look next
+conda/mamba, compilers, Spack,\
+and containers --- where to look
 :::
 
 ::: next-steps-card
@@ -35,53 +35,47 @@ Section 4 --- 15 min
 
 ::: notes
 - 15-minute section: keep moving
-- Core message: try modules first, then use a prepared conda/mamba environment
+- Core message: mamba/conda is the primary route for this workshop; compilers are a stretch
 - Do NOT get drawn into bespoke attendee environment debugging here --- redirect to docs/support after the session
-- Containers are follow-up only; do not teach hands-on
+- Containers (Podman-HPC / Singularity) are follow-up only; do not teach hands-on
 - If VS Code or other editor tooling is raised in Q&A, answer briefly and move on
 :::
 
-## Decision order {#decision-order .shell-slide}
+## Software landscape {#software-landscape .shell-slide}
 
 ::: slide-subtitle
-Three routes, in priority order
+Four routes --- pick by what your software needs, not in a fixed order
 :::
 
-:::::: flow-row
-::: flow-card
-[1. Modules]{.flow-title}
+:::: shell-grid
+::: shell-text
+  Route                            When to reach for it                                      Today?
+  -------------------------------- --------------------------------------------------------- -------------
+  **mamba / conda**                Package available on conda-forge or another channel       **Primary**
+  **System modules + compilers**   Compile your own code; `PrgEnv-gnu` / `gcc-native`        Stretch
+  **Spack**                        Complex compiled projects needing system-specific flags   Follow-up
+  **Podman-HPC / Singularity**     Deployment wrapper; use any package manager inside        Follow-up
 
-Pre-built, system-managed. Try `module avail` first --- if it is there, use it.
+Modules on Isambard 3 are bare-bones --- almost no research software is available through `module avail`. Their main
+value is loading the system compiler (`gcc-native`) when you want to compile your own code.
+
+Containers are **orthogonal** to the others: a container can wrap a conda or Spack environment and gives access to
+package managers like `apt` or `nix` that are otherwise unavailable on a shared HPC system.
 :::
-
-::: flow-card
-[2. Conda / mamba]{.flow-title}
-
-User-managed environment. Install what you need in an isolated named environment.
-:::
-
-::: flow-card
-[3. Containers]{.flow-title}
-
-Singularity/Apptainer. Useful for complex or reproducible stacks --- follow-up route, not taught today.
-:::
-::::::
-
-::: slide-note
-Spack is an alternative for compiled software; see the [Spack
-guide](https://docs.isambard.ac.uk/user-documentation/guides/spack/) after the workshop.
-:::
+::::
 
 ::: notes
-- Emphasise this is a decision order, not a hierarchy of complexity
-- Most attendees will find what they need in modules or a conda env
-- Redirect anyone whose stack does not fit either route to support after the session
+- Do not spend long on this slide; it is orientation, not instruction
+- The key correction to make explicitly: "module avail will show almost nothing useful for your research"
+- Compilers are the one real use for modules; GCC via PrgEnv-gnu or gcc-native is the taught path (Section 1 notes)
+- Containers orthogonal point is important if anyone asks "can I use apt inside a container?" --- yes, that's the point
+- Redirect Spack and container questions to follow-up docs
 :::
 
 ## Modules {#modules .shell-slide}
 
 ::: slide-subtitle
-Pre-built software, loaded on demand --- the first place to look
+Useful mainly for the system compiler --- but good to know the commands
 :::
 
 :::: shell-grid
@@ -112,9 +106,10 @@ Stretch: try `module avail` and search for a tool you already use.
 ::::
 
 ::: notes
-- Demo live: run module list, module reset, module avail python
-- Give attendees \~2 min to try the commands themselves
-- If someone asks about a module that does not exist, point at the conda route on the next slides
+- Demo live: run module list, module reset, module avail python (likely shows little or nothing)
+- Lean into the emptiness as a teaching moment: "this is why we use mamba"
+- The commands are still worth knowing --- attendees will see them in job scripts and documentation
+- If someone asks about a specific tool: check module avail together, then move on to conda
 :::
 
 ## How do you install software on a remote machine? {#how-install-software .shell-slide}
@@ -160,10 +155,9 @@ Shared systems, supply chain risk, and reproducibility
 ::: {.fit-panel .good}
 [Safer routes]{.fit-title}
 
-- **Modules** --- system-managed, vetted builds
 - **Conda / mamba** --- isolated named environments; easy to delete and recreate
-- **Containers** --- fully self-contained; portable across systems
-- **Spack** --- built from source with explicit dependencies
+- **Spack** --- built from source with explicit dependencies and system-tuned flags
+- **Podman-HPC / Singularity** --- fully self-contained; portable across systems
 :::
 
 ::: {.fit-panel .bad}
@@ -418,7 +412,8 @@ Beyond modules and conda --- where to look next
 
 <https://docs.isambard.ac.uk/user-documentation/guides/spack/>
 
-**Containers (Singularity / Apptainer)** --- for fully self-contained, portable stacks:
+**Containers (Podman-HPC / Singularity)** --- for fully self-contained, portable stacks; can wrap any package manager
+inside:
 
 <https://docs.isambard.ac.uk/user-documentation/guides/containers/>
 
@@ -426,8 +421,8 @@ Beyond modules and conda --- where to look next
 
 <https://docs.isambard.ac.uk/user-documentation/tutorials/intro-tour/>
 
-If your own software stack does not fit modules or conda, do not spend workshop time on it. **Ask a helper to note it
-down and we will follow up after the session.**
+If your own software stack does not fit conda, do not spend workshop time on it. **Ask a helper to note it down and we
+will follow up after the session.**
 :::
 ::::
 
