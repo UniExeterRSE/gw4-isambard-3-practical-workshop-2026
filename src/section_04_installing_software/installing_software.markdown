@@ -232,6 +232,42 @@ pwd
 - If someone has no internet, they can use the materials already on the workshop project share
 :::
 
+## Install dotfiles (optional) {#install-dotfiles .shell-slide}
+
+::: slide-subtitle
+Architecture-aware shell config --- skip if you already have your own `.bashrc` / `.zshrc`
+:::
+
+:::: shell-grid
+::: shell-text
+``` bash
+cd bootstrap && install/dotfiles.sh install
+```
+
+The script symlinks `.bashrc`, `.bash_profile`, `.zshrc`, and `.zshenv` from `bootstrap/dotfiles/` into `$HOME`. Any
+existing file is backed up as `<file>.bak` first.
+
+**Why bother?** Isambard 3 has a *shared* home directory across both its `x86_64` and Arm (`aarch64`) login nodes. The
+dotfiles detect the current architecture at login (`uname -sm`) and route software installations into an arch-specific
+prefix:
+
+``` text
+~/.local/opt/Linux-aarch64/   ← used when logged into an Arm node
+~/.local/opt/Linux-x86_64/   ← used when logged into an x86_64 node
+```
+
+**Skip this step if** you already have a `.bashrc` you are happy with.
+:::
+::::
+
+::: notes
+- This slide is optional; most attendees who did pre-workshop setup will already have dotfiles sorted
+- The arch-dispatch is the main teaching point: shared home = you cannot hard-code architecture-specific paths
+- If someone has an existing .bashrc, reassure them: dotfiles.sh backs it up, and they can always restore from .bak
+- The key env vars set are: `__OPT_ROOT`, `MAMBA_ROOT_PREFIX`, `MAMBA_EXE` --- the mamba.sh installer reads
+  `MAMBA_ROOT_PREFIX` to know where to install miniforge
+:::
+
 ## Install mamba and tools {#install-mamba-tools .shell-slide}
 
 ::: slide-subtitle
@@ -243,8 +279,6 @@ Run the bootstrap scripts from inside the cloned repo
 All bootstrap scripts are in the `bootstrap/` subdirectory:
 
 ``` bash
-cd bootstrap
-
 # Install VS Code CLI (skip if already done in pre-workshop setup)
 install/code.sh install
 
