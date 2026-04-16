@@ -207,7 +207,9 @@ Get the bootstrap scripts onto Isambard 3
     bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/gh.sh) install
     gh auth login --git-protocol ssh --web
     ```
+:::
 
+::: {.column width="50%"}
 4.  In your fork click **Code → SSH → copy**, then clone (replace `UniExeterRSE` with your username):
 
     ``` bash
@@ -217,10 +219,8 @@ Get the bootstrap scripts onto Isambard 3
     cd gw4-isambard-3-practical-workshop-2026
     pwd
     ```
-:::
 
-::: {.column width="50%"}
-**Option B --- Read-only HTTPS clone (simpler, no GitHub account needed)**
+    **Option B --- Read-only HTTPS clone (simpler, no GitHub account needed)**
 
 ``` bash
 mkdir -p ~/git
