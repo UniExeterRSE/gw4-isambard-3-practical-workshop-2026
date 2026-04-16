@@ -100,7 +100,7 @@ at the workshop; see README "Out of Scope".
 **Install Clifton on macOS/Linux:**
 
 ``` bash
-bash <(curl -L https://raw.githubusercontent.com/ickc/envoy/refs/heads/main/install/clifton.sh) install
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/clifton.sh) install
 ```
 
 Then authenticate and connect:
@@ -162,7 +162,7 @@ the presenter moves on.
 **Install the VS Code CLI** on Isambard 3 (do this once, before the workshop):
 
 ``` bash
-bash <(curl -L https://raw.githubusercontent.com/ickc/envoy/refs/heads/main/install/code.sh) install
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/code.sh) install
 ```
 
 **Launch a browser tunnel** (run this each session from the login node):
