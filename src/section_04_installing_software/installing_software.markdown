@@ -242,6 +242,8 @@ Architecture-aware shell config --- skip if you already have your own `.bashrc` 
 ::: shell-text
 ``` bash
 cd bootstrap && install/dotfiles.sh install
+# make dotfiles active immediately
+source ~/.bashrc
 ```
 
 The script symlinks `.bashrc`, `.bash_profile`, `.zshrc`, and `.zshenv` from `bootstrap/dotfiles/` into `$HOME`. Any
