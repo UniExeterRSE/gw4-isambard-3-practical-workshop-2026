@@ -196,7 +196,7 @@ get_conda_env_file() {
         __MAMBA_ENV_FILE="conda/${filename}"
     else
         __MAMBA_ENV_FILE="${HOME}/${filename}"
-        github_download_file_to ickc envoy main "conda/${filename}" "${__MAMBA_ENV_FILE}"
+        github_download_file_to UniExeterRSE gw4-isambard-3-practical-workshop-2026 main "conda/${filename}" "${__MAMBA_ENV_FILE}"
     fi
 }
 
