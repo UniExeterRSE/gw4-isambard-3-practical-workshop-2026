@@ -203,6 +203,10 @@ TODOs:
 - [ ] Confirm whether the example output filenames and shell choices match local workshop conventions
 - [ ] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
 - [ ] Keep the beginner path free of partition changes and `--mail-type=END`
+- [ ] Simple single core job: env, date, free, lscpu, etc.
+- [ ] Interactive job: try a few commands
+- [ ] Simple single node 1 minute wall clock time (no mpi yet): simple c program with matmul and timing and
+  show flops, may show strong/weak scaling
 
 ### 4. Installing Software (15 min) — Active
 
