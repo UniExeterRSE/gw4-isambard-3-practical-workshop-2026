@@ -1,7 +1,7 @@
 # Interactive Job
 
-An interactive job gives you a shell on a compute node. It is the fastest way to poke at things — try a command, see
-the result, try another — without the submit → wait → read-output loop.
+An interactive job gives you a shell on a compute node. It is the fastest way to poke at things — try a command, see the
+result, try another — without the submit → wait → read-output loop.
 
 Use it sparingly: compute nodes are a shared resource. Quit the shell (`exit`) as soon as you are done.
 
@@ -51,8 +51,8 @@ This releases the allocation immediately. Do not leave the shell sitting idle.
 
 ## When to use an interactive job
 
-- Quick checks: "does this command exist on compute nodes?", "does this module load cleanly?".
-- Poking at a failed job's environment before writing a batch script.
+- Quick checks: “does this command exist on compute nodes?”, “does this module load cleanly?”.
+- Poking at a failed job’s environment before writing a batch script.
 - Short, interactive debugging.
 
 Do **not** use interactive jobs for long-running work. That is what batch jobs are for — they survive you closing your

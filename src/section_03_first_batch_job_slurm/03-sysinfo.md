@@ -38,7 +38,7 @@ lscpu
 1.  Which hostname did the compute node report? How is it different from the login node?
 2.  How much memory does `free -h` show on the compute node?
 3.  What does `lscpu` say about the CPU architecture and model? (You should see `aarch64` and Neoverse-V2.)
-4.  Which `SLURM_*` variables look useful? (e.g. `SLURM_JOB_ID`, `SLURM_CPUS_ON_NODE`, `SLURM_SUBMIT_DIR`.)
+4.  Which `SLURM_*` variables look useful? (e.g. `SLURM_JOB_ID`, `SLURM_CPUS_ON_NODE`, `SLURM_SUBMIT_DIR`.)
 
 ## Things to try
 
