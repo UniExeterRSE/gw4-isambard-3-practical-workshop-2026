@@ -35,6 +35,9 @@ int main(int argc, char **argv) {
     real_t *C = malloc(elems * sizeof(real_t));
     if (!A || !B || !C) {
         fprintf(stderr, "allocation failed for N=%d\n", n);
+        free(A);
+        free(B);
+        free(C);
         return 1;
     }
 
