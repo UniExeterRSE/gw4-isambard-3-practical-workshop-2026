@@ -201,12 +201,14 @@ TODOs:
   [src/section_03_first_batch_job_slurm/README.md](src/section_03_first_batch_job_slurm/README.md)
 - [ ] Add presenter notes for walking through the first script line by line
 - [ ] Confirm whether the example output filenames and shell choices match local workshop conventions
-- [ ] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
-- [ ] Keep the beginner path free of partition changes and `--mail-type=END`
-- [ ] Simple single core job: env, date, free, lscpu, etc.
-- [ ] Interactive job: try a few commands
-- [ ] Simple single node 1 minute wall clock time (no mpi yet): simple c program with matmul and timing and show flops,
-  may show strong/weak scaling
+- [x] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
+- [x] Keep the beginner path free of partition changes and `--mail-type=END`
+- [x] Simple single core job: env, date, free, lscpu, etc. (folded into `hello_world.sh`)
+- [x] Interactive job: try a few commands (`03-interactive.md` — stretch)
+- [x] Simple single node 1 minute wall clock time (no mpi yet): simple c program with matmul and timing and show flops
+  (`04-matmul.md` — stretch; strong/weak scaling deferred to later in the workshop)
+- [x] Section 3 slide deck in
+  [src/section_03_first_batch_job_slurm/first_batch_job_slurm.markdown](src/section_03_first_batch_job_slurm/first_batch_job_slurm.markdown)
 
 ### 4. Installing Software (15 min) — Active
 

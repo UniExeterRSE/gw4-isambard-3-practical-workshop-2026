@@ -2,20 +2,22 @@
 
 **Section type: Active.** Rhythm: Present → Demo (walk through the script live) → Hands-on → Discussion.
 
-This section adapts the Slurm parts of the source tutorial into beginner-friendly Isambard 3 exercises.
+25 minutes. Core taught path is `01` + `02`. `03` and `04` are stretch / fast-finisher material — bring them in only if
+the room is moving fast, or skip and signpost as post-workshop reading.
 
-Files in this section:
+**Core path (taught):**
 
-- `01-hello-world.md` - first batch job walkthrough
-- `02-multi-task.md` - extend the job to multiple tasks
-- `03-sysinfo.md` - single-core job that inspects the compute node (`date`, `free`, `lscpu`, Slurm env)
-- `04-interactive.md` - starting an interactive session with `srun --pty bash`
-- `05-matmul.md` - compile and run a small BLAS matmul under Slurm; measure GFLOPS
-- `hello_world.sh` - starter script
-- `multi_task.sh` - multi-task script using `srun`
-- `sysinfo.sh` - single-core system-info batch script
-- `matmul.c` - BLAS `cblas_dgemm`/`cblas_sgemm` matmul with timing and GFLOPS output
-- `makefile` - builds `matmul_dgemm` and `matmul_sgemm` with the Cray `cc` wrapper under `PrgEnv-gnu`
-- `matmul.sh` - batch script that loads `PrgEnv-gnu`, builds, and runs `matmul_dgemm`
+- `01-hello-world.md` + `hello_world.sh` — first `sbatch` / `squeue --me` / read output / `scancel`. The script also
+  dumps `hostname`, `date`, `free -h`, `lscpu`, and the `SLURM_*` env, so one submission also tells attendees what a
+  compute node looks like.
+- `02-multi-task.md` + `multi_task.sh` — extend to `--ntasks=4` with `srun`; first look at `sacct`.
+
+**Stretch:**
+
+- `03-interactive.md` — starting an interactive session with `srun --pty bash` when batch feels too slow for a quick
+  check.
+- `04-matmul.md` + `matmul.c` + `makefile` + `matmul.sh` — compile a tiny BLAS matmul via the Cray `cc` wrapper under
+  `PrgEnv-gnu` and run it under Slurm. Framed as “run something non-trivial end-to-end”; the GFLOPS number exists but we
+  do not dissect it here. Revisited later if there is time.
 
 All examples here are CPU-only and suitable for Isambard 3.

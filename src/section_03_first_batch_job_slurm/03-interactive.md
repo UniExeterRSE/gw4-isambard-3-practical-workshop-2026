@@ -1,4 +1,4 @@
-# Interactive Job
+# Interactive Job (stretch)
 
 An interactive job gives you a shell on a compute node. It is the fastest way to poke at things — try a command, see the
 result, try another — without the submit → wait → read-output loop.
@@ -22,18 +22,8 @@ You will wait briefly in the queue, then land on a compute node with a prompt.
 
 ## Try a few commands
 
-``` bash
-hostname
-whoami
-pwd
-date
-free -h
-lscpu | head
-nproc
-echo "${SLURM_JOB_ID}"
-```
-
-Compare `hostname` here with the login node — you are on a different machine now.
+Run any of the commands from `hello_world.sh` (`hostname`, `date`, `free -h`, `lscpu`, `echo "${SLURM_JOB_ID}"`) — this
+time you can eyeball the output directly instead of reading it from a log.
 
 ## End the session
 
@@ -42,12 +32,6 @@ exit
 ```
 
 This releases the allocation immediately. Do not leave the shell sitting idle.
-
-## Questions
-
-1.  Which hostname did the compute node report?
-2.  What does `echo "${SLURM_JOB_ID}"` print — and does it match what `squeue --me` showed while you were waiting?
-3.  How is the output from `lscpu` different from the login node?
 
 ## When to use an interactive job
 
