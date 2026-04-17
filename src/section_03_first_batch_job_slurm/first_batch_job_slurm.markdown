@@ -271,8 +271,8 @@ Lands you on a compute node with a prompt. Run the same commands you would put i
 ::: notes
 - Only reach for this slide if the room is ahead
 - Make it explicit: interactive jobs are a convenience tool, not the default workflow
-- If someone's VS Code tunnel is already active, an interactive job is often unnecessary --- they can just run on the
-  login node's provided shell... actually no, redirect to batch, login nodes are not for compute
+- If someone's VS Code tunnel is already active, avoid suggesting they run compute work in the login node shell;
+  redirect them to batch instead, because login nodes are not for compute
 :::
 
 ## Stretch: run something non-trivial {#stretch-matmul .shell-slide}
