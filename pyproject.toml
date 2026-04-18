@@ -51,11 +51,12 @@ docs = { cmd = "cd src; make all", description = "Make HTMLs." }
 serve = { cmd = "python -m http.server $PRESENTATION_PORT --bind 127.0.0.1 --directory src", description = "Serve the presentation.", depends-on = ["docs"] }
 linkcheck-local = { cmd = "lychee http://127.0.0.1:$PRESENTATION_PORT", description = "Check the local presentation with lychee." }
 linkcheck-live = { cmd = "lychee https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/", description = "Check the live presentation with lychee." }
-format-md = { cmd = "python bin/md_formatter.py '**/*.md' -t gfm", description = "Format .md files via pandoc (GFM)." }
+format = { depends-on = ["format-c", "format-markdown", "format-md", "format-py", "format-sh"], description = "Run all formatters." }
+format-c = { cmd = "bash bin/c_formatter.sh", description = "Format C files using clang-format." }
 format-markdown = { cmd = "python bin/md_formatter.py '**/*.markdown' -t markdown", description = "Format .markdown files via pandoc." }
+format-md = { cmd = "python bin/md_formatter.py '**/*.md' -t gfm", description = "Format .md files via pandoc (GFM)." }
 format-py = { cmd = "ruff check --fix src/ bin/ && ruff format src/ bin/", description = "Lint-fix and format .py and .ipynb files with ruff." }
 format-sh = { cmd = "bash bin/sh_formatter.sh", description = "Format .sh files using sed and shfmt." }
-format = { depends-on = ["format-sh", "format-md", "format-markdown", "format-py"], description = "Run all formatters." }
 
 [tool.pixi.dependencies]
 python = ">=3.12,<3.13"
@@ -70,6 +71,7 @@ pillow = ">=12.1.1,<13"
 ruff = ">=0.11,<1"
 go-shfmt = ">=3.12,<4"
 lychee = ">=0.23.0,<0.24"
+clang-format = ">=22.1.3,<23"
 
 [tool.pixi.pypi-dependencies]
 isambard3-workshop = { path = ".", editable = true }
