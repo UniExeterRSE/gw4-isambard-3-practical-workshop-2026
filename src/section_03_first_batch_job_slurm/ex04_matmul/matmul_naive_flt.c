@@ -1,6 +1,7 @@
 /* matmul_naive_flt.c — matrix multiply using a hand-rolled ikj triple loop (single precision) */
 #define _POSIX_C_SOURCE 200809L
 
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +20,7 @@ static double wall_seconds(void)
  * access, which is friendlier to the cache than the textbook ijk order. */
 static void naive_gemm(const real_t* A, const real_t* B, real_t* C, int n)
 {
+#pragma omp parallel for schedule(static)
     for (int i = 0; i < n; i++) {
         for (int k = 0; k < n; k++) {
             real_t a = A[(size_t)i * n + k];
@@ -49,15 +51,14 @@ int main(int argc, char** argv)
         return 1;
     }
 
+#pragma omp parallel for schedule(static)
     for (size_t i = 0; i < elems; i++) {
         A[i] = (real_t)((double)(i % 100) / 100.0);
         B[i] = (real_t)((double)((i * 7u) % 100) / 100.0);
     }
     memset(C, 0, elems * sizeof(real_t));
 
-    const char* threads_env = getenv("OMP_NUM_THREADS");
-    printf("matmul routine=naive ikj triple loop (float) N=%d OMP_NUM_THREADS=%s\n", n,
-        threads_env ? threads_env : "(unset)");
+    printf("matmul routine=naive ikj triple loop (float) N=%d omp_threads=%d\n", n, omp_get_max_threads());
 
     double t0 = wall_seconds();
     naive_gemm(A, B, C, n);
