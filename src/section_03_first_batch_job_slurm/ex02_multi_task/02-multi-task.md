@@ -1,34 +1,46 @@
 # Multi-Task Slurm Job
 
-Now modify the first example so Slurm launches multiple tasks.
+A single Slurm job that launches **multiple tasks** — each task runs the same executable simultaneously across cores or
+nodes. This is the SPMD (Single Program, Multiple Data) model that underlies most parallel HPC workloads.
 
-## Starter script
-
-See `multi_task.sh`.
+Open `sbatch_multi_task.sh` and note the `--ntasks` directive before submitting.
 
 ## Submit it
 
 ``` bash
-sbatch multi_task.sh
+sbatch sbatch_multi_task.sh
 ```
 
-## Observe the output
+## Monitor it
+
+``` bash
+squeue --me
+```
+
+## Read the output
 
 ``` bash
 cat multi_task.out
+# or follow it live while the job runs
+tail -F multi_task.out
 ```
 
-You should see one line from each task.
+You should see one line per task, each reporting a different `SLURM_PROCID`.
 
-## Inspect accounting data
+## Cancel if needed
 
 ``` bash
-sacct --format=JobID,JobName,State,Elapsed
+scancel <jobid>
 ```
+
+## Questions
+
+1.  How many lines appear in the output, and why?
+2.  Are the lines always printed in order (task 0, 1, 2, 3)? Why or why not?
+3.  What is `SLURM_PROCID`? How does it differ from `SLURM_JOB_ID`?
 
 ## Things to try
 
-- Change `--ntasks=4` to another value
-- Change the job name
-- Change the output filename
-- Add a short `sleep` command to make queue and run states easier to observe
+- Change `--ntasks` to 8 and resubmit. Does the output scale as expected?
+
+- Try `#SBATCH --exclusive` and see what happens. What `--ntasks` should you set it to?
