@@ -30,27 +30,6 @@ If successful, the output will look something like:
 This is a test with 1 processes
 ```
 
-## Running the multi-node job
-
-See `mpi_osu.sh` for the script. Note the directives that specifically request more than one node:
-
-``` bash
-#SBATCH --nodes=2
-#SBATCH --ntasks-per-node=1
-```
-
-Submit the script:
-
-``` bash
-sbatch mpi_osu.sh
-```
-
-Check its status:
-
-``` bash
-squeue --me
-```
-
 ## Review the output
 
 Once the job is completed or running, inspect the output:

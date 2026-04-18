@@ -22,7 +22,6 @@ Files in this section:
 - `hybrid-MPI.md` - thread-related environment variables for hybrid runs
 - `01-mpi-parallelism-stretch.md` - an optional stretch module demonstrating multi-node MPI parallelism using
   `osu-micro-benchmarks`.
-- `mpi_osu.sh` - a basic batch script for the multi-node job.
 - `monte_carlo_pi_c/` - C MPI+OpenMP implementation of the same Monte Carlo Pi estimation; a compiled-language stretch
   goal that sweeps MPI-rank × OMP-thread combinations across all 144 Grace CPU cores. See
   `monte_carlo_pi_c/monte_carlo_pi_mpi_hybrid_c.md` for the walkthrough.
