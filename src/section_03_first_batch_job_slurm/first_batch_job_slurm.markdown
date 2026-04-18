@@ -34,10 +34,11 @@ Section 3 --- 25 min
 :::::::::
 
 ::: notes
-- 25-minute active section: Present -\> Demo -\> Hands-on -\> Discussion
-- Taught core: hello-world + multi-task. Interactive and matmul are stretch, reach for them only if the room is ahead
+- 25-minute active section: Present → Demo ex01 → Demo ex03 → Hands-on (all four, self-paced) → Discussion
+- Flow: talk through anatomy + submit/check/read (\~4 min), demo ex01 live, show interactive with ex03 demo, then
+  release to hands-on block; attendees start at ex01 and move forward at their own pace
 - Do NOT drift into partition changes or `--mail-type=END`; both are out of scope for the beginner path
-- Biggest risk is spending too long on one walkthrough; keep momentum and redirect bespoke questions to Q&A or follow-up
+- Biggest risk is spending too long on one demo; keep momentum and redirect bespoke questions to Q&A or follow-up
 :::
 
 ## Why batch? {#why-batch .shell-slide}
@@ -95,6 +96,8 @@ env | sort > hello_world_${HOSTNAME}.env
 - Walk through the directives live: name, output, ntasks, cpus-per-task, time
 - Flag that `--time` is a hard limit --- overshoot and Slurm kills the job (this comes back in debugging)
 - The body is ordinary shell, which is why we use it to ask the node about itself on the first run
+- DEMO: switch to terminal; `cd ex01_hello_world`; open `sbatch_hello_world.sh` briefly; `sbatch sbatch_hello_world.sh`;
+  show `squeue --me` while it runs; `cat hello_world.out`
 :::
 
 ## Submit, check, read {#submit-check-read .shell-slide}
@@ -119,6 +122,7 @@ Returns a **job ID**.
 
 ``` bash
 squeue --me
+watch -n 15 squeue --me
 ```
 
 States: `PD` (pending), `R` (running), `CG` (completing).
@@ -137,126 +141,18 @@ Output is just a file. Cancel any job you submitted by mistake.
 ::::::
 
 ::: slide-note
-`squeue --me` is the polite version of `squeue`. Do not `watch`-style hammer the scheduler --- it is shared.
+`watch -n 15 squeue --me` polls every 15 seconds --- do not go lower. The scheduler is shared.
 :::
 
 ::: notes
-- Demo live: sbatch the script, show squeue --me while it is PD/R, then cat the output
 - Point out the output file is just a file --- any editor or pager works
 - Mention scancel exists; show it if a job is still PD long enough to demonstrate
 :::
 
-## Hands-on: hello world {#hands-on-hello-world .shell-slide}
+## Interactive jobs {#interactive-jobs .shell-slide}
 
 ::: slide-subtitle
-\~8 minutes --- helpers are circulating
-:::
-
-:::: shell-grid
-::: shell-text
-1.  Navigate to `ex01_hello_world/` and open `sbatch_hello_world.sh`.
-
-2.  Submit it:
-
-    ``` bash
-    sbatch sbatch_hello_world.sh
-    ```
-
-3.  Watch it:
-
-    ``` bash
-    squeue --me
-    ```
-
-4.  Read the output once it finishes:
-
-    ``` bash
-    cat hello_world.out
-    ```
-
-**Stretch for fast finishers:** change the walltime, the job name, or the output filename. Add a short `sleep 30` to see
-the job sit in `R` state in `squeue --me`.
-:::
-::::
-
-::: notes
-- Primary teaching goal: everyone gets one successful submission before anything else happens
-- Helpers prioritise unblocking stragglers; do not get drawn into stretch discussion while anyone is stuck
-- If the queue is slow, use the wait time to talk through the output they will see
-:::
-
-## Multi-task: ntasks + srun {#multi-task-ntasks-srun .shell-slide}
-
-::: slide-subtitle
-Same job, four tasks, one `srun` to launch them
-:::
-
-:::: shell-grid
-::: shell-text
-``` bash
-#!/bin/bash
-#SBATCH --job-name=multi_task
-#SBATCH --output=multi_task.out
-#SBATCH --ntasks=4
-#SBATCH --time=00:01:00
-
-srun bash -c 'echo "Task ${SLURM_PROCID} running on $(hostname)"'
-```
-
-- `--ntasks=4` --- Slurm allocates slots for four tasks
-- `srun` --- launches the command across all allocated tasks
-- `${SLURM_PROCID}` --- each task sees its own rank (0, 1, 2, 3)
-
-After it runs:
-
-``` bash
-cat multi_task.out
-sacct --format=JobID,JobName,State,Elapsed
-```
-:::
-::::
-
-::: notes
-- Keep this short: the point is just "here is how you fan out to N tasks"
-- No MPI here --- tasks are independent bash commands
-- `sacct` is a first look; it comes back in the debugging section
-:::
-
-## Hands-on: multi-task + sacct {#hands-on-multi-task-sacct .shell-slide}
-
-::: slide-subtitle
-\~7 minutes --- change a knob and observe
-:::
-
-:::: shell-grid
-::: shell-text
-1.  Navigate to `ex02_multi_task/` and submit `sbatch_multi_task.sh`:
-
-    ``` bash
-    sbatch sbatch_multi_task.sh
-    ```
-
-2.  `cat multi_task.out` --- confirm one line per task.
-
-3.  `sacct --format=JobID,JobName,State,Elapsed` --- see your recent jobs.
-
-**Stretch:**
-
-- Change `--ntasks=4` to another value and compare the output.
-- Add `sleep 10` inside the `srun` command to make the job visible in `squeue --me` for longer.
-- Try `sacct --format=JobID,JobName,State,ExitCode,MaxRSS` (more columns come back in debugging).
-:::
-::::
-
-::: notes
-- Remind: sacct reads from the accounting database, so it may lag a few seconds after the job completes
-- Do not chase a full tour of sacct columns --- defer to Section 6
-:::
-
-## Stretch: interactive jobs {#stretch-interactive-jobs .shell-slide}
-
-::: slide-subtitle
-Fastest way to poke at something --- but quit as soon as you are done
+A shell on a compute node --- fastest way to poke at something
 :::
 
 :::: shell-grid
@@ -275,55 +171,36 @@ Lands you on a compute node with a prompt. Run the same commands you would put i
 ::::
 
 ::: notes
-- Only reach for this slide if the room is ahead
+- DEMO: run the srun command live; show hostname changing; run a couple of commands; exit immediately
+- `srun` appears here and in ex02 (multi-task) --- same command, different context; the .md files explain both
 - Make it explicit: interactive jobs are a convenience tool, not the default workflow
 - If someone's VS Code tunnel is already active, avoid suggesting they run compute work in the login node shell;
   redirect them to batch instead, because login nodes are not for compute
 :::
 
-## Stretch: run something non-trivial {#stretch-matmul .shell-slide}
+## Hands-on {#hands-on .shell-slide}
 
 ::: slide-subtitle
-Compile + submit + read --- same loop, bigger payload
+\~15 minutes --- work in order, skip an exercise if it feels too easy
 :::
 
 :::: shell-grid
 ::: shell-text
-Four C files: two BLAS calls (`cblas_dgemm`, `cblas_sgemm`) and two hand-rolled `ikj` triple loops in double and single
-precision. All print wall time and GFLOPS.
+- **ex01** `ex01_hello_world/` → `01-hello-world.md` --- first sbatch submission
+- **ex02** `ex02_multi_task/` → `02-multi-task.md` --- ntasks + srun + sacct
+- **ex03** `ex03_interactive/` → `03-interactive.md` --- interactive shell
+- **ex04** `ex04_matmul/` → `04-matmul.md` --- compile + run (build first: `bash make.sh`)
 
-``` bash
-cd ex04_matmul
-bash make.sh           # loads PrgEnv-gnu, builds all four binaries
-sbatch sbatch_matmul.sh
-```
-
-Slurm job: 2-minute walltime, 1 exclusive node, `OMP_NUM_THREADS=144`.
-
-    === Running matmul_sgemm... ===
-    matmul routine=cblas_sgemm (float) N=16384 OMP_NUM_THREADS=144
-    elapsed_s=0.0631 gflops=277.43 checksum=...
-    === Running matmul_dgemm... ===
-    matmul routine=cblas_dgemm (double) N=16384 OMP_NUM_THREADS=144
-    elapsed_s=0.1124 gflops=156.03 checksum=...
-    === Running matmul_naive_flt... ===
-    matmul routine=naive ikj triple loop (float) N=16384 OMP_NUM_THREADS=144
-    elapsed_s=... gflops=... checksum=...
-    === Running matmul_naive... ===
-    matmul routine=naive ikj triple loop (double) N=16384 OMP_NUM_THREADS=144
-    elapsed_s=... gflops=... checksum=...
-
-Same machine, same `N`, same arithmetic. Notice the gaps: BLAS beats naive; single precision beats double. We are
-**not** dissecting it today --- we will revisit *why* (cache blocking, vectorisation, LibSci) later in the workshop.
+Each `.md` has the commands to run, questions to think about, and things to try if you finish early.
 :::
 ::::
 
 ::: notes
-- Only reach for this if the room has comfortably finished multi-task
-- Framing: "here is something non-trivial running end-to-end"; do not be tempted to start explaining LibSci threading
-- Two gaps are deliberate bait: BLAS vs naive, and single vs double precision --- acknowledge both, defer the why to
-  later
-- If someone asks "why is it so fast / slow?", note it and defer to the later scaling/precision section
+- Helpers: circulate and unblock; do not get drawn into ex04 discussion while anyone is stuck on ex01
+- If the queue is slow, the wait is a good moment to walk through what the output will look like
+- sacct may lag a few seconds after a job completes --- normal
+- ex04 needs a build step before sbatch: `bash make.sh` inside ex04_matmul/; mention this if people reach it
+- Two gaps in ex04 are deliberate bait: BLAS vs naive, and single vs double --- acknowledge, defer the why to later
 :::
 
 ## Do not do these today {#do-not-do-these-today .shell-slide}
