@@ -42,6 +42,7 @@ conda_envs_path_prepend() {
 # just put conda and mamba in the PATH
 path_prepend "${MAMBA_ROOT_PREFIX}/condabin"
 path_prepend_all "${__OPT_ROOT}/system"
+path_prepend_all "${__OPT_ROOT}"
 
 if command -v mamba > /dev/null 2>&1; then
     # * this source the conda functions but not changing the PATH directly
