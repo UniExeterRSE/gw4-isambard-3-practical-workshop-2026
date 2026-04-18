@@ -1,2 +1,7 @@
+# batch job related files
+*.out
+*.err
+*.env
+# HTML related files
 *.html
 index.md
