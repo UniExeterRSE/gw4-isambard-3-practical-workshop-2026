@@ -72,18 +72,18 @@ Shebang + `#SBATCH` directives + normal shell commands
 ::: shell-text
 ``` bash
 #!/bin/bash
-#SBATCH --job-name=hello-world
+#SBATCH --job-name=hello_world
 #SBATCH --output=hello_world.out
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=00:02:00
+#SBATCH --time=00:01:00
 
 echo "Job ID: ${SLURM_JOB_ID}"
 echo "Host:   $(hostname)"
 date
 free -h
 lscpu
-env | grep '^SLURM_' | sort
+env | sort > hello_world_${HOSTNAME}.env
 ```
 
 - `#SBATCH` lines are comments to the shell, **directives** to Slurm
@@ -154,12 +154,12 @@ Output is just a file. Cancel any job you submitted by mistake.
 
 :::: shell-grid
 ::: shell-text
-1.  Copy `hello_world.sh` from `/projects/workshop/` into your `$HOME`.
+1.  Navigate to `ex01_hello_world/` and open `sbatch_hello_world.sh`.
 
 2.  Submit it:
 
     ``` bash
-    sbatch hello_world.sh
+    sbatch sbatch_hello_world.sh
     ```
 
 3.  Watch it:
@@ -195,10 +195,10 @@ Same job, four tasks, one `srun` to launch them
 ::: shell-text
 ``` bash
 #!/bin/bash
-#SBATCH --job-name=multi-task
+#SBATCH --job-name=multi_task
 #SBATCH --output=multi_task.out
 #SBATCH --ntasks=4
-#SBATCH --time=00:02:00
+#SBATCH --time=00:01:00
 
 srun bash -c 'echo "Task ${SLURM_PROCID} running on $(hostname)"'
 ```
@@ -230,8 +230,14 @@ sacct --format=JobID,JobName,State,Elapsed
 
 :::: shell-grid
 ::: shell-text
-1.  Submit `multi_task.sh`.
+1.  Navigate to `ex02_multi_task/` and submit `sbatch_multi_task.sh`:
+
+    ``` bash
+    sbatch sbatch_multi_task.sh
+    ```
+
 2.  `cat multi_task.out` --- confirm one line per task.
+
 3.  `sacct --format=JobID,JobName,State,Elapsed` --- see your recent jobs.
 
 **Stretch:**
@@ -283,32 +289,41 @@ Compile + submit + read --- same loop, bigger payload
 
 :::: shell-grid
 ::: shell-text
-One C file, two builds: a hand-rolled triple loop and a call into BLAS `cblas_dgemm`. Both print wall time and GFLOPS.
+Four C files: two BLAS calls (`cblas_dgemm`, `cblas_sgemm`) and two hand-rolled `ikj` triple loops in double and single
+precision. All print wall time and GFLOPS.
 
 ``` bash
-module load PrgEnv-gnu
-make                   # cc -O3 -mcpu=neoverse-v2 ... (LibSci auto-linked)
-./matmul_naive 1024
-./matmul_dgemm 1024
+cd ex04_matmul
+bash make.sh           # loads PrgEnv-gnu, builds all four binaries
+sbatch sbatch_matmul.sh
 ```
 
-Run both under Slurm with `make.sh` (1-minute walltime, 1 core).
+Slurm job: 2-minute walltime, 1 exclusive node, `OMP_NUM_THREADS=144`.
 
-    matmul routine=naive ikj triple loop (double) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=1.8321 gflops=1.17 checksum=1.234567e+08
-    matmul routine=cblas_dgemm (double) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=0.0421 gflops=51.02 checksum=1.234567e+08
+    === Running matmul_sgemm... ===
+    matmul routine=cblas_sgemm (float) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=0.0631 gflops=277.43 checksum=...
+    === Running matmul_dgemm... ===
+    matmul routine=cblas_dgemm (double) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=0.1124 gflops=156.03 checksum=...
+    === Running matmul_naive_flt... ===
+    matmul routine=naive ikj triple loop (float) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=... gflops=... checksum=...
+    === Running matmul_naive... ===
+    matmul routine=naive ikj triple loop (double) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=... gflops=... checksum=...
 
-Same machine, same `N`, same arithmetic. Notice the gap. We are **not** dissecting it today --- we will revisit *why*
-(cache blocking, vectorisation, LibSci) later in the workshop.
+Same machine, same `N`, same arithmetic. Notice the gaps: BLAS beats naive; single precision beats double. We are
+**not** dissecting it today --- we will revisit *why* (cache blocking, vectorisation, LibSci) later in the workshop.
 :::
 ::::
 
 ::: notes
 - Only reach for this if the room has comfortably finished multi-task
 - Framing: "here is something non-trivial running end-to-end"; do not be tempted to start explaining LibSci threading
-- The naive/BLAS gap is deliberate bait --- acknowledge it, then defer the why to the later scaling/precision section
-- If someone asks "why is it so fast / slow?", note it and defer to the later section
+- Two gaps are deliberate bait: BLAS vs naive, and single vs double precision --- acknowledge both, defer the why to
+  later
+- If someone asks "why is it so fast / slow?", note it and defer to the later scaling/precision section
 :::
 
 ## Do not do these today {#do-not-do-these-today .shell-slide}
