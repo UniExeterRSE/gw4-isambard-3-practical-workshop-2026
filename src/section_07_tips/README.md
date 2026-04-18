@@ -21,9 +21,10 @@ TODO: add more pages
 
 #### Get CPU usage of `srun` tasks
 
-`sacct` — the canonical Slurm post-hoc query.** Every job step (each `srun` counts as one) gets its resource usage recorded. After the job finishes:
+`sacct` — the canonical Slurm post-hoc query.\*\* Every job step (each `srun` counts as one) gets its resource usage
+recorded. After the job finishes:
 
-```bash
+``` bash
 sacct -j ${SLURM_JOB_ID} --format=JobID,JobName%15,Elapsed,TotalCPU,NCPUS,CPUTime,AveCPU,MaxRSS
 ```
 
@@ -32,9 +33,10 @@ Key columns:
 - `TotalCPU` = user + sys CPU time summed over **every task** in the step (this is what you want).
 - `Elapsed` = wall clock.
 - `NCPUS` = cores allocated to the step.
-- `CPUTime` = `Elapsed × NCPUS` — the "budget" you could have used.
+- `CPUTime` = `Elapsed × NCPUS` — the “budget” you could have used.
 
-Utilisation = `TotalCPU / CPUTime`. A healthy hybrid run should be near 1.0; oversubscription shows up as `TotalCPU > NCPUS × Elapsed` (threads fighting for cores add up to more CPU-seconds than were allocated).
+Utilisation = `TotalCPU / CPUTime`. A healthy hybrid run should be near 1.0; oversubscription shows up as
+`TotalCPU > NCPUS × Elapsed` (threads fighting for cores add up to more CPU-seconds than were allocated).
 
 ### Cheatsheet
 
