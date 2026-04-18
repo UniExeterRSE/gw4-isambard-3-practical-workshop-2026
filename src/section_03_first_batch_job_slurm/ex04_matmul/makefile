@@ -1,5 +1,5 @@
 CC     	?= cc
-CFLAGS 	?= -O3 -mcpu=neoverse-v2 -std=c11 -Wall -Wextra
+CFLAGS 	?= -O3 -mcpu=neoverse-v2 -std=c11 -Wall -Wextra -fopenmp
 PROGS  	?= matmul_dgemm matmul_sgemm matmul_naive matmul_naive_flt
 
 .PHONY: all clean help

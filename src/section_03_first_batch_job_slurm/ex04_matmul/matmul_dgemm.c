@@ -2,6 +2,7 @@
 #define _POSIX_C_SOURCE 200809L
 
 #include <cblas.h>
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,15 +37,14 @@ int main(int argc, char** argv)
         return 1;
     }
 
+#pragma omp parallel for schedule(static)
     for (size_t i = 0; i < elems; i++) {
         A[i] = (real_t)((double)(i % 100) / 100.0);
         B[i] = (real_t)((double)((i * 7u) % 100) / 100.0);
     }
     memset(C, 0, elems * sizeof(real_t));
 
-    const char* threads_env = getenv("OMP_NUM_THREADS");
-    printf("matmul routine=cblas_dgemm (double) N=%d OMP_NUM_THREADS=%s\n", n,
-        threads_env ? threads_env : "(unset)");
+    printf("matmul routine=cblas_dgemm (double) N=%d omp_threads=%d\n", n, omp_get_max_threads());
 
     double t0 = wall_seconds();
     /* BLAS level-3: C = 1*A*B + 0*C, row-major, no transpose */
