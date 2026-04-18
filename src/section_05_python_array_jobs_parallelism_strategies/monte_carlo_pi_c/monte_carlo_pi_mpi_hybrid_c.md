@@ -11,14 +11,19 @@ the programming environment, build with `make`, submit under Slurm, read output 
 
 - `monte_carlo_pi_mpi_hybrid.c` — the C source. Key design decisions:
 
-  - **SoA memory layout**: coordinates stored as `coords[dim][chunk_size]` so the per-dimension accumulation is a
-    stride-1 loop that auto-vectorises on SVE2.
-  - **xoshiro256+ RNG**: seeded per rank via splitmix64; each OpenMP thread jumps 2^128 steps ahead for independent
-    streams.
+  - **Fused kernel**: each sample lives in registers; no intermediate buffer, no memory traffic beyond the 256-bit RNG
+    state and a scalar `rsq`.
+  - **Per-thread work CLI**: `-n` is samples *per OpenMP thread*. Total samples = MPI ranks × OMP threads × `-n`. The
+    thread count is read from `OMP_NUM_THREADS` via `omp_get_max_threads()`, so the driver does not need to repeat it.
   - **d-sphere generalisation**: accepts a `-d` flag so you can test in dimensions other than 2 (the default).
 
+- `rng.h`, `rng.c` — xoshiro256+ PRNG in its own translation unit, so the main file is not cluttered with bit mixing.
+  `rng.h` exposes only `Rng`, `rng_init(rng, seed, stream)`, and `rng_uniform` (the hot-loop entry point is a
+  `static inline`). Each (rank, thread) pair calls `rng_init` with a unique `stream` index, which advances the generator
+  by `stream × 2^128` steps — guaranteeing non-overlapping streams.
+
 - `makefile` — builds the binary with Cray’s `mpicc` wrapper. LibSci and MPICH are linked automatically under
-  `PrgEnv-gnu`; `-lm` covers `pow` / `tgamma`.
+  `PrgEnv-gnu`; `-lm` covers `pow` / `tgamma`. `rng.c` is compiled as a separate object and linked in.
 
 - `make.sh` — loads `PrgEnv-gnu` and runs `make all`. Run this on a login node first.
 
@@ -42,15 +47,16 @@ cat mc_pi.out
 
 Each run prints a one-line result table followed by `time -v` accounting. Look for the `time[s]` column:
 
-    d=2 N=200000000 num_threads=144 seed=20260421 mpi_ranks=1
+    d=2 N=288000000 num_threads=144 seed=20260421 mpi_ranks=1
     variant               hits      p_hat     p_true    sigma_p     pi_hat   sigma_pi   thr ranks    time[s]
     -----------------------------------------------------------------------------------------...
-    c-mpi-omp     157082816   0.785414   0.785398   0.000013   3.141657   0.000052   144     1     0.1234
+    c-mpi-omp     226194852   0.785400   0.785398   0.000011   3.141601   0.000043   144     1     0.0123
 
-The wall time should be roughly the same across all fifteen configurations — the total work is fixed at 200 million
-samples and 144 hardware threads are always busy. If one configuration is noticeably slower, that hints at MPI
-communication overhead or NUMA effects from thread binding.
+The wall time should be roughly the same across all fifteen configurations — per-thread work is fixed at 2 million
+samples (288 million in total, since ranks × threads = 144 across the sweep) and every Grace core is busy. If one
+configuration is noticeably slower, that hints at MPI startup overhead (many small ranks) or NUMA effects from thread
+binding.
 
-Compare the `time[s]` here against the Python/Numba hybrid result from `02-monte-carlo-pi-parallel-strategies.md` for
-the same sample count: the C binary is typically 3–5× faster because there is no interpreter and the inner loop
-vectorises cleanly with SVE2.
+Compare the `time[s]` here against the Python/Numba hybrid result from `02-monte-carlo-pi-parallel-strategies.md` for a
+similar sample count: the C binary is typically 3–5× faster because there is no interpreter and the fused inner loop
+keeps every sample in a register — the entire hot path is one xoshiro state update followed by a couple of FMAs.

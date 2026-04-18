@@ -2,17 +2,21 @@ CC      ?= mpicc
 CFLAGS  ?= -O3 -mcpu=neoverse-v2 -std=c11 -Wall -Wextra -fopenmp
 LDFLAGS ?=
 LIBS    ?= -lm
-BINS    = monte_carlo_pi_mpi_hybrid
+BIN     = monte_carlo_pi_mpi_hybrid
+OBJS    = monte_carlo_pi_mpi_hybrid.o rng.o
 
 .PHONY: all clean help
 
-all: $(BINS)  ## build the MPI+OpenMP Monte Carlo Pi binary
+all: $(BIN)  ## build the MPI+OpenMP Monte Carlo Pi binary
 
-%: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@ $(LIBS)
+$(BIN): $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ $(LIBS)
 
-clean:  ## remove built binary
-	$(RM) $(BINS)
+%.o: %.c rng.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:  ## remove built binary and object files
+	$(RM) $(BIN) $(OBJS)
 
 .DEFAULT_GOAL = help
 help:  ## print this help message
