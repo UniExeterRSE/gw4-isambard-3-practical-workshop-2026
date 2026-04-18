@@ -33,6 +33,14 @@ You should see one line per task, each reporting a different `SLURM_PROCID`.
 scancel <jobid>
 ```
 
+## Check accounting after completion
+
+``` bash
+sacct -j <jobid> --format=JobID,State,Elapsed,CPUTime
+```
+
+`sacct` may lag a few seconds after a job finishes — that is normal.
+
 ## Questions
 
 1.  How many lines appear in the output, and why?

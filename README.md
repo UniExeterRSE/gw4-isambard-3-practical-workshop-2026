@@ -192,18 +192,18 @@ TODOs:
 - [x] Create a hello-world walkthrough in
   [src/section_03_first_batch_job_slurm/ex01_hello_world/01-hello-world.md](src/section_03_first_batch_job_slurm/ex01_hello_world/01-hello-world.md)
 - [x] Create a starter batch script in
-  [src/section_03_first_batch_job_slurm/ex01_hello_world/hello_world.sh](src/section_03_first_batch_job_slurm/ex01_hello_world/hello_world.sh)
+  [src/section_03_first_batch_job_slurm/ex01_hello_world/sbatch_hello_world.sh](src/section_03_first_batch_job_slurm/ex01_hello_world/sbatch_hello_world.sh)
 - [x] Create a multi-task walkthrough in
   [src/section_03_first_batch_job_slurm/ex02_multi_task/02-multi-task.md](src/section_03_first_batch_job_slurm/ex02_multi_task/02-multi-task.md)
 - [x] Create a multi-task `srun` example in
-  [src/section_03_first_batch_job_slurm/ex02_multi_task/multi_task.sh](src/section_03_first_batch_job_slurm/ex02_multi_task/multi_task.sh)
+  [src/section_03_first_batch_job_slurm/ex02_multi_task/sbatch_multi_task.sh](src/section_03_first_batch_job_slurm/ex02_multi_task/sbatch_multi_task.sh)
 - [x] Add a section README in
   [src/section_03_first_batch_job_slurm/README.md](src/section_03_first_batch_job_slurm/README.md)
 - [ ] Add presenter notes for walking through the first script line by line
 - [ ] Confirm whether the example output filenames and shell choices match local workshop conventions
 - [x] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
 - [x] Keep the beginner path free of partition changes and `--mail-type=END`
-- [x] Simple single core job: env, date, free, lscpu, etc. (folded into `hello_world.sh`)
+- [x] Simple single core job: env, date, free, lscpu, etc. (folded into `sbatch_hello_world.sh`)
 - [x] Interactive job: try a few commands (`ex03_interactive/03-interactive.md` — stretch)
 - [x] Simple single node 1 minute wall clock time (no mpi yet): simple c program with matmul and timing and show flops
   (`ex04_matmul/04-matmul.md` — stretch; strong/weak scaling deferred to later in the workshop)

@@ -113,7 +113,7 @@ Three commands you will use every day
 [sbatch]{.flow-title}
 
 ``` bash
-sbatch hello_world.sh
+sbatch sbatch_hello_world.sh
 ```
 
 Returns a **job ID**.
