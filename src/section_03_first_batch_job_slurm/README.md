@@ -17,7 +17,7 @@ the room is moving fast, or skip and signpost as post-workshop reading.
 
 - `ex03_interactive/03-interactive.md` — starting an interactive session with `srun --pty bash` when batch feels too
   slow for a quick check.
-- `ex04_matmul/04-matmul.md` + `ex04_matmul/matmul.c` + `ex04_matmul/makefile` + `ex04_matmul/matmul.sh` — compile a
+- `ex04_matmul/04-matmul.md` + `ex04_matmul/matmul.c` + `ex04_matmul/makefile` + `ex04_matmul/make.sh` — compile a
   tiny BLAS matmul via the Cray `cc` wrapper under `PrgEnv-gnu` and run it under Slurm. Framed as “run something
   non-trivial end-to-end”; the GFLOPS number exists but we do not dissect it here. Revisited later if there is time.
 

@@ -292,7 +292,7 @@ make                   # cc -O3 -mcpu=neoverse-v2 ... (LibSci auto-linked)
 ./matmul_dgemm 1024
 ```
 
-Run both under Slurm with `matmul.sh` (1-minute walltime, 1 core).
+Run both under Slurm with `make.sh` (1-minute walltime, 1 core).
 
     matmul routine=naive ikj triple loop (double) N=1024 OMP_NUM_THREADS=(unset)
     elapsed_s=1.8321 gflops=1.17 checksum=1.234567e+08

@@ -15,12 +15,14 @@ revisit what the numbers mean (scaling, precision, LibSci threading) later in th
   - `-DUSE_NAIVE` → a hand-rolled `ikj` triple-loop (double precision, no BLAS)
 - `makefile` — builds `matmul_dgemm`, `matmul_sgemm`, and `matmul_naive` with the Cray C wrapper `cc`. LibSci is linked
   automatically under `PrgEnv-gnu`, no explicit `-lblas` needed.
-- `matmul.sh` — loads `PrgEnv-gnu`, runs `make`, runs `./matmul_naive 1024` then `./matmul_dgemm 1024`.
+- `make.sh` — loads `PrgEnv-gnu`, runs `make`, runs `./matmul_naive 1024` then `./matmul_dgemm 1024`.
 
 ## Build and submit
 
 ``` bash
-sbatch matmul.sh
+make.sh
+# TODO
+sbatch ...
 ```
 
 The job script handles `module load PrgEnv-gnu` and `make` before running the binary.
