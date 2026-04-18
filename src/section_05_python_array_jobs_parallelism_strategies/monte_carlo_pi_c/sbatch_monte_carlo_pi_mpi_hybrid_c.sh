@@ -20,5 +20,5 @@ for ((i = 0; i < NPROCS; i++)); do
     nproc=${PROCS[i]}
     nthreads=${PROCS[NPROCS - 1 - i]}
     echo "=== N_PROC=${nproc}, N_THREADS=${nthreads} ==="
-    OMP_NUM_THREADS=${nthreads} command time -v mpirun -n ${nproc} monte_carlo_pi_mpi_hybrid -d 2 -n ${N}
+    OMP_NUM_THREADS=${nthreads} command time -v srun -n ${nproc} monte_carlo_pi_mpi_hybrid -d 2 -n ${N}
 done
