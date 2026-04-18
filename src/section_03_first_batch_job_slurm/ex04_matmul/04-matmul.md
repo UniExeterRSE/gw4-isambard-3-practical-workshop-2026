@@ -23,17 +23,20 @@ changes between precision and implementation:
 - `makefile` — builds all four binaries with the Cray C wrapper `cc`. LibSci is linked automatically under `PrgEnv-gnu`,
   no explicit `-lblas` needed.
 
-- `make.sh` — loads `PrgEnv-gnu`, runs `make`, then runs all four binaries at N=1024.
+- `make.sh` — loads `PrgEnv-gnu` and runs `make` to build all four binaries. Run this on a login node first.
+
+- `sbatch_matmul.sh` — Slurm job script: loads `PrgEnv-gnu`, sets `OMP_NUM_THREADS=144`, and runs all four binaries at
+  N=16384 using `command time -v` for timing.
 
 ## Build and submit
 
 ``` bash
-make.sh
-# TODO
-sbatch ...
+bash make.sh
+sbatch sbatch_matmul.sh
 ```
 
-The job script handles `module load PrgEnv-gnu` and `make` before running the binary.
+Build on the login node with `make.sh`, then submit the job with `sbatch`. The job script handles the module load and
+runs each binary in turn.
 
 ## Read the output
 
@@ -43,16 +46,20 @@ cat matmul.out
 
 You should see four blocks, something like:
 
-    matmul routine=naive ikj triple loop (double) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=1.8321 gflops=1.17 checksum=1.234567e+08
-    matmul routine=naive ikj triple loop (float) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=1.6102 gflops=1.33 checksum=1.234568e+08
-    matmul routine=cblas_dgemm (double) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=0.0421 gflops=51.02 checksum=1.234567e+08
-    matmul routine=cblas_sgemm (float) N=1024 OMP_NUM_THREADS=(unset)
-    elapsed_s=0.0218 gflops=98.53 checksum=1.234568e+08
+    === Running matmul_sgemm... ===
+    matmul routine=cblas_sgemm (float) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=0.0631 gflops=277.43 checksum=...
+    === Running matmul_dgemm... ===
+    matmul routine=cblas_dgemm (double) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=0.1124 gflops=156.03 checksum=...
+    === Running matmul_naive_flt... ===
+    matmul routine=naive ikj triple loop (float) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=... gflops=... checksum=...
+    === Running matmul_naive... ===
+    matmul routine=naive ikj triple loop (double) N=16384 OMP_NUM_THREADS=144
+    elapsed_s=... gflops=... checksum=...
 
-Exact numbers vary — the point is the gaps. Same machine, same `N`, same arithmetic: the BLAS versions are ~40× faster
-than the naive loops, and single precision is roughly 2× faster than double (half the memory bandwidth, wider SIMD).
-Notice the checksums: naive-float and sgemm agree with each other but differ slightly from the double results due to
-lower precision. We will come back to *why* (cache blocking, vectorisation, LibSci) later in the workshop.
+Exact numbers vary — the point is the gaps. Same machine, same `N`, same arithmetic: the BLAS versions are substantially
+faster than the naive loops, and single precision is roughly 2× faster than double (half the memory bandwidth, wider
+SIMD). Notice the checksums: naive-float and sgemm agree with each other but differ slightly from the double results due
+to lower precision. We will come back to *why* (cache blocking, vectorisation, LibSci) later in the workshop.
