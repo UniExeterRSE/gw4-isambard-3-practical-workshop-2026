@@ -58,3 +58,7 @@ make clean   # removes *.out, *.err, *.env
 - Bump `--cpus-per-task=1` to `--cpus-per-task=4` and re-check `nproc` inside the job.
 
 - Change the job name, the output filename, or the walltime.
+
+## Notes
+
+- By default requested node is shared unless `#SBATCH --exclusive` is specified.
