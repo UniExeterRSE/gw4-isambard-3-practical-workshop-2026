@@ -5,7 +5,22 @@
 more on sbatch directives, run `man sbatch`
 or go to https://slurm.schedmd.com/sbatch.html
 
+E.g. look up that these means
+
+```
+--mem
+--mem-per-cpu
+--cpus-per-task
+--ntasks-per-node 
+```
+
 TODO: add more pages
+
+### Tips
+
+```sh
+#SBATCH --error=hello_world.err
+```
 
 ### Cheatsheet
 
