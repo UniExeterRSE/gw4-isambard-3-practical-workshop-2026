@@ -10,7 +10,9 @@ set -euo pipefail
 module reset
 module load PrgEnv-gnu
 
-make
+make all
 
 ./matmul_naive 1024
+./matmul_naive_flt 1024
 ./matmul_dgemm 1024
+./matmul_sgemm 1024

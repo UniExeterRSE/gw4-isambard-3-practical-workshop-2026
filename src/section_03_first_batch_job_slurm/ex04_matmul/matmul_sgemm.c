@@ -1,25 +1,13 @@
+/* matmul_sgemm.c — matrix multiply using cblas_sgemm (single precision BLAS) */
 #define _POSIX_C_SOURCE 200809L
 
+#include <cblas.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#ifdef USE_NAIVE
-typedef double real_t;
-#define GEMM_NAME "naive ikj triple loop (double)"
-#else
-#include <cblas.h>
-#ifdef USE_SGEMM
-typedef float real_t;
-#define GEMM cblas_sgemm
-#define GEMM_NAME "cblas_sgemm (float)"
-#else
-typedef double real_t;
-#define GEMM cblas_dgemm
-#define GEMM_NAME "cblas_dgemm (double)"
-#endif
-#endif
+typedef float real_t; /* single precision: 4 bytes per element (half the memory of double) */
 
 static double wall_seconds(void)
 {
@@ -27,20 +15,6 @@ static double wall_seconds(void)
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (double)ts.tv_sec + (double)ts.tv_nsec * 1e-9;
 }
-
-#ifdef USE_NAIVE
-static void naive_gemm(const real_t* A, const real_t* B, real_t* C, int n)
-{
-    for (int i = 0; i < n; i++) {
-        for (int k = 0; k < n; k++) {
-            real_t a = A[(size_t)i * n + k];
-            for (int j = 0; j < n; j++) {
-                C[(size_t)i * n + j] += a * B[(size_t)k * n + j];
-            }
-        }
-    }
-}
-#endif
 
 int main(int argc, char** argv)
 {
@@ -69,14 +43,13 @@ int main(int argc, char** argv)
     memset(C, 0, elems * sizeof(real_t));
 
     const char* threads_env = getenv("OMP_NUM_THREADS");
-    printf("matmul routine=%s N=%d OMP_NUM_THREADS=%s\n", GEMM_NAME, n, threads_env ? threads_env : "(unset)");
+    printf("matmul routine=cblas_sgemm (float) N=%d OMP_NUM_THREADS=%s\n", n,
+        threads_env ? threads_env : "(unset)");
 
     double t0 = wall_seconds();
-#ifdef USE_NAIVE
-    naive_gemm(A, B, C, n);
-#else
-    GEMM(CblasRowMajor, CblasNoTrans, CblasNoTrans, n, n, n, (real_t)1.0, A, n, B, n, (real_t)0.0, C, n);
-#endif
+    /* BLAS level-3: C = 1*A*B + 0*C, row-major, no transpose */
+    cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, n, n, n,
+        1.0f, A, n, B, n, 0.0f, C, n);
     double elapsed = wall_seconds() - t0;
 
     double flops = 2.0 * (double)n * (double)n * (double)n;

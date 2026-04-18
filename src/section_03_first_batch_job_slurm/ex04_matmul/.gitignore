@@ -1,0 +1,4 @@
+matmul_dgemm
+matmul_sgemm
+matmul_naive
+matmul_naive_flt
