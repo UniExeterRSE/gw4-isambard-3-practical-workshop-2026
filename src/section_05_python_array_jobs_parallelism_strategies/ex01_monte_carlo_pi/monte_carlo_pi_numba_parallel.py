@@ -17,10 +17,10 @@
 #
 # Two-level structure mirrors the C MPI/OpenMP hybrid:
 #
-# - `count_hits_thread` — single-thread kernel; seeds its own RNG from a stream
+# - `count_hits_kernel` — single-thread kernel; seeds its own RNG from a stream
 #   index so no two threads share samples (analogous to `count_hits` in the C
 #   version).
-# - `count_hits_parallel` — `prange` wrapper that dispatches one `count_hits_thread`
+# - `count_hits_parallel` — `prange` wrapper that dispatches one `count_hits_kernel`
 #   call per thread (analogous to `count_local_hits` in the C version).
 #
 # Explicit type signatures trigger eager compilation at import time; no warm-up
@@ -40,23 +40,9 @@ from .monte_carlo_pi_common import (
     summarise_result,
     timed_count,
 )
+from .monte_carlo_pi_numba import count_hits_kernel
 
 VARIANT_NAME = "numba-parallel"
-
-
-@njit("i8(i8, i8, i8)", cache=True)
-def count_hits_thread(n: int, d: int, stream_seed: int) -> int:
-    """Single-thread kernel: seed once, generate and count inline."""
-    np.random.seed(stream_seed)
-    hits = np.int64(0)
-    for _ in range(n):
-        rsq = 0.0
-        for _ in range(d):
-            x = np.random.uniform(-1.0, 1.0)
-            rsq += x * x
-        if rsq <= 1.0:
-            hits += 1
-    return hits
 
 
 @njit("i8(i8, i8, i8, i8)", cache=True, parallel=True)
@@ -68,7 +54,7 @@ def count_hits_parallel(n: int, d: int, base_seed: int, nthreads: int) -> int:
     for tid in prange(nthreads):
         # Ceiling-distribute remainder to the first r threads.
         n_this = q + (1 if tid < r else 0)
-        hits += count_hits_thread(n_this, d, base_seed + tid)
+        hits += count_hits_kernel(n_this, d, base_seed + tid)
     return hits
 
 
