@@ -12,7 +12,6 @@ export XDG_DATA_HOME="${__LOCAL_ROOT}/share"
 
 export MAMBA_ROOT_PREFIX="${__OPT_ROOT}/miniforge3"
 export MAMBA_EXE="${MAMBA_ROOT_PREFIX}/condabin/mamba"
-
 path_prepend() {
     if [[ -d $1 ]]; then
         case ":${PATH}:" in
