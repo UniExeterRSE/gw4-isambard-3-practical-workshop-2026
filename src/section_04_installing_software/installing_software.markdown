@@ -238,8 +238,8 @@ pwd
 Architecture-aware shell config --- skip if you already have your own `.bashrc` / `.zshrc`
 :::
 
-:::: shell-grid
-::: shell-text
+::::: shell-grid
+:::: shell-text
 ``` bash
 cd bootstrap && install/dotfiles.sh install
 # make dotfiles active immediately
@@ -259,8 +259,14 @@ prefix:
 ```
 
 **Skip this step if** you already have a `.bashrc` you are happy with.
+
+::: slide-note
+**Advanced users:** You do not need to install these dotfiles. Instead, open `bootstrap/dotfiles/` and cherry-pick the
+parts you want --- the arch-dispatch logic (`uname -sm`) and the `MAMBA_ROOT_PREFIX` / `MAMBA_EXE` exports are the most
+useful pieces to copy into your own config.
 :::
 ::::
+:::::
 
 ::: notes
 - This slide is optional; most attendees who did pre-workshop setup will already have dotfiles sorted
@@ -268,6 +274,7 @@ prefix:
 - If someone has an existing .bashrc, reassure them: dotfiles.sh backs it up, and they can always restore from .bak
 - The key env vars set are: `__OPT_ROOT`, `MAMBA_ROOT_PREFIX`, `MAMBA_EXE` --- the mamba.sh installer reads
   `MAMBA_ROOT_PREFIX` to know where to install miniforge
+- Advanced users: steer them to read dotfiles/ and cherry-pick; no need to run the script
 :::
 
 ## Install mamba and tools {#install-mamba-tools .shell-slide}
@@ -276,8 +283,8 @@ prefix:
 Run the bootstrap scripts from inside the cloned repo
 :::
 
-:::: shell-grid
-::: shell-text
+::::: shell-grid
+:::: shell-text
 All bootstrap scripts are in the `bootstrap/` subdirectory:
 
 ``` bash
@@ -288,19 +295,24 @@ install/code.sh install
 install/mamba.sh install
 
 # Install a curated set of command-line tools into a "system" conda env
-# (includes gh, parallel, pandoc, git-delta, ripgrep, and more)
 NAME=system install/mamba-env.sh install
 ```
 
 After `mamba.sh install`, open a new shell (or run `source ~/.bashrc`) so that `mamba` is on your path.
+
+::: slide-note
+`mamba-env.sh` creates a `system` conda environment with popular command-line tools: `gh` (GitHub CLI), `parallel`,
+`pandoc`, `git-delta`, `ripgrep`, `pixi`, and `direnv`. **Skip this step** if you already set up the environment to your
+own liking.
+:::
 
 ``` bash
 # Verify
 mamba --version
 mamba env list
 ```
-:::
 ::::
+:::::
 
 ::: notes
 - Demo live: run mamba.sh install and show the output
@@ -402,24 +414,27 @@ A newer approach: project-scoped environments
 :::: shell-grid
 ::: shell-text
 [Pixi](https://pixi.sh) is a newer Rust-based package manager from the conda-forge ecosystem. It manages environments
-per project rather than globally.
+per project rather than globally. This workshop repo uses pixi + direnv internally.
+
+**Beginners --- just run this once and you are done:**
 
 ``` bash
-# If pixi is installed (it is in the "system" conda env):
 cd gw4-isambard-3-practical-workshop-2026
-pixi shell            # activate this project's environment
-pixi run format       # run a task defined in pyproject.toml
+direnv allow          # activates the pixi env automatically every time you cd here
 ```
 
-[direnv](https://direnv.net) pairs with pixi (or any tool) to activate an environment automatically on `cd`:
+When you enter the repo directory, your shell will use the project environment automatically. You do not need to
+understand pixi to follow today's exercises.
+
+**Advanced users --- want full control over your own environment?**
+
+Ignore the `direnv allow` prompt. A standard conda `environment.yml` is committed at the repo root. Use it to create
+your own named environment:
 
 ``` bash
-# The project .envrc runs: eval "$(pixi shell-hook)"
-# After direnv allow, the env is live whenever you enter the directory
-direnv allow
+mamba env create -f environment.yml -y
+mamba activate default
 ```
-
-This workshop repo uses pixi + direnv internally. You do not need to understand it for today's exercises.
 :::
 ::::
 
@@ -427,6 +442,7 @@ This workshop repo uses pixi + direnv internally. You do not need to understand 
 - This slide is context for the workshop repo itself, not a teaching requirement
 - If no one asks, move quickly through it --- 30 seconds is enough
 - Pixi is in the "system" conda env installed via bootstrap; attendees who did that step already have it
+- Advanced users who want full control: environment.yml is committed; point them at it and move on
 :::
 
 ## Other routes {#other-routes .shell-slide}
