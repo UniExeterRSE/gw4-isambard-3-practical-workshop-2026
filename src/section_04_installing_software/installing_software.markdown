@@ -246,8 +246,9 @@ cd bootstrap && install/dotfiles.sh install
 source ~/.bashrc
 ```
 
-The script symlinks `.bashrc`, `.bash_profile`, `.zshrc`, and `.zshenv` from `bootstrap/dotfiles/` into `$HOME`. Any
-existing file is backed up as `<file>.bak` first.
+The script symlinks `.bashrc`, `.bash_profile`, `.zshrc`, and `.zshenv` from `bootstrap/dotfiles/` into `$HOME`, and
+symlinks `~/.config` to `bootstrap/dotfiles/.config/`. Any existing file or directory is backed up as `<name>.bak`
+first.
 
 **Why bother?** Isambard 3 has a *shared* home directory across both its `x86_64` and Arm (`aarch64`) login nodes. The
 dotfiles detect the current architecture at login (`uname -sm`) and route software installations into an arch-specific
@@ -257,6 +258,8 @@ prefix:
 ~/.local/opt/Linux-aarch64/   ← used when logged into an Arm node
 ~/.local/opt/Linux-x86_64/   ← used when logged into an x86_64 node
 ```
+
+`~/.config` is also symlinked so that tool configs (e.g. pixi) live inside the repo and are version-controlled.
 
 **Skip this step if** you already have a `.bashrc` you are happy with.
 
@@ -275,6 +278,8 @@ useful pieces to copy into your own config.
 - The key env vars set are: `__OPT_ROOT`, `MAMBA_ROOT_PREFIX`, `MAMBA_EXE` --- the mamba.sh installer reads
   `MAMBA_ROOT_PREFIX` to know where to install miniforge
 - Advanced users: steer them to read dotfiles/ and cherry-pick; no need to run the script
+- The ~/.config symlink carries `pixi/config.toml` which sets `detached-environments = true`; without it pixi's `.pixi/`
+  cache would collide between architectures on the shared home (x86_64 and aarch64 builds in the same directory)
 :::
 
 ## Install mamba and tools {#install-mamba-tools .shell-slide}
@@ -435,6 +440,13 @@ environment a name of your choice:
 mamba env create -f environment.yml -n isambard3-workshop -y
 mamba activate isambard3-workshop
 ```
+
+**On Isambard 3**, the dotfiles install `~/.config/pixi/config.toml` with `detached-environments = true`. Without this,
+pixi stores each project's env in `.pixi/` *inside the project directory*. Because x86_64 and aarch64 nodes share the
+same home (and the same checkout), the two architectures would write incompatible binaries into the same `.pixi/`
+folder. Detached mode stores envs in an arch-specific prefix (`~/.local/opt/<arch>/`) instead.
+
+This workshop repo uses pixi + direnv internally. You do not need to understand it for today's exercises.
 :::
 ::::
 
@@ -443,6 +455,8 @@ mamba activate isambard3-workshop
 - If no one asks, move quickly through it --- 30 seconds is enough
 - Pixi is in the "system" conda env installed via bootstrap; attendees who did that step already have it
 - Advanced users who want full control: environment.yml is committed; point them at it and move on
+- The detached-environments point is the key reason ~/.config is symlinked by dotfiles: shared home = shared .pixi/ =
+  arch collision without the config override
 :::
 
 ## Other routes {#other-routes .shell-slide}
