@@ -12,3 +12,4 @@ export XDG_DATA_HOME="${__LOCAL_ROOT}/share"
 
 export MAMBA_ROOT_PREFIX="${__OPT_ROOT}/miniforge3"
 export MAMBA_EXE="${MAMBA_ROOT_PREFIX}/condabin/mamba"
+export PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
