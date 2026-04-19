@@ -51,12 +51,13 @@ docs = { cmd = "cd src; make all", description = "Make HTMLs." }
 serve = { cmd = "python -m http.server $PRESENTATION_PORT --bind 127.0.0.1 --directory src", description = "Serve the presentation.", depends-on = ["docs"] }
 linkcheck-local = { cmd = "lychee http://127.0.0.1:$PRESENTATION_PORT", description = "Check the local presentation with lychee." }
 linkcheck-live = { cmd = "lychee https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/", description = "Check the live presentation with lychee." }
-format = { depends-on = ["format-c", "format-markdown", "format-md", "format-py", "format-sh"], description = "Run all formatters." }
+format = { depends-on = ["format-c", "format-markdown", "format-md", "format-py", "format-sh", "export-conda-env"], description = "Run all formatters and auto-generation scripts." }
 format-c = { cmd = "bash bin/c_formatter.sh", description = "Format C files using clang-format." }
 format-markdown = { cmd = "python bin/md_formatter.py '**/*.markdown' -t markdown", description = "Format .markdown files via pandoc." }
 format-md = { cmd = "python bin/md_formatter.py '**/*.md' -t gfm", description = "Format .md files via pandoc (GFM)." }
 format-py = { cmd = "ruff check --fix src/ bin/ && ruff format src/ bin/", description = "Lint-fix and format .py and .ipynb files with ruff." }
 format-sh = { cmd = "bash bin/sh_formatter.sh", description = "Format .sh files using sed and shfmt." }
+export-conda-env = { cmd = "pixi workspace export conda-environment --platform linux-aarch64 environment.yml && python bin/fix_conda_env.py environment.yml", description = "Export the pixi environment to a conda-compatible environment.yml, stripping duplicate pip entries." }
 
 [tool.pixi.dependencies]
 python = ">=3.12,<3.13"
