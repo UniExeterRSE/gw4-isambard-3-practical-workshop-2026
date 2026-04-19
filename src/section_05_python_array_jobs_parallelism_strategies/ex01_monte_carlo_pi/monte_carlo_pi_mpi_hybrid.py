@@ -90,7 +90,7 @@ def main() -> None:
     # Total samples = MPI ranks × threads × n.
     args = build_parser(
         "Monte Carlo Pi using hybrid MPI and threaded Numba.\n"
-        "-n sets samples PER THREAD; total = MPI ranks × threads × n."
+        "-n sets samples per thread; total = MPI ranks × threads × n."
     ).parse_args()
     config = ExperimentConfig(
         d=args.d,
