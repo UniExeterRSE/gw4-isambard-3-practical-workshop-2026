@@ -75,7 +75,7 @@ package managers like `apt` or `nix` that are otherwise unavailable on a shared 
 ## Modules {#modules .shell-slide}
 
 ::: slide-subtitle
-Useful mainly for the system compiler --- but good to know the commands
+Almost no research software here --- but essential for the system compiler
 :::
 
 :::: shell-grid
@@ -94,12 +94,16 @@ module avail
 module avail python
 module avail gcc
 
-# Load a module
+# Load a module (one of the few tools available this way)
 module load brics/emacs
 
 # Unload one module
 module unload brics/emacs
 ```
+
+**Compiling your own code?** `PrgEnv-gnu` loads the GNU compiler toolchain (`gcc`, `g++`, `gfortran`) and the
+Cray-wrapped MPI library. It is used in later sections whenever C or Fortran code is compiled. Almost everything else
+you need will come from mamba instead.
 
 Stretch: try `module avail` and search for a tool you already use.
 :::
@@ -110,6 +114,7 @@ Stretch: try `module avail` and search for a tool you already use.
 - Lean into the emptiness as a teaching moment: "this is why we use mamba"
 - The commands are still worth knowing --- attendees will see them in job scripts and documentation
 - If someone asks about a specific tool: check module avail together, then move on to conda
+- PrgEnv-gnu note prepares attendees for sections 3--5 where it appears without explanation
 :::
 
 ## How do you install software on a remote machine? {#how-install-software .shell-slide}

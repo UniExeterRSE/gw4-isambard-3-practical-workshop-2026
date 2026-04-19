@@ -49,31 +49,6 @@ Full details (paths, `$LOCALDIR`, `$PROJECTDIR_PUBLIC`, quota checks):
 - \$LOCALDIR and \$PROJECTDIR_PUBLIC exist but are out of scope here; defer to the docs link
 :::
 
-## Modules in one minute {#modules-in-one-minute .shell-slide}
-
-::: slide-subtitle
-Pre-built software, loaded on demand
-:::
-
-:::: shell-grid
-::: shell-text
-Isambard 3 serves a lot of its software through **environment modules**. You load what you need for a job; unload (or
-`module reset`) when you are done.
-
-- `module list` --- what is currently loaded
-- `module reset` --- restore the default set; a good habit at the start of a job script
-- `module avail` --- everything available (long list --- pipe through `head` or `grep`)
-- `module avail <name>` --- search for a specific tool
-
-We cover this in more detail in Section 4 on installing software.
-:::
-::::
-
-::: notes
-- Do not get drawn into `module load` choices here --- defer to Section 4
-- If someone asks "but does module X exist?", point at `module avail` and move on
-:::
-
 ## Try these now {#try-these-now .shell-slide}
 
 ::: slide-subtitle
