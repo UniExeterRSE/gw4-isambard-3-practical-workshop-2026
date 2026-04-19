@@ -428,12 +428,12 @@ understand pixi to follow today's exercises.
 
 **Advanced users --- want full control over your own environment?**
 
-Ignore the `direnv allow` prompt. A standard conda `environment.yml` is committed at the repo root. Use it to create
-your own named environment:
+Ignore the `direnv allow` prompt. A standard conda `environment.yml` is committed at the repo root. Use `-n` to give the
+environment a name of your choice:
 
 ``` bash
-mamba env create -f environment.yml -y
-mamba activate default
+mamba env create -f environment.yml -n isambard3-workshop -y
+mamba activate isambard3-workshop
 ```
 :::
 ::::
