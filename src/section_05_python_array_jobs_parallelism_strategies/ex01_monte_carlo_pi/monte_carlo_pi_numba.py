@@ -15,8 +15,10 @@
 # %% [markdown]
 # # Monte Carlo Pi: Numba
 #
-# This version keeps the NumPy data generation but JIT-compiles the hit-count
-# kernel with Numba.
+# This version JIT-compiles the entire kernel with Numba, including inline RNG.
+# An explicit type signature triggers eager compilation at import time, so no
+# warm-up call is needed. Points are generated and consumed immediately inside
+# the loop — no intermediate array is allocated.
 
 # %%
 from __future__ import annotations
@@ -24,58 +26,37 @@ from __future__ import annotations
 import numpy as np
 from numba import njit
 
-try:
-    from .monte_carlo_pi_common import (
-        ExperimentConfig,
-        ExperimentResult,
-        chunk_lengths,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
-except ImportError:
-    from monte_carlo_pi_common import (  # type: ignore
-        ExperimentConfig,
-        ExperimentResult,
-        chunk_lengths,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
+from .monte_carlo_pi_common import (
+    ExperimentConfig,
+    ExperimentResult,
+    parse_config,
+    print_results,
+    summarise_result,
+    timed_count,
+)
 
 VARIANT_NAME = "numba"
-_WARMED_DIMENSIONS: set[int] = set()
 
 
-@njit(cache=True)
-def count_hits_kernel(points: np.ndarray) -> int:
-    hits = 0
-    for i in range(points.shape[0]):
-        radius_sq = 0.0
-        for j in range(points.shape[1]):
-            radius_sq += points[i, j] * points[i, j]
-        if radius_sq <= 1.0:
+# Explicit signature → eager compilation at module import; no warm-up call needed.
+# np.random.seed / np.random.uniform are supported in numba nopython mode and use
+# a thread-local state, matching the xoshiro per-stream pattern in the C version.
+@njit("i8(i8, i8, i8)", cache=True)
+def count_hits_kernel(n: int, d: int, seed: int) -> int:
+    np.random.seed(seed)
+    hits = np.int64(0)
+    for _ in range(n):
+        rsq = 0.0
+        for _ in range(d):
+            x = np.random.uniform(-1.0, 1.0)
+            rsq += x * x
+        if rsq <= 1.0:
             hits += 1
     return hits
 
 
-def warm_kernel(d: int) -> None:
-    if d in _WARMED_DIMENSIONS:
-        return
-    count_hits_kernel(np.zeros((1, d), dtype=np.float64))
-    _WARMED_DIMENSIONS.add(d)
-
-
 def count_hits(config: ExperimentConfig) -> int:
-    warm_kernel(config.d)
-    rng = np.random.default_rng(config.seed)
-    hits = 0
-    for length in chunk_lengths(config.n, config.chunk_size):
-        points = rng.uniform(-1.0, 1.0, size=(length, config.d))
-        hits += int(count_hits_kernel(points))
-    return hits
+    return int(count_hits_kernel(config.n, config.d, config.seed))
 
 
 def run_experiment(config: ExperimentConfig) -> ExperimentResult:

@@ -22,42 +22,24 @@ from __future__ import annotations
 
 import random
 
-try:
-    from .monte_carlo_pi_common import (
-        ExperimentConfig,
-        ExperimentResult,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
-except ImportError:
-    from monte_carlo_pi_common import (  # type: ignore
-        ExperimentConfig,
-        ExperimentResult,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
+from .monte_carlo_pi_common import (
+    ExperimentConfig,
+    ExperimentResult,
+    parse_config,
+    print_results,
+    summarise_result,
+    timed_count,
+)
 
 VARIANT_NAME = "pure-python"
-
-
-def random_point(rng: random.Random, d: int) -> list[float]:
-    return [rng.uniform(-1.0, 1.0) for _ in range(d)]
-
-
-def is_in_unit_sphere(point: list[float]) -> bool:
-    radius_sq = sum(coordinate * coordinate for coordinate in point)
-    return radius_sq <= 1.0
 
 
 def count_hits(config: ExperimentConfig) -> int:
     rng = random.Random(config.seed)
     hits = 0
     for _ in range(config.n):
-        if is_in_unit_sphere(random_point(rng, config.d)):
+        rsq = sum(rng.uniform(-1.0, 1.0) ** 2 for _ in range(config.d))
+        if rsq <= 1.0:
             hits += 1
     return hits
 

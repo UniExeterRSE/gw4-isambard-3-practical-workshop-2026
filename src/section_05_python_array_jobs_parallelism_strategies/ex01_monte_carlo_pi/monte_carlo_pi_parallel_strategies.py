@@ -30,22 +30,19 @@ except ImportError:
     MPI = None
     COMM = None
 
+from .monte_carlo_pi_common import parse_config, print_results
+from .monte_carlo_pi_numba import run_experiment as run_numba
+from .monte_carlo_pi_numba_parallel import run_experiment as run_numba_parallel
+from .monte_carlo_pi_numpy import run_experiment as run_numpy
+from .monte_carlo_pi_pure_python import run_experiment as run_pure_python
+
 try:
-    from .monte_carlo_pi_common import parse_config, print_results
     from .monte_carlo_pi_mpi_hybrid import run_experiment as run_mpi_hybrid
-    from .monte_carlo_pi_numba import run_experiment as run_numba
-    from .monte_carlo_pi_numba_parallel import run_experiment as run_numba_parallel
-    from .monte_carlo_pi_numpy import run_experiment as run_numpy
-    from .monte_carlo_pi_pure_python import run_experiment as run_pure_python
+
+    _HAS_MPI = True
 except ImportError:
-    from monte_carlo_pi_common import parse_config, print_results  # type: ignore
-    from monte_carlo_pi_mpi_hybrid import run_experiment as run_mpi_hybrid  # type: ignore
-    from monte_carlo_pi_numba import run_experiment as run_numba  # type: ignore
-    from monte_carlo_pi_numba_parallel import (  # type: ignore
-        run_experiment as run_numba_parallel,
-    )
-    from monte_carlo_pi_numpy import run_experiment as run_numpy  # type: ignore
-    from monte_carlo_pi_pure_python import run_experiment as run_pure_python  # type: ignore
+    run_mpi_hybrid = None
+    _HAS_MPI = False
 
 
 def main() -> None:
@@ -62,7 +59,7 @@ def main() -> None:
         results.append(run_numpy(config))
         results.append(run_numba(config))
         results.append(run_numba_parallel(config))
-    if size > 1:
+    if _HAS_MPI and size > 1:
         COMM.Barrier()
         hybrid_result = run_mpi_hybrid(config)
     else:

@@ -15,8 +15,16 @@
 # %% [markdown]
 # # Monte Carlo Pi: Numba Parallel
 #
-# This version changes the Numba kernel to `parallel=True` and switches the
-# outer loop to `prange`.
+# Two-level structure mirrors the C MPI/OpenMP hybrid:
+#
+# - `count_hits_thread` — single-thread kernel; seeds its own RNG from a stream
+#   index so no two threads share samples (analogous to `count_hits` in the C
+#   version).
+# - `count_hits_parallel` — `prange` wrapper that dispatches one `count_hits_thread`
+#   call per thread (analogous to `count_local_hits` in the C version).
+#
+# Explicit type signatures trigger eager compilation at import time; no warm-up
+# call is needed.  Points are generated inline — no intermediate array is allocated.
 
 # %%
 from __future__ import annotations
@@ -24,59 +32,49 @@ from __future__ import annotations
 import numpy as np
 from numba import get_num_threads, njit, prange, set_num_threads
 
-try:
-    from .monte_carlo_pi_common import (
-        ExperimentConfig,
-        ExperimentResult,
-        chunk_lengths,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
-except ImportError:
-    from monte_carlo_pi_common import (  # type: ignore
-        ExperimentConfig,
-        ExperimentResult,
-        chunk_lengths,
-        parse_config,
-        print_results,
-        summarise_result,
-        timed_count,
-    )
+from .monte_carlo_pi_common import (
+    ExperimentConfig,
+    ExperimentResult,
+    parse_config,
+    print_results,
+    summarise_result,
+    timed_count,
+)
 
 VARIANT_NAME = "numba-parallel"
-_WARMED_DIMENSIONS: set[int] = set()
 
 
-@njit(cache=True, parallel=True)
-def count_hits_kernel(points: np.ndarray) -> int:
-    hits = 0
-    for i in prange(points.shape[0]):
-        radius_sq = 0.0
-        for j in range(points.shape[1]):
-            radius_sq += points[i, j] * points[i, j]
-        if radius_sq <= 1.0:
+@njit("i8(i8, i8, i8)", cache=True)
+def count_hits_thread(n: int, d: int, stream_seed: int) -> int:
+    """Single-thread kernel: seed once, generate and count inline."""
+    np.random.seed(stream_seed)
+    hits = np.int64(0)
+    for _ in range(n):
+        rsq = 0.0
+        for _ in range(d):
+            x = np.random.uniform(-1.0, 1.0)
+            rsq += x * x
+        if rsq <= 1.0:
             hits += 1
     return hits
 
 
-def warm_kernel(d: int) -> None:
-    if d in _WARMED_DIMENSIONS:
-        return
-    count_hits_kernel(np.zeros((1, d), dtype=np.float64))
-    _WARMED_DIMENSIONS.add(d)
+@njit("i8(i8, i8, i8, i8)", cache=True, parallel=True)
+def count_hits_parallel(n: int, d: int, base_seed: int, nthreads: int) -> int:
+    """Distribute n samples across nthreads; each thread gets an independent RNG stream."""
+    hits = np.int64(0)
+    q = n // nthreads
+    r = n % nthreads
+    for tid in prange(nthreads):
+        # Ceiling-distribute remainder to the first r threads.
+        n_this = q + (1 if tid < r else 0)
+        hits += count_hits_thread(n_this, d, base_seed + tid)
+    return hits
 
 
 def count_hits(config: ExperimentConfig) -> int:
     set_num_threads(config.num_threads)
-    warm_kernel(config.d)
-    rng = np.random.default_rng(config.seed)
-    hits = 0
-    for length in chunk_lengths(config.n, config.chunk_size):
-        points = rng.uniform(-1.0, 1.0, size=(length, config.d))
-        hits += int(count_hits_kernel(points))
-    return hits
+    return int(count_hits_parallel(config.n, config.d, config.seed, config.num_threads))
 
 
 def run_experiment(config: ExperimentConfig) -> ExperimentResult:

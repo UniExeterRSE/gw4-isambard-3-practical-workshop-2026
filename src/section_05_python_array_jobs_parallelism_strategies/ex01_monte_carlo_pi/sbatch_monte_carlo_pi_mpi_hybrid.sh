@@ -5,7 +5,7 @@
 #SBATCH --exclusive
 #SBATCH --time=00:01:00
 
-N=1048576 # 2^20
+N=536870912 # 2^29
 export OMP_PLACES=threads
 export OMP_PROC_BIND=spread
 export OMP_DYNAMIC=FALSE

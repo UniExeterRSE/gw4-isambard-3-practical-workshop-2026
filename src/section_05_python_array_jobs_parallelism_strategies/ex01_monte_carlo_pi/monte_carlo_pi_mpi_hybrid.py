@@ -17,67 +17,38 @@
 #
 # This version distributes the work across MPI ranks and uses the threaded
 # Numba kernel within each rank.
+#
+# Seed strategy mirrors the C version: each (rank, thread) pair gets a unique
+# stream index `rank * nthreads + tid`, so `base_seed + rank * nthreads` is
+# passed to `count_hits_parallel`, which internally adds `tid`.
 
 # %%
 from __future__ import annotations
 
 import time
 
-import numpy as np
 from mpi4py import MPI
-from numba import get_num_threads, njit, prange, set_num_threads
+from numba import get_num_threads, set_num_threads
 
-try:
-    from .monte_carlo_pi_common import (
-        ExperimentConfig,
-        ExperimentResult,
-        build_parser,
-        chunk_lengths,
-        print_results,
-        summarise_result,
-    )
-except ImportError:
-    from monte_carlo_pi_common import (  # type: ignore
-        ExperimentConfig,
-        ExperimentResult,
-        build_parser,
-        chunk_lengths,
-        print_results,
-        summarise_result,
-    )
+from .monte_carlo_pi_common import (
+    ExperimentConfig,
+    ExperimentResult,
+    build_parser,
+    print_results,
+    summarise_result,
+)
+from .monte_carlo_pi_numba_parallel import count_hits_parallel
 
 VARIANT_NAME = "mpi-hybrid"
-_WARMED_DIMENSIONS: set[int] = set()
 
 
-@njit(cache=True, parallel=True)
-def count_hits_kernel(points: np.ndarray) -> int:
-    hits = 0
-    for i in prange(points.shape[0]):
-        radius_sq = 0.0
-        for j in range(points.shape[1]):
-            radius_sq += points[i, j] * points[i, j]
-        if radius_sq <= 1.0:
-            hits += 1
-    return hits
-
-
-def warm_kernel(d: int) -> None:
-    if d in _WARMED_DIMENSIONS:
-        return
-    count_hits_kernel(np.zeros((1, d), dtype=np.float64))
-    _WARMED_DIMENSIONS.add(d)
-
-
-def count_local_hits(local_n: int, config: ExperimentConfig, seed: int) -> int:
+def count_local_hits(local_n: int, config: ExperimentConfig, rank: int) -> int:
     set_num_threads(config.num_threads)
-    warm_kernel(config.d)
-    rng = np.random.default_rng(seed)
-    hits = 0
-    for length in chunk_lengths(local_n, config.chunk_size):
-        points = rng.uniform(-1.0, 1.0, size=(length, config.d))
-        hits += int(count_hits_kernel(points))
-    return hits
+    nthreads = config.num_threads
+    # stream = rank * nthreads + tid; pass rank-offset base so count_hits_parallel
+    # adds tid to get unique per-(rank,thread) streams.
+    rank_base_seed = config.seed + rank * nthreads
+    return int(count_hits_parallel(local_n, config.d, rank_base_seed, nthreads))
 
 
 def run_experiment(config: ExperimentConfig) -> ExperimentResult | None:
@@ -89,11 +60,9 @@ def run_experiment(config: ExperimentConfig) -> ExperimentResult | None:
     if rank < (config.n % size):
         local_n += 1
 
-    local_seed = config.seed + 10_000 * rank
-
     comm.Barrier()
     start = time.perf_counter()
-    local_hits = count_local_hits(local_n, config, local_seed)
+    local_hits = count_local_hits(local_n, config, rank)
     local_elapsed_s = time.perf_counter() - start
 
     total_hits = comm.reduce(local_hits, op=MPI.SUM, root=0)
