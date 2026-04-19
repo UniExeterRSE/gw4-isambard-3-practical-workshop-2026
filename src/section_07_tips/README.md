@@ -66,3 +66,11 @@ squeue --me
 # Inspect current and past jobs
 sacct
 ```
+
+## Trouble shooting
+
+(This fix sshing from ghostty for example. Generalize a bit and explain what’s happening)
+
+``` sh
+TERM=xterm-256color command ssh e6c.3.isambard
+```
