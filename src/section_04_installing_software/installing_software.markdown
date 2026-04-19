@@ -259,7 +259,7 @@ prefix:
 ~/.local/opt/Linux-x86_64/   ← used when logged into an x86_64 node
 ```
 
-`~/.config` is also symlinked so that tool configs (e.g. pixi) live inside the repo and are version-controlled.
+`~/.config` is also symlinked so that tool configs (e.g. pixi) live inside the repo and are version-controlled.
 
 **Skip this step if** you already have a `.bashrc` you are happy with.
 
@@ -278,8 +278,9 @@ useful pieces to copy into your own config.
 - The key env vars set are: `__OPT_ROOT`, `MAMBA_ROOT_PREFIX`, `MAMBA_EXE` --- the mamba.sh installer reads
   `MAMBA_ROOT_PREFIX` to know where to install miniforge
 - Advanced users: steer them to read dotfiles/ and cherry-pick; no need to run the script
-- The ~/.config symlink carries `pixi/config.toml` which sets `detached-environments = true`; without it pixi's `.pixi/`
-  cache would collide between architectures on the shared home (x86_64 and aarch64 builds in the same directory)
+- The \~/.config symlink carries `pixi/config.toml` which sets `detached-environments = true`; without it pixi's
+  `.pixi/` cache would collide between architectures on the shared home (x86_64 and aarch64 builds in the same
+  directory)
 :::
 
 ## Install mamba and tools {#install-mamba-tools .shell-slide}
@@ -455,7 +456,7 @@ This workshop repo uses pixi + direnv internally. You do not need to understand 
 - If no one asks, move quickly through it --- 30 seconds is enough
 - Pixi is in the "system" conda env installed via bootstrap; attendees who did that step already have it
 - Advanced users who want full control: environment.yml is committed; point them at it and move on
-- The detached-environments point is the key reason ~/.config is symlinked by dotfiles: shared home = shared .pixi/ =
+- The detached-environments point is the key reason \~/.config is symlinked by dotfiles: shared home = shared .pixi/ =
   arch collision without the config override
 :::
 
