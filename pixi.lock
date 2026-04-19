@@ -826,7 +826,7 @@ packages:
 - pypi: ./
   name: isambard3-workshop
   version: 0.1.0
-  sha256: ca89ac68d254595d6ebddadeb804674ad125bf4d716a5a8b216a60e2b835d45c
+  sha256: 41c4d2b92a0d6100210270daa1050a50db9b2b81e2b2ba75098979836536e83a
   requires_dist:
   - numpy>=2,<3
   - numba>=0.61,<0.62
