@@ -6,7 +6,7 @@ written by the ``--save`` flag of ``monte-carlo-pi-numba-parallel``.
 Usage::
 
     reduce-mc-pi-results results/mc_pi_*.txt
-    python -m section_05_python_array_jobs_parallelism_strategies.ex03_parallel_strategies.reduce_results results/mc_pi_*.txt
+    python -m section_05_python_array_jobs_parallelism_strategies.ex03_job_array.reduce_results results/mc_pi_*.txt
 """
 
 from __future__ import annotations
