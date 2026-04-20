@@ -3,7 +3,7 @@
 Demonstrates a data race in Numba: accumulating into a shared NumPy array
 element from a parallel prange loop.
 
-Expected: N * M // 3
+Expected: number of integers in [0, N*M) divisible by 3
 Result:   non-deterministic — almost always gives the wrong answer.
 """
 
@@ -39,7 +39,7 @@ def main() -> None:
     # Warm-up JIT compile
     count_divisible_wrong(10, 10)
 
-    expected = n * m // 3
+    expected = (n * m - 1) // 3 + 1  # count of multiples of 3 in [0, n*m)
     for run in range(1, 4):
         result = count_divisible_wrong(n, m)
         correct = "yes" if result == expected else "NO — race condition detected!"

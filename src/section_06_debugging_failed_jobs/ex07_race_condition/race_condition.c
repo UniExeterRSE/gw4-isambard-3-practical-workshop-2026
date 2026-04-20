@@ -5,7 +5,7 @@
  * is a data race: multiple threads write to the same variable without a
  * reduction clause.
  *
- * Expected result: N * M / 3  (approximately)
+ * Expected result: number of integers in [0, N*M) divisible by 3
  * Actual result:   non-deterministic — almost always gives the wrong answer.
  */
 #define _POSIX_C_SOURCE 200809L
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     int N = (argc > 1) ? atoi(argv[1]) : 4000;
     int M = (argc > 2) ? atoi(argv[2]) : 4000;
 
-    long expected = (long)N * M / 3;
+    long expected = ((long)N * M - 1) / 3 + 1; /* count of multiples of 3 in [0, N*M) */
     long hits = 0;
 
 #pragma omp parallel for schedule(static)
