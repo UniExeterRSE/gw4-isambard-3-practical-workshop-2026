@@ -37,6 +37,7 @@ from .monte_carlo_pi_common import (
     ExperimentResult,
     parse_config,
     print_results,
+    save_raw_result,
     summarise_result,
     timed_count,
 )
@@ -78,7 +79,10 @@ def run_experiment(config: ExperimentConfig) -> ExperimentResult:
 
 def main() -> None:
     config = parse_config("Monte Carlo Pi using Numba with parallel prange.")
-    print_results(config, [run_experiment(config)])
+    result = run_experiment(config)
+    print_results(config, [result])
+    if config.save:
+        save_raw_result(result, config.save)
 
 
 if __name__ == "__main__":
