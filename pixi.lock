@@ -1256,11 +1256,11 @@ packages:
 - pypi: ./
   name: isambard3-workshop
   version: 0.1.0
-  sha256: 0d6977505faf32147e12265afa745a740e4e7af4ecec898faf4e6845daef9e94
+  sha256: f35dd19ac42928e625383bcba246f590c9ba8294694a613b7c6885fa63033393
   requires_dist:
-  - numpy
-  - numba
-  - mpi4py
+  - numpy>=2.4,<3
+  - numba>=0.65,<1
+  - mpi4py>=4.1,<5
   requires_python: '>=3.12,<3.13'
 - conda: https://conda.anaconda.org/conda-forge/noarch/jsonschema-4.26.0-pyhcf101f3_0.conda
   sha256: db973a37d75db8e19b5f44bbbdaead0c68dde745407f281e2a7fe4db74ec51d7
