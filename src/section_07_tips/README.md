@@ -2,22 +2,30 @@
 
 ## Slurm
 
-more on sbatch directives, run `man sbatch` or go to https://slurm.schedmd.com/sbatch.html
+more on sbatch directives,
 
-E.g. look up that these means
+- [`man sbatch`](https://slurm.schedmd.com/sbatch.html)
+- TODO: add all other man pages here.
+
+Notes to participants: E.g. look up that these means
 
     --mem
     --mem-per-cpu
     --cpus-per-task
     --ntasks-per-node 
 
-TODO: add more pages
 
 ### Tips
+
+#### separate stdout and stderr
+
+How:
 
 ``` sh
 #SBATCH --error=hello_world.err
 ```
+
+Make a note that seperating them can be confusing too because you don't know how the two are related.
 
 #### Get CPU usage of `srun` tasks
 
