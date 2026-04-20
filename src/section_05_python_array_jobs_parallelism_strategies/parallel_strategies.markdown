@@ -292,8 +292,9 @@ What this does:
 2.  **Main** --- `parallel --jobs 36 < tasks.txt` on an exclusive 144-core node
 3.  **Post** --- `reduce-mc-pi-results` combines `results/mc_pi_gnu_*.txt`
 
-After the pre job: `cat tasks.txt` to see the commands. Each line pins its process to a disjoint core range using
-`$PARALLEL_JOBSLOT` --- no oversubscription.
+After the pre job: `cat tasks.txt` to see the commands. The pre-job log also prints a concrete slot-1 preview
+(`taskset -c 0-3 ...`). Each line pins its process to a disjoint core range using `$PARALLEL_JOBSLOT` --- no
+oversubscription.
 
 **Oversubscription check:** wall-clock time per task (from `/usr/bin/time -v`) should match the array job.
 
@@ -302,7 +303,7 @@ Open `generate_tasks.py` and tweak `N_TASKS`, `N_THREADS`, or `N_CONCURRENT`.
 ::::
 
 ::: notes
-- Show a tasks.txt line: taskset -c ... env NUMBA_NUM_THREADS=4 /usr/bin/time -v monte-carlo-pi-numba-parallel ...
+- Show the slot-1 preview from the pre job, then a tasks.txt line with the PARALLEL_JOBSLOT template
 - PARALLEL_JOBSLOT is the runtime slot number; the shell arithmetic in each line expands it to a core range
 - 2\>&1 merges /usr/bin/time's stderr into stdout so one log captures everything
 - If timings differ from the array job, ask why: NUMA effects, scheduler noise, cache pressure

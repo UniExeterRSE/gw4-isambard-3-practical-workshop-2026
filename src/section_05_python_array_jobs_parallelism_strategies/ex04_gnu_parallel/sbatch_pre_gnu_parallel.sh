@@ -20,3 +20,11 @@ python -m section_05_python_array_jobs_parallelism_strategies.ex04_gnu_parallel.
     --threads "${N_THREADS}" \
     > tasks.txt
 echo "Generated $(wc -l < tasks.txt) tasks in tasks.txt"
+echo "First task template:"
+head -n 1 tasks.txt
+echo "Slot 1 preview:"
+python -m section_05_python_array_jobs_parallelism_strategies.ex04_gnu_parallel.generate_tasks \
+    --samples-per-thread "${N_SAMPLES_PER_THREAD}" \
+    --threads "${N_THREADS}" \
+    --preview-slot 1 \
+    --preview-seed 1

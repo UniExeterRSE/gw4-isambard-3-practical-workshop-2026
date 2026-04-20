@@ -44,6 +44,9 @@ After the pre job completes, look at what will be submitted:
 cat tasks.txt
 ```
 
+The pre-job log also prints the first task template and a concrete slot-1 preview (`taskset -c 0-3 ...`) so you can
+confirm the CPU binding before launching GNU parallel.
+
 Each line is a complete shell command with `taskset`, `env`, `/usr/bin/time -v`, and the actual program call.
 
 Open `generate_tasks.py` to see how the commands are constructed and tweak `--tasks`, `--threads`, or

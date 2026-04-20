@@ -29,6 +29,20 @@ DEFAULT_THREADS = 4
 DEFAULT_DIMENSION = 2
 
 
+def task_command(*, seed: int, samples_per_thread: int, threads: int, dimension: int, core_spec: str) -> str:
+    result_file = f"results/mc_pi_gnu_{seed}.txt"
+    return (
+        f"taskset -c {core_spec}"
+        f" env NUMBA_NUM_THREADS={threads}"
+        f" OMP_PLACES=threads OMP_PROC_BIND=spread OMP_DYNAMIC=FALSE"
+        f" /usr/bin/time -v"
+        f" monte-carlo-pi-numba-parallel"
+        f" -d {dimension} -n {samples_per_thread} -t {threads}"
+        f" -s {seed} --save {result_file}"
+        f" 2>&1"
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tasks", type=int, default=DEFAULT_TASKS, help="Number of task lines to print.")
@@ -40,26 +54,51 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--threads", type=int, default=DEFAULT_THREADS, help="Threads used by each task.")
     parser.add_argument("--dimension", type=int, default=DEFAULT_DIMENSION, help="Problem dimension.")
+    parser.add_argument(
+        "--preview-slot",
+        type=int,
+        default=None,
+        help="Print one concrete slot-bound command instead of the full tasks.txt contents.",
+    )
+    parser.add_argument(
+        "--preview-seed",
+        type=int,
+        default=1,
+        help="Seed used for --preview-slot output.",
+    )
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.preview_slot is not None:
+        if args.preview_slot < 1:
+            raise ValueError("preview_slot must be a positive integer.")
+        first_cpu = (args.preview_slot - 1) * args.threads
+        last_cpu = args.preview_slot * args.threads - 1
+        print(
+            task_command(
+                seed=args.preview_seed,
+                samples_per_thread=args.samples_per_thread,
+                threads=args.threads,
+                dimension=args.dimension,
+                core_spec=f"{first_cpu}-{last_cpu}",
+            )
+        )
+        return
+
     for seed in range(1, args.tasks + 1):
-        result_file = f"results/mc_pi_gnu_{seed}.txt"
         # PARALLEL_JOBSLOT is exported by GNU parallel (1-based slot cycling up to --jobs N).
         # Shell arithmetic $(( )) is evaluated by the subshell parallel spawns, so the
         # literal string $PARALLEL_JOBSLOT is safe to embed here.
         print(
-            f"taskset -c"
-            f" $(( (PARALLEL_JOBSLOT-1)*{args.threads} ))-$(( PARALLEL_JOBSLOT*{args.threads}-1 ))"
-            f" env NUMBA_NUM_THREADS={args.threads}"
-            f" OMP_PLACES=threads OMP_PROC_BIND=spread OMP_DYNAMIC=FALSE"
-            f" /usr/bin/time -v"
-            f" monte-carlo-pi-numba-parallel"
-            f" -d {args.dimension} -n {args.samples_per_thread} -t {args.threads}"
-            f" -s {seed} --save {result_file}"
-            f" 2>&1"
+            task_command(
+                seed=seed,
+                samples_per_thread=args.samples_per_thread,
+                threads=args.threads,
+                dimension=args.dimension,
+                core_spec=f"$(( (PARALLEL_JOBSLOT-1)*{args.threads} ))-$(( PARALLEL_JOBSLOT*{args.threads}-1 ))",
+            )
         )
 
 

@@ -141,8 +141,8 @@ sbatch --dependency=afterok:<MAIN_ID> sbatch_post_gnu_parallel.sh
 
 **Checking output:**
 
-- `mc_pi_pre_gnu_<JOBID>.out` — should report `Generated 36 tasks in tasks.txt` and show the first `taskset -c …`
-  command for sanity-checking CPU binding.
+- `mc_pi_pre_gnu_<JOBID>.out` — should report `Generated 36 tasks in tasks.txt`, then print both the first task template
+  and a concrete `Slot 1 preview:` line (`taskset -c 0-3 …`) for sanity-checking CPU binding.
 - `mc_pi_gnu_<JOBID>.out` — GNU parallel interleaves output from all 36 tasks. Look for 36 separate `/usr/bin/time -v`
   blocks; each should contain `Elapsed (wall clock) time` and the pi estimate line. No task should time out or print a
   traceback.
