@@ -7,6 +7,33 @@ partition). All commands assume you are working inside the section directory unl
 cd src/section_05_python_array_jobs_parallelism_strategies
 ```
 
+## TL;DR — submit all jobs at once
+
+Run from `src/section_05_python_array_jobs_parallelism_strategies/`:
+
+``` sh
+# ex01 — single job variants
+(cd ex01_monte_carlo_pi && sbatch sbatch_monte_carlo_pi_single.sh)
+(cd ex01_monte_carlo_pi && sbatch sbatch_monte_carlo_pi_mpi_hybrid.sh)
+
+# ex02 — C MPI hybrid (build first)
+(cd ex02_monte_carlo_pi_c && bash make.sh && sbatch sbatch_monte_carlo_pi_mpi_hybrid_c.sh)
+
+# ex03 — job array pipeline (pre → array → post)
+(cd ex03_job_array && bash run_array_pipeline.sh)
+
+# ex04 — GNU parallel pipeline (pre → parallel → post)
+(cd ex04_gnu_parallel && bash run_gnu_parallel_pipeline.sh)
+
+# ex05 — mpi4py.futures
+(cd ex05_mpi4py_futures && sbatch sbatch_mpi4py_futures.sh)
+
+# ex06 — Python multiprocessing
+(cd ex06_multiprocessing && sbatch sbatch_multiprocessing.sh)
+```
+
+Then monitor with `squeue --me` and check outputs as described in each section below.
+
 ## Prerequisites
 
 The Pixi `hpc` environment must be installed and the `hpc` feature must resolve. The `default` environment works for
