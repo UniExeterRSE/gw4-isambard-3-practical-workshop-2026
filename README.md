@@ -315,18 +315,25 @@ Add a brief etiquette note:
 
 Use this as a flexible closing block.
 
-Suggested contents:
+Contents:
 
+- Slurm tips: separating stdout/stderr, checking CPU usage with `sacct`, useful directives to look up
+- Slurm cheatsheet: `sinfo`, `scontrol`, `sacctmgr`, `squeue`, `sacct`
 - file transfer one-liners: `scp`, `rsync`
+- troubleshooting: terminal emulator compatibility
 - where to look next in the docs
-- support route
-- feedback QR code
+- support routes: BriCS helpdesk (`isambard-support@exeter.ac.uk`) and UoE RSA (`rsa@exeter.ac.uk`)
+- feedback: announce that a survey will be sent by email after the workshop (no QR code)
 - open Q&A
 
 Important distinction to make clear:
 
 - workshop questions after the session can be redirected to the relevant docs/help route
 - official BriCS support issues should go through the helpdesk
+
+TODOs:
+
+- [x] Create section README with presenter notes ([src/section_07_tips/README.md](src/section_07_tips/README.md))
 
 ## Pre-Workshop Email
 
@@ -365,7 +372,7 @@ In addition, ask attendees to:
 - three broken debugging scripts
 - software setup mini-walkthrough
 - file transfer slide
-- wrap-up slide with links and QR codes
+- wrap-up slide with links and support contacts
 
 ## TODOs
 
