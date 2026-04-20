@@ -87,7 +87,9 @@ The script runs `monte-carlo-pi-summary`: pure Python → NumPy → Numba → Nu
 **Look for:** the `time[s]` column. Same total samples, different implementations. How much faster is Numba than pure
 Python? Does `--cpus-per-task=4` help Numba-parallel?
 
-**Open the script and try:** change `-n` or `-t`. Resubmit and compare.
+**Open the script and try:** change `-n` (samples **per thread**) or `-t` (threads). Note: `-n` is per thread, so
+increasing `-t` also increases total samples (weak scaling). To keep total samples fixed, scale `-n` down
+proportionally.
 :::
 ::::
 
