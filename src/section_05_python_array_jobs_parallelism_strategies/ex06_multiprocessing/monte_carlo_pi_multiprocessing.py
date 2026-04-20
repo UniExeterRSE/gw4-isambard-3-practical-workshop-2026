@@ -67,7 +67,9 @@ def main() -> None:
     total_hits = sum(r[0] for r in results)
     total_n = sum(r[1] for r in results)
 
-    pi_estimate = 4.0 * total_hits / total_n
+    p_hat = total_hits / total_n
+    prefactor = (2.0**args.d) * math.gamma(args.d / 2.0 + 1.0)
+    pi_estimate = (prefactor * p_hat) ** (2.0 / args.d)
     error = abs(pi_estimate - math.pi)
     print(f"total_n={total_n:,}  hits={total_hits:,}")
     print(f"pi_estimate={pi_estimate:.8f}  error={error:.2e}  time={elapsed_s:.3f}s")
