@@ -16,9 +16,11 @@ cd -
 
 ## Submit it
 
-From the directory containing the binary (or after copying / symlinking it):
+Ensure `monte_carlo_pi_mpi_hybrid` is on your `PATH` (the batch script calls it by name), then from inside this exercise
+directory:
 
 ``` bash
+cd src/section_06_debugging_failed_jobs/ex02_wrong_env_module
 sbatch sbatch_wrong_env_module.sh
 ```
 

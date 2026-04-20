@@ -13,7 +13,7 @@ bash make.sh
 ```
 
 That compiles the C MPI+OpenMP source under `PrgEnv-gnu` and places the binary in the same directory. Make sure that
-directory is on your `PATH`, or copy the binary into this exercise directory before submitting.
+directory is on your `PATH` before submitting (the batch script calls `monte_carlo_pi_mpi_hybrid` by name, not by path).
 
 ## Submit the job
 
