@@ -71,6 +71,43 @@ Each exercise directory has a broken script and a walkthrough `.md`. Start with 
 
 ------------------------------------------------------------------------------------------------------------------------
 
+## Before you look at the hints... {#productive-struggle .shell-slide}
+
+::: slide-subtitle
+The struggle is the learning
+:::
+
+::::: fit-panels
+::: {.fit-panel .good}
+[Do this first]{.fit-title}
+
+- Read the error message carefully
+- Form a hypothesis about what is wrong
+- Try one fix and observe what changes
+- Hints are at the bottom of each exercise `.md`
+:::
+
+::: {.fit-panel .bad}
+[Resist the urge to]{.fit-title}
+
+- Immediately scroll to the hint
+- Paste the error straight into an LLM
+- Ask a helper before you have a hypothesis
+:::
+:::::
+
+::: slide-note
+LLMs and helpers are fine --- but only after you have spent a few minutes thinking. The mental model you build by
+struggling is the point.
+:::
+
+::: notes
+Emphasise this before the hands-on block. The goal is not to get to the right answer fastest --- it's to build the
+mental model of debugging. Peeking at the answer skips that.
+:::
+
+------------------------------------------------------------------------------------------------------------------------
+
 ## When a job fails {#debugging-flowchart .shell-slide}
 
 ::: slide-subtitle
@@ -139,8 +176,7 @@ ex01--ex04 --- four different ways the environment can be wrong
 ::: shell-text
 **ex01 Oversubscription**
 
-`srun` launches N threads but `--cpus-per-task` is not set (defaults to 1). All threads compete for one CPU. Fix: add
-`--cpus-per-task=N` to the `#SBATCH` header **and** the `srun` line.
+`srun` launches N threads but `--cpus-per-task` is not set (defaults to 1). All threads compete for one CPU.
 
 **ex02 Module missing**
 
@@ -154,8 +190,7 @@ pixi environment are not on `PATH`.
 
 **ex04 Wrong pixi environment**
 
-The script activates the `default` environment; MPI-enabled code needs the `hpc` environment (Cray MPICH build). Fix:
-`pixi run --environment hpc <command>`.
+The script activates the `default` environment; MPI-enabled code needs the `hpc` environment (Cray MPICH build).
 :::
 ::::
 
@@ -180,14 +215,10 @@ ex05--ex06 --- memory and topology
 A large matrix is allocated, but the job only requests 1 CPU and the default memory. The OOM killer terminates the
 process. `sacct` shows `State=OUT_OF_MEMORY` or `ExitCode=137`.
 
-Fix: increase `--mem-per-cpu` or `--mem` to cover the working set, and/or reduce the problem size.
-
 **ex06 MPI topology**
 
 Ranks are spread unevenly across nodes --- e.g. 3 ranks on node A, 1 on node B. Collective operations stall or produce
 incorrect timings because the load is not balanced.
-
-Fix: ensure `--ntasks-per-node` divides evenly into `--ntasks`, and check the `srun` binding flags.
 :::
 ::::
 
@@ -212,20 +243,7 @@ ex07 --- the job finishes but gives the wrong answer
 An OpenMP parallel loop accumulates into a shared variable without a `reduction` clause. Multiple threads write to the
 same memory simultaneously --- the result is non-deterministic and usually wrong.
 
-C version:
-
-``` c
-/* broken */
-#pragma omp parallel for
-for (int i = 0; i < N; i++) count += (x[i]*x[i] + y[i]*y[i] < 1.0);
-
-/* fixed */
-#pragma omp parallel for reduction(+:count)
-for (int i = 0; i < N; i++) count += (x[i]*x[i] + y[i]*y[i] < 1.0);
-```
-
-Numba version: the `@numba.njit(parallel=True)` variant has the same bug --- use `numba.prange` with an explicit
-accumulator pattern.
+The C version and the Numba `@numba.njit(parallel=True)` variant both have this bug.
 
 The job exits 0 and produces output --- but the output is wrong. This is the hardest category to catch.
 :::

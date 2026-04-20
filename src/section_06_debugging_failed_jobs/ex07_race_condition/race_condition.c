@@ -8,7 +8,7 @@
  * Expected result: N * M / 3  (approximately)
  * Actual result:   non-deterministic, usually wrong
  *
- * Fix: add  reduction(+:hits)  to the #pragma omp parallel for directive.
+ * Result: non-deterministic — almost always gives the wrong answer.
  */
 #define _POSIX_C_SOURCE 200809L
 
@@ -24,7 +24,6 @@ int main(int argc, char** argv)
     long expected = (long)N * M / 3;
     long hits = 0;
 
-    /* BUG: missing  reduction(+:hits) */
 #pragma omp parallel for schedule(static)
     for (int i = 0; i < N; i++) {
         long row_hits = 0;
@@ -32,7 +31,7 @@ int main(int argc, char** argv)
             if ((i * M + j) % 3 == 0)
                 row_hits++;
         }
-        hits += row_hits; /* data race: multiple threads write to shared hits */
+        hits += row_hits;
     }
 
     printf("threads=%d  N=%d  M=%d\n", omp_get_max_threads(), N, M);
