@@ -6,10 +6,11 @@ each task. This is useful when tasks are short and scheduler overhead matters.
 ## CPU binding and oversubscription
 
 Each command in `tasks.txt` pins itself to a disjoint set of cores via `$PARALLEL_JOBSLOT` — an environment variable GNU
-parallel exports to every spawned process. With `N_CONCURRENT=10` and `N_THREADS=4` per task, slot `k` gets cores
-`(k-1)*4` to `k*4-1`, so 40 of the node’s 144 cores are used with no overlap.
+parallel exports to every spawned process. With `N_CONCURRENT=36` and `N_THREADS=4` per task, slot `k` gets cores
+`(k-1)*4` to `k*4-1`, so all 144 of the node’s cores are used with no overlap.
 
-Set `N_CONCURRENT=36` in `sbatch_gnu_parallel.sh` and run 36 tasks to fill all 144 cores.
+The example runs `36` tasks with `2^29` samples per thread, matching the array job’s task shape while avoiding per-task
+scheduler overhead.
 
 `/usr/bin/time -v` wraps every command so wall-clock time and peak memory appear in the log. `2>&1` merges that
 diagnostic stderr into stdout so one log captures everything.
@@ -45,7 +46,8 @@ cat tasks.txt
 
 Each line is a complete shell command with `taskset`, `env`, `/usr/bin/time -v`, and the actual program call.
 
-Open `generate_tasks.py` to see how the commands are constructed and tweak `N_TASKS` or `N_THREADS`.
+Open `generate_tasks.py` to see how the commands are constructed and tweak `--tasks`, `--threads`, or
+`--samples-per-thread`.
 
 ## Reduce manually
 

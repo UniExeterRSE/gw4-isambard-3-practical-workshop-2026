@@ -238,7 +238,7 @@ Using HPC this way is sometimes called **HTC** (High-Throughput Computing).
 ## ex03: Slurm job array {#job-array .shell-slide}
 
 ::: slide-subtitle
-One `sbatch` command, ten independent jobs
+One `sbatch` command, 36 independent jobs
 :::
 
 :::: shell-grid
@@ -252,12 +252,15 @@ bash run_array_pipeline.sh
 What this does:
 
 1.  **Pre** --- create `results/` directory
-2.  **Main** --- `--array=1-10`: ten tasks, each with its own seed (`$SLURM_ARRAY_TASK_ID`)
-3.  **Post** --- `reduce-mc-pi-results` combines all ten `results/mc_pi_<jobid>_<taskid>.txt` files
+2.  **Main** --- `--array=1-36%36`: 36 tasks, each with its own seed (`$SLURM_ARRAY_TASK_ID`)
+3.  **Post** --- `reduce-mc-pi-results` combines all 36 `results/mc_pi_<jobid>_<taskid>.txt` files
 
 Monitor: `squeue --me` shows `<jobid>_1`, `<jobid>_2`, ... --- one entry per task.
 
 **Throttling:** add `%M` to cap concurrency: `--array=1-1000%50`
+
+This example uses `4` threads per task and `2^29` samples per thread, so the array can occupy all `144` Grace CPU cores
+when all 36 tasks are running.
 
 Open `sbatch_monte_carlo_pi_array.sh` and change the array size or seed range.
 :::
@@ -286,7 +289,7 @@ bash run_gnu_parallel_pipeline.sh
 What this does:
 
 1.  **Pre** --- generate `tasks.txt` (one complete command per line, with `taskset` and `/usr/bin/time -v`)
-2.  **Main** --- `parallel --jobs 10 < tasks.txt` on an exclusive node
+2.  **Main** --- `parallel --jobs 36 < tasks.txt` on an exclusive 144-core node
 3.  **Post** --- `reduce-mc-pi-results` combines `results/mc_pi_gnu_*.txt`
 
 After the pre job: `cat tasks.txt` to see the commands. Each line pins its process to a disjoint core range using
@@ -325,8 +328,8 @@ cat mc_pi_futures_<jobid>.out
 - **Rank 0** --- controller: submits tasks, collects results, reduces
 - **Ranks 1..N-1** --- workers: each runs one task at a time
 
-With `--ntasks=11` you get **10 workers**. Pre, map, and reduce are all in the same Python script --- no Slurm job
-chaining needed.
+With `--ntasks=36` and `--cpus-per-task=4` you get **35 worker ranks** plus **1 controller rank**. Pre, map, and reduce
+are all in the same Python script --- no Slurm job chaining needed.
 
 ``` python
 from mpi4py.futures import MPIPoolExecutor
@@ -335,13 +338,14 @@ with MPIPoolExecutor() as executor:
     results = list(executor.map(_worker, task_args))
 ```
 
-Launch: `srun -n 11 python -m mpi4py.futures -m <module> [args]`
+Launch: `srun -n 36 -c 4 python -m mpi4py.futures -m <module> [args]`
 :::
 ::::
 
 ::: notes
 - Key message: single script replaces the 3-script pipeline; controller = orchestrator
 - With N MPI ranks: N-1 workers. Remind attendees to set --ntasks = n_workers + 1
+- Here the shared map-reduce layout is 4 threads/task; rank 0 consumes one 4-core slot as the controller
 - Unlike job arrays, tasks are not separate Slurm jobs --- less scheduler overhead, works well for short tasks
 - Multi-node capable (unlike GNU parallel or multiprocessing)
 - Do NOT go into MPI internals; the concurrent.futures API is the point
@@ -367,11 +371,11 @@ Three NERSC-recommended patterns for HPC:
 ``` python
 import multiprocessing as mp, os
 
-mp.set_start_method("spawn")            # safe: no fork of MPI/Numba state
-n_workers = len(os.sched_getaffinity(0))  # CPUs in Slurm cgroup, not all cores
-os.environ["OMP_NUM_THREADS"] = "1"    # prevent nested threading
+ctx = mp.get_context("spawn")           # safe: no fork of MPI/Numba state
+available = sorted(os.sched_getaffinity(0))
+n_workers = len(available) // 4         # 36 workers on a 144-core node
 
-with mp.Pool(processes=n_workers) as pool:
+with ctx.Pool(processes=n_workers, initializer=_init_worker, ...) as pool:
     results = pool.map(_worker, task_args)
 ```
 
