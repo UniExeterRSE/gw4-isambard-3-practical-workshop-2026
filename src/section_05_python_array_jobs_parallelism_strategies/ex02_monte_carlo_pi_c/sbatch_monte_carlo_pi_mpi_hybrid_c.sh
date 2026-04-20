@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=mc_pi
-#SBATCH --output=mc_pi.out
+#SBATCH --output=mc_pi_%j.out
 #SBATCH --nodes=1
 #SBATCH --exclusive
 #SBATCH --time=00:01:00

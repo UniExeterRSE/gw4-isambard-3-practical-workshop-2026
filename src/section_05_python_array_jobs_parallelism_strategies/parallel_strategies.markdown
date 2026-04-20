@@ -109,7 +109,7 @@ ex01 --- scale to all 144 cores on one Grace node
 ::: shell-text
 ``` bash
 sbatch sbatch_monte_carlo_pi_mpi_hybrid.sh
-cat mc_pi_py.out
+cat mc_pi_py_<jobid>.out
 ```
 
 The script sweeps every valid (nproc, nthreads) decomposition on 144 cores:
@@ -143,7 +143,7 @@ ex01 --- weak scaling across 4 nodes (576 cores)
 ::: shell-text
 ``` bash
 sbatch sbatch_monte_carlo_pi_mpi_hybrid_multinode.sh
-cat mc_pi_py_mn.out
+cat mc_pi_py_mn_<jobid>.out
 ```
 
 Weak scaling: resources grow 4× (144 → 576 cores), per-thread work stays constant.

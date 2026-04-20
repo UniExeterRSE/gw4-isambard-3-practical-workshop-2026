@@ -67,8 +67,8 @@ MPI hybrid (Python, single node):
 sbatch sbatch_monte_carlo_pi_mpi_hybrid.sh
 ```
 
-Check `mc_pi_py.out`: each `srun` block runs a different (ranks × threads) decomposition. All `pi_hat` values should
-agree to ~5 significant figures.
+Check `mc_pi_py_<JOBID>.out`: each `srun` block runs a different (ranks × threads) decomposition. All `pi_hat` values
+should agree to ~5 significant figures.
 
 ## ex02 — Monte Carlo Pi (C, stretch)
 
@@ -80,8 +80,8 @@ bash make.sh                    # compiles monte_carlo_pi_mpi_hybrid
 sbatch sbatch_monte_carlo_pi_mpi_hybrid_c.sh
 ```
 
-Check the output file: the C binary should report the same `pi_hat` as the Python MPI-hybrid variant (same algorithm,
-same default seed). Elapsed time should be significantly shorter.
+Check `mc_pi_<JOBID>.out`: the C binary should report the same `pi_hat` as the Python MPI-hybrid variant (same
+algorithm, same default seed). Elapsed time should be significantly shorter.
 
 ## ex03 — Slurm job array pipeline
 

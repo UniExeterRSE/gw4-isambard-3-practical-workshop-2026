@@ -42,7 +42,7 @@ Build on the login node with `make.sh`, then submit the job with `sbatch`.
 ## Read the output
 
 ``` bash
-cat mc_pi.out
+cat mc_pi_<jobid>.out
 ```
 
 Each run prints a one-line result table followed by `time -v` accounting. Look for the `time[s]` column:
