@@ -3,14 +3,8 @@
 Demonstrates a data race in Numba: accumulating into a shared NumPy array
 element from a parallel prange loop.
 
-Numba handles scalar reductions in prange automatically, but writing to a
-shared array element is NOT protected — it is a data race.
-
 Expected: N * M // 3
-Actual:   non-deterministic, usually wrong
-
-Fix: use a scalar accumulator  hits = np.int64(0)  and let prange handle
-the reduction, rather than indexing into a shared array.
+Result:   non-deterministic — almost always gives the wrong answer.
 """
 
 from __future__ import annotations
@@ -24,14 +18,14 @@ from numba import njit, prange, set_num_threads
 
 @njit(parallel=True, cache=True)
 def count_divisible_wrong(n: int, m: int) -> int:
-    """Count integers in [0,n) x [0,m) divisible by 3 — BUG: shared array element."""
-    counts = np.zeros(1, dtype=np.int64)  # shared array — race condition
+    """Count integers in [0,n) x [0,m) divisible by 3."""
+    counts = np.zeros(1, dtype=np.int64)
     for i in prange(n):
         row_hits = np.int64(0)
         for j in range(m):
             if (i * m + j) % 3 == 0:
                 row_hits += 1
-        counts[0] += row_hits  # BUG: multiple threads write to counts[0]
+        counts[0] += row_hits
     return int(counts[0])
 
 
