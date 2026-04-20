@@ -8,15 +8,26 @@ Ten minutes: short orientation, then try-time, then questions
 ::: shell-text
 Quick checkpoint: does everyone have a shell prompt on Isambard 3?
 
-- Helpers are circulating --- raise a hand if not
+- If you do **not** have a prompt yet, raise a hand now and a helper will stay with you
 - Anyone still stuck on login can follow along on-screen
-- Editing workflow for today: BriCS VS Code **browser tunnel** (desktop VS Code, vim, etc. are fine if you already have
-  them set up)
+- Editor route for today: open VS Code in the browser via the BriCS **browser tunnel** guide when we need an editor; if
+  you already brought desktop VS Code, vim, or another editor fully set up, keep using that
 
 We are going to cover **three small things**: where you can put files, how to get at pre-built software, and a shared
 list of commands you will run in a moment.
 :::
 ::::
+
+::: notes
+- Open with: "If you already have a shell prompt on Isambard 3, stay with me. If you do not, raise a hand now."
+- Tell helpers: "Please pick up anyone without a prompt and keep going with them in parallel; do not wait for the room."
+- If someone is still blocked after the first minute, say: "Follow along on the projector for now; we will mop up the
+  login issue in parallel."
+- Spoken editor signpost: "When we need to edit files later, the default taught route is VS Code in the browser via the
+  BriCS tunnel guide. If you already came with desktop VS Code, vim, or another editor working, that is fine too."
+- Close the slide with: "This is just a quick bridge into the first Slurm job: storage, modules preview, then a short
+  command list for you to try."
+:::
 
 ## Storage: what goes where {#storage-what-goes-where .shell-slide}
 

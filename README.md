@@ -174,8 +174,8 @@ TODOs:
   [src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown](src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown)
 - [x] Add a section README in
   [src/section_02_login_checkpoint_first_commands/README.md](src/section_02_login_checkpoint_first_commands/README.md)
-- [ ] Add exact live-teaching prompts for the login checkpoint and helper mop-up (speaker notes on slide 1)
-- [ ] Tighten the spoken VS Code tunnel signpost on slide 1 for attendees following the browser-based editor path
+- [x] Add exact live-teaching prompts for the login checkpoint and helper mop-up (speaker notes on slide 1)
+- [x] Tighten the spoken VS Code tunnel signpost on slide 1 for attendees following the browser-based editor path
 
 ### 3. First Batch Job — Slurm (25 min) — Active
 
