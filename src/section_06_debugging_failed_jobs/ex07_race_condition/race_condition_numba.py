@@ -12,6 +12,7 @@ Actual:   non-deterministic, usually wrong
 Fix: use a scalar accumulator  hits = np.int64(0)  and let prange handle
 the reduction, rather than indexing into a shared array.
 """
+
 from __future__ import annotations
 
 import os
@@ -42,7 +43,7 @@ def main() -> None:
     set_num_threads(nthreads)
 
     # Warm-up JIT compile
-    _ = count_divisible_wrong(10, 10)
+    count_divisible_wrong(10, 10)
 
     expected = n * m // 3
     for run in range(1, 4):
