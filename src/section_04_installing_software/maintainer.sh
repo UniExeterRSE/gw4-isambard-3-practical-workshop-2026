@@ -17,6 +17,11 @@ export __OPT_ROOT="${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}"
 export MAMBA_ROOT_PREFIX="${__OPT_ROOT}/miniforge3"
 export XDG_CONFIG_HOME="${PROJECTDIR}/local/config"
 
+echo "__LOCAL_ROOT=${__LOCAL_ROOT}"
+echo "__OPT_ROOT=${__OPT_ROOT}"
+echo "MAMBA_ROOT_PREFIX=${MAMBA_ROOT_PREFIX}"
+echo "XDG_CONFIG_HOME=${XDG_CONFIG_HOME}"
+
 cd "${DIR}/../../bootstrap"
 install/bootstrap.sh
 
