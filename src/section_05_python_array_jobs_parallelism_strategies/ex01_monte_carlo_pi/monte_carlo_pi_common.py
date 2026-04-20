@@ -5,6 +5,7 @@ import math
 import os
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -14,6 +15,7 @@ class ExperimentConfig:
     num_threads: int
     seed: int
     chunk_size: int = 262_144  # 2**18
+    save: str | None = None
 
 
 @dataclass(frozen=True)
@@ -155,6 +157,14 @@ def build_parser(description: str) -> argparse.ArgumentParser:
         default=262_144,  # 2**18
         help="Maximum number of points generated per array batch.",
     )
+    parser.add_argument(
+        "--save",
+        dest="save",
+        type=str,
+        default=None,
+        metavar="FILE",
+        help="Write 'hits n' to FILE for downstream reduction (map-reduce pattern).",
+    )
     return parser
 
 
@@ -174,6 +184,7 @@ def parse_config(description: str) -> ExperimentConfig:
         num_threads=args.num_threads,
         seed=args.seed,
         chunk_size=args.chunk_size,
+        save=args.save,
     )
 
 
@@ -210,3 +221,10 @@ def timed_count(count_hits, config: ExperimentConfig) -> tuple[int, float]:
     hits = count_hits(config)
     elapsed_s = time.perf_counter() - start
     return hits, elapsed_s
+
+
+def save_raw_result(result: ExperimentResult, path: str) -> None:
+    """Write 'hits n' to path so reduce_results.py can combine multiple runs."""
+    dest = Path(path)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(f"{result.hits} {result.n}\n")
