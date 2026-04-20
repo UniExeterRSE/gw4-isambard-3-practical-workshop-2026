@@ -133,7 +133,7 @@ TODOs:
   [src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown](src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown)
 - [x] Add a section README in
   [src/section_01_welcome_login_overview/README.md](src/section_01_welcome_login_overview/README.md)
-- [ ] Coordinate with BriCS staff on the 10-minute Introduction to BriCS/Isambard 3 (content, speaker, slides)
+- [x] Coordinate with BriCS staff on the 10-minute Introduction to BriCS/Isambard 3 (content, speaker, slides)
 - [x] Turn the overview notes into actual slide deck content (`01-system-overview.markdown` +
   `02-grace-cpu-superchip.markdown`)
 - [x] Add exact presenter wording for the Clifton login start and helper choreography
@@ -402,17 +402,17 @@ In addition, ask attendees to:
   flag + `reduce_results.py`)
 - [x] GNU Parallel example (`ex04_gnu_parallel/` — `generate_tasks.py` + `sbatch_gnu_parallel.sh`)
 - [x] Stretch or take-home material signposted across the active sections
-- [ ] Live-system spot-check the module names used in exercises
+- [x] Live-system spot-check the module names used in exercises
 - [x] Project / reservation identifiers now appear consistently in the materials (`exeter-workshop-260421`, `e6c`,
   `brics.e6c_qos`)
-- [ ] Confirm path for workshop materials
+- [x] Confirm path for workshop materials
 - [x] Confirm workshop account provisioning timeline with BriCS (project being created; invitations going out to
   registered attendees shortly)
 - [x] Set up a project on the portal for the workshop
 - [x] Put a reservation in place on Isambard 3 for the workshop duration
-- [ ] Confirm if there are any remote participants
-- [ ] Final room/helper plan for login support
-- [ ] Follow the whole workshop end-to-end with an empty user directory from scratch
+- [x] Confirm if there are any remote participants
+- [x] Final room/helper plan for login support
+- [x] Follow the whole workshop end-to-end with an empty user directory from scratch
 
 At this point the repository is materially complete for teaching content. The remaining work is mostly operational:
 day-of coordination, one clean-account rehearsal, and confirming the final workshop-materials path / live-system values
