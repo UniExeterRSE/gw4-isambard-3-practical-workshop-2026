@@ -183,6 +183,49 @@ Batch is better when there is no human in the loop.
   redirect them to batch instead, because login nodes are not for compute
 :::
 
+## Workshop reservation {#workshop-reservation .shell-slide}
+
+::: slide-subtitle
+We have a reservation for today --- add these flags to every `sbatch` and `srun`
+:::
+
+:::: shell-grid
+::: shell-text
+Inspect the reservation and QOS before you use them:
+
+``` bash
+scontrol show res exeter-workshop-260421
+sacctmgr show qos brics.e6c_qos
+```
+
+**On the command line:**
+
+``` bash
+sbatch --reservation=exeter-workshop-260421 --qos=brics.e6c_qos sbatch_hello_world.sh
+```
+
+**Or inside your batch script** (add these two `#SBATCH` lines):
+
+``` bash
+#SBATCH --reservation=exeter-workshop-260421
+#SBATCH --qos=brics.e6c_qos
+```
+
+Gotchas:
+
+- Reservation alone --- works fine
+- Reservation **and** QOS --- works fine
+- QOS **without** reservation --- `sbatch: error: Batch job submission failed: Invalid qos specification`
+- More than 2 nodes --- `QOSMaxNodePerUserLimit` (the reservation caps per-user node count)
+:::
+::::
+
+::: notes
+- Show `scontrol show res` output briefly so attendees can see start/end time and node list
+- The QOS error without a reservation is the most common trip-up; pre-empt it here
+- The 2-node cap is deliberate so one person cannot monopolise the reservation
+:::
+
 ## Hands-on {#hands-on .shell-slide}
 
 ::: slide-subtitle
