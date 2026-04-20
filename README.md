@@ -76,22 +76,21 @@ it. **Do not re-raise this as an open planning concern.**
 | \#  | Section                                                    | Type    | Duration | Time        |
 |-----|------------------------------------------------------------|---------|----------|-------------|
 | –   | Doors open: tea, coffee, optional account-setup support    | –       | 30 min   | 09:30–10:00 |
-| 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | Passive | 30 min   | 10:00–10:30 |
-| 2   | Login Checkpoint + First Commands                          | Active  | 10 min   | 10:30–10:40 |
-| 3   | First Batch Job (Slurm)                                    | Active  | 25 min   | 10:40–11:05 |
-|     | Break                                                      | –       | 10 min   | 11:05–11:15 |
-| 4   | Installing Software                                        | Active  | 15 min   | 11:15–11:30 |
-| 5   | Python Example + Array Jobs + Parallelism Strategies       | Active  | 25 min   | 11:30–11:55 |
-| 6   | Debugging Failed Jobs                                      | Active  | 20 min   | 11:55–12:15 |
+| 1   | BriCS Intro (by BriCS) + Welcome + Login + System Overview | Passive | 15 min   | 10:00–10:15 |
+| 2   | Login Checkpoint + First Commands                          | Active  | 5 min    | 10:15–10:20 |
+| 3   | First Batch Job (Slurm)                                    | Active  | 25 min   | 10:20–10:45 |
+| 4   | Installing Software                                        | Active  | 30 min   | 10:45–11:15 |
+|     | Break                                                      | –       | 10 min   | 11:15–11:25 |
+| 5   | Python Example + Array Jobs + Parallelism Strategies       | Active  | 35 min   | 11:25–12:00 |
+| 6   | Debugging Failed Jobs                                      | Active  | 15 min   | 12:00–12:15 |
 | 7   | Tips, Help, Wrap-Up, Q&A & Feedback                        | Passive | 15 min   | 12:15–12:30 |
 
 ## Section Details
 
-### 1. BriCS Intro + Welcome + Login + System Overview (30 min) — Passive
+### 1. BriCS Intro + Welcome + Login + System Overview (15 min) — Passive
 
-The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by BriCS staff. Login and the system
-overview then run in parallel: attendees begin the Clifton login process (`clifton auth`, then `ssh`) while the
-presenter gives a lightweight system overview and helpers circulate.
+The section opens with a 10-minute introduction to BriCS/Isambard 3 delivered by BriCS staff, followed by a short
+5-minute Grace CPU Superchip overview while attendees log in and helpers circulate.
 
 **Planning assumption: attendees follow the minimal setup steps in the [Pre-Workshop Email](#pre-workshop-email) before
 arrival** — initial setup, Clifton/SSH, and the VS Code CLI. The 09:30 doors-open window (see [Pre-workshop setup
@@ -101,9 +100,9 @@ Default editor path for the workshop: use VS Code via the browser-based tunnel w
 documentation. Treat this as the standard taught route so participants are all following the same setup unless they
 deliberately choose an alternative editor.
 
-Keep the system overview deliberately light and focused on what attendees need immediately: what Isambard 3 is, where it
-sits in the UK HPC landscape, Grace CPU nodes / Arm/aarch64 at a high level, Slurm as the scheduler, and the main
-storage areas they will use in the workshop.
+Keep the system overview deliberately light and focused on what attendees need immediately: Grace CPU nodes /
+Arm/aarch64 at a high level, Slurm as the scheduler, and just enough context to situate the machine before the hands-on
+sections.
 
 Do **not** spend long here on architecture-specific software discussion. Keep that for the software section when it is
 directly relevant.
@@ -118,6 +117,10 @@ should not be mentioned in the taught path.
 
 Slides should stay low-demand: large diagrams, minimal text, clear signposting.
 
+Use only a very small subset of the Section 1 material live. The Grace deck is now a short presenter-led insert, not a
+longer architecture block. Login issues should be resolved in parallel by participants and helpers during this section
+and, if needed, continue into Section 2 without holding the room.
+
 Keep a passive follow-along contingency in reserve for the rare attendee who still has an access problem on the day
 despite completing pre-event setup, but treat this as an edge case.
 
@@ -126,28 +129,30 @@ TODOs:
 - [x] Create presenter-facing system overview notes covering what Isambard 3 is, Arm/aarch64, CPU-only positioning,
   Slurm, and storage areas in
   [src/section_01_welcome_login_overview/01-system-overview.markdown](src/section_01_welcome_login_overview/01-system-overview.markdown)
-- [x] Create a short attendee storage exercise in
-  [src/section_01_welcome_login_overview/02-storage-worksheet.md](src/section_01_welcome_login_overview/02-storage-worksheet.md)
+- [x] Fold the attendee-facing storage orientation into the Section 2 live commands deck in
+  [src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown](src/section_02_login_checkpoint_first_commands/01-login-first-commands.markdown)
 - [x] Add a section README in
   [src/section_01_welcome_login_overview/README.md](src/section_01_welcome_login_overview/README.md)
 - [ ] Coordinate with BriCS staff on the 10-minute Introduction to BriCS/Isambard 3 (content, speaker, slides)
-- [ ] Turn the overview notes into actual slide deck content
+- [x] Turn the overview notes into actual slide deck content (`01-system-overview.markdown` +
+  `02-grace-cpu-superchip.markdown`)
 - [x] Add exact presenter wording for the Clifton login start and helper choreography
 - [x] Add the VS Code browser-tunnel signposting that will be said live in the room
 - [x] Document the passive follow-along contingency for the rare attendee with an access problem on the day
 - [x] Create the single arrival/setup instructions slide (displayed on screen 09:30–10:00, covering the minimal setup
   steps from the pre-workshop email)
-- [ ] Find and embed an NVIDIA Grace CPU image on a single CPU-architecture slide (one slide, within the system
-  overview)
+- [x] Find and embed NVIDIA Grace CPU imagery in the CPU-architecture material (`02-grace-cpu-superchip.markdown` +
+  `src/media/NVidia/Grace-CPU-Superchip/`)
 - [x] Add a single portal slide covering the portal’s purpose (project dashboard, usage and NHR per project) — attendees
   have already seen it in pre-workshop setup Step 1, so the slide is a recap rather than new material
 
-### 2. Login Checkpoint + First Commands (10 min) — Active
+### 2. Login Checkpoint + First Commands (5 min) — Active
 
-Quick checkpoint that everyone is in. Helpers mop up stragglers.
+Rapid checkpoint that everyone is in or has helper support already in progress. This is a bridge into Section 3, not a
+full orientation block.
 
-This section should be a short guided orientation around shell basics, the main storage variables, and the idea that
-modules are part of the normal workflow on Isambard 3.
+This section should be a very short guided orientation around shell basics, the main storage variables, and the idea
+that modules are part of the normal workflow on Isambard 3.
 
 Key teaching point here is not just naming directories, but *what goes where*: `$HOME` for config, scripts, and small
 outputs, `$PROJECTDIR` for shared project material, and `$SCRATCHDIR` for working data and temporary job data.
@@ -199,8 +204,9 @@ TODOs:
   [src/section_03_first_batch_job_slurm/ex02_multi_task/sbatch_multi_task.sh](src/section_03_first_batch_job_slurm/ex02_multi_task/sbatch_multi_task.sh)
 - [x] Add a section README in
   [src/section_03_first_batch_job_slurm/README.md](src/section_03_first_batch_job_slurm/README.md)
-- [ ] Add presenter notes for walking through the first script line by line
-- [ ] Confirm whether the example output filenames and shell choices match local workshop conventions
+- [x] Add presenter notes for walking through the first script line by line
+- [x] Review the example output filenames and shell choices (`#!/bin/bash`, explicit `.out` naming) for workshop
+  consistency
 - [x] Add explicit fast-finisher prompts for walltime, job naming, output naming, and `sleep`
 - [x] Keep the beginner path free of partition changes and `--mail-type=END`
 - [x] Simple single core job: env, date, free, lscpu, etc. (folded into `sbatch_hello_world.sh`)
@@ -210,7 +216,7 @@ TODOs:
 - [x] Section 3 slide deck in
   [src/section_03_first_batch_job_slurm/first_batch_job_slurm.markdown](src/section_03_first_batch_job_slurm/first_batch_job_slurm.markdown)
 
-### 4. Installing Software (15 min) — Active
+### 4. Installing Software (30 min) — Active
 
 Keep this section tightly scoped.
 
@@ -225,6 +231,13 @@ Containers should only be mentioned briefly as a follow-up route and should not 
 
 Keep VS Code and other remote-development tooling out of the taught path for this section. If raised in Q&A, answer
 briefly and move on.
+
+This is now the critical completion gate for the rest of the workshop. Everyone should finish the mandatory setup path
+here before the room moves on, because later sections assume those stacks are already working.
+
+For the live workshop, keep the room together and prioritise successful completion over breadth. Teach only the decision
+order, the modules preview, and the mandatory prepared user-managed environment route. Fork/clone choice, dotfiles, and
+broader tooling details should be treated as presenter demo or take-home reference, not core in-room hands-on.
 
 TODOs:
 
@@ -242,56 +255,57 @@ TODOs:
 - [x] Keep containers as follow-up only and out of the core hands-on path
 - [x] Confirm the module demo example (`module load brics/emacs`) is a real, loadable module on Isambard 3
 
-### 5. Python Example + Array Jobs + Parallelism Strategies (25 min) — Active
+### 5. Python Example + Array Jobs + Parallelism Strategies (35 min) — Active
+
+This is now the main conceptual block after software setup. The live path should focus on one realistic Python job, a
+presenter demo of the hybrid MPI case, and a few pipeline patterns such as job arrays and GNU Parallel.
 
 **Part A — Single job (~8 min)**
 
-Use the prepared Monte Carlo Pi example from `/projects/workshop/`.
-
-Attendees write a small job script that loads Python and runs the example.
-
-Goals:
-
-- load the right software
-- submit a job
-- inspect output
-- confirm they can run a realistic but simple script
-
-**Part B — Array jobs (~7 min)**
-
-Add `--array=1-10` and read `$SLURM_ARRAY_TASK_ID` as the seed.
+Use `ex01_monte_carlo_pi/` with the prepared `sbatch_monte_carlo_pi_single.sh` script rather than asking attendees to
+write a new script from scratch.
 
 Goals:
 
-- understand how arrays fan out
-- inspect per-task outputs
-- see how arrays help with repeated independent tasks
+- load the right software path (`pixi` / environment activation)
+- submit a realistic Python job
+- inspect the timing table across implementations
+- confirm attendees can run repo-native Python material on Isambard 3
 
-**Part C — Three ways to run many serial jobs (~10 min)**
+**Part B — Hybrid MPI demo (~10 min)**
 
-Compare approaches conceptually:
+Demo the hybrid MPI case from `ex01_monte_carlo_pi/` live to establish the process/thread hierarchy and the distinction
+between shared-memory and distributed-memory parallelism. This is a presenter-led concept demo, not a requirement that
+every attendee runs the full sweep themselves in-room.
 
-| Approach | How | Good for | Watch out |
-|----|----|----|----|
-| GNU Parallel (single node) | One-node launcher pattern | Hundreds of short tasks on one node | Bound to one node; confirm module availability in prep |
-| Slurm job arrays | `--array=1-N` | Moderate independent tasks | Large arrays can place extra strain on the scheduler; use throttling |
-| MPI parallelism | `mpi4py` / compiled MPI | Multi-node communicating tasks | Requires MPI-aware code |
+**Part C — Pipeline patterns (~17 min)**
 
-This part should remain comparative and practical rather than deep.
+Use selected pipeline examples such as `ex03_job_array/03-job-array.md` and `ex04_gnu_parallel/04-gnu-parallel.md` to
+show the map → run → reduce pattern for many independent tasks. Keep `mpi4py.futures`, multiprocessing, and the compiled
+C/OpenMP material comparative or take-home unless the room is moving unusually fast.
 
-### 6. Debugging Failed Jobs (20 min) — Active
+### 6. Debugging Failed Jobs (15 min) — Active
 
-This should stay hands-on and explicitly problem-solving focused.
+This section is intentionally an exercise buffet, not a complete walkthrough. Introduce the debugging flow, point
+attendees at the menu, let them start one exercise, and explicitly invite them to continue after the workshop.
 
-#### Broken scripts exercise (~12 min)
+The workshop project expires the day after the workshop, so use the remaining access time to encourage attendees to come
+back to the unfinished debugging exercises once the formal session ends.
 
-Prepared broken examples:
+#### Broken scripts exercise (~7 min in-room, continue after)
 
-1.  Wrong module name → inspect `.err`
-2.  Walltime too short → inspect `sacct`, see `TIMEOUT`
-3.  Write to non-existent directory → inspect exit code / error output
+Prepared broken examples now cover seven distinct failure modes:
 
-Participants submit, diagnose, fix, and resubmit.
+1.  Oversubscription (`ex01_oversubscription/`)
+2.  Missing `PrgEnv-gnu` (`ex02_wrong_env_module/`)
+3.  Pixi environment missing on the compute node (`ex03_wrong_env_pixi_missing/`)
+4.  Wrong pixi environment for MPI (`ex04_wrong_env_pixi_wrong/`)
+5.  Out-of-memory failure (`ex05_oom_matmul/`)
+6.  Uneven MPI topology across nodes (`ex06_mpi_topology/`)
+7.  Race condition / wrong answers (`ex07_race_condition/`)
+
+Participants should self-select the exercise closest to their own likely failure mode, diagnose it, fix it, and
+resubmit. Finishing the whole exercise set is **not** the goal during the live session.
 
 #### Debugging flowchart (~8 min)
 
@@ -322,7 +336,8 @@ Contents:
 - file transfer one-liners: `scp`, `rsync`
 - troubleshooting: terminal emulator compatibility
 - where to look next in the docs
-- support routes: BriCS helpdesk (<https://support.isambard.ac.uk/>) and UoE RSE workshop follow-up (`isambard-support@exeter.ac.uk`)
+- support routes: BriCS helpdesk (<https://support.isambard.ac.uk/>) and UoE RSE workshop follow-up
+  (`isambard-support@exeter.ac.uk`)
 - feedback: announce that a survey will be sent by email after the workshop (no QR code)
 - open Q&A
 
@@ -358,9 +373,9 @@ In addition, ask attendees to:
 
 ## Workshop Material Design Notes
 
-### Prepared materials to create
+### Prepared materials now in repo
 
-- slide deck
+- section slide decks
 - onboarding/run-of-show notes for presenter and helpers
 - arrival / minimal-setup slide for 09:30–10:00
 - single CPU-architecture slide (NVIDIA Grace image)
@@ -369,7 +384,7 @@ In addition, ask attendees to:
 - multi-task Slurm job script
 - Monte Carlo Pi Python script
 - array job variant
-- three broken debugging scripts
+- debugging exercise suite (currently 7 scenarios plus maintainer notes)
 - software setup mini-walkthrough
 - file transfer slide
 - wrap-up slide with links and support contacts
@@ -377,8 +392,8 @@ In addition, ask attendees to:
 ## TODOs
 
 - [x] Pre-workshop email draft
-- [ ] Slide deck outline
-- [ ] Broken job scripts for debugging exercise (3 scripts)
+- [x] Slide deck outline
+- [x] Debugging exercise suite (7 broken exercises + maintainer notes)
 - [x] First Slurm job script
 - [x] Multi-task Slurm job script
 - [x] Monte Carlo Pi Python script
@@ -386,17 +401,22 @@ In addition, ask attendees to:
   (`src/section_05_python_array_jobs_parallelism_strategies/ex03_job_array/sbatch_monte_carlo_pi_array.sh` + `--save`
   flag + `reduce_results.py`)
 - [x] GNU Parallel example (`ex04_gnu_parallel/` — `generate_tasks.py` + `sbatch_gnu_parallel.sh`)
-- [ ] Stretch goals for each hands-on section
-- [ ] Confirm module names used in exercises
-- [ ] Confirm project ID format shown in examples
+- [x] Stretch or take-home material signposted across the active sections
+- [ ] Live-system spot-check the module names used in exercises
+- [x] Project / reservation identifiers now appear consistently in the materials (`exeter-workshop-260421`, `e6c`,
+  `brics.e6c_qos`)
 - [ ] Confirm path for workshop materials
 - [x] Confirm workshop account provisioning timeline with BriCS (project being created; invitations going out to
   registered attendees shortly)
-- [ ] Set up a project on the portal for the workshop
-- [ ] Put a reservation in place on Isambard 3 for the workshop duration
+- [x] Set up a project on the portal for the workshop
+- [x] Put a reservation in place on Isambard 3 for the workshop duration
 - [ ] Confirm if there are any remote participants
 - [ ] Final room/helper plan for login support
 - [ ] Follow the whole workshop end-to-end with an empty user directory from scratch
+
+At this point the repository is materially complete for teaching content. The remaining work is mostly operational:
+day-of coordination, one clean-account rehearsal, and confirming the final workshop-materials path / live-system values
+still match what the slides and scripts now assume.
 
 ## Notes
 
