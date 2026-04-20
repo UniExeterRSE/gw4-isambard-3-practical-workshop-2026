@@ -375,9 +375,10 @@ In addition, ask attendees to:
 - [x] First Slurm job script
 - [x] Multi-task Slurm job script
 - [x] Monte Carlo Pi Python script
-- [x] Array job version of the Python example (`ex01_monte_carlo_pi/sbatch_monte_carlo_pi_array.sh` + `--save` flag +
-  `reduce_results.py`)
-- [x] GNU Parallel example (`ex03_parallel_strategies/` — `generate_tasks.py` + `sbatch_gnu_parallel.sh`)
+- [x] Array job version of the Python example
+  (`src/section_05_python_array_jobs_parallelism_strategies/ex03_job_array/sbatch_monte_carlo_pi_array.sh` + `--save`
+  flag + `reduce_results.py`)
+- [x] GNU Parallel example (`ex04_gnu_parallel/` — `generate_tasks.py` + `sbatch_gnu_parallel.sh`)
 - [ ] Stretch goals for each hands-on section
 - [ ] Confirm module names used in exercises
 - [ ] Confirm project ID format shown in examples
