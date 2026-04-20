@@ -186,7 +186,7 @@ Batch is better when there is no human in the loop.
 ## Workshop reservation {#workshop-reservation .shell-slide}
 
 ::: slide-subtitle
-We have a reservation for today --- add these flags to every `sbatch` and `srun`
+We have a reservation for today --- add these flags to `sbatch` and `srun` commands that should use the reservation
 :::
 
 :::: shell-grid
