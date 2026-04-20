@@ -1,10 +1,7 @@
-# Exercise 3: Wrong Environment — Pixi Not Activated on Compute Node
+# A Command That Works Interactively But Not in a Batch Job
 
-## The scenario
-
-You have been working on the login node, where direnv automatically activates the pixi environment when you `cd` into
-the project directory. Your `monte-carlo-pi-summary` command works fine interactively. You write a batch script, submit
-it — and the job fails.
+You run a command from the login node — it works fine. You put the same command in a batch script and submit it. The job
+fails immediately with a command-not-found error.
 
 ## Submit it
 
@@ -12,46 +9,39 @@ it — and the job fails.
 sbatch sbatch_wrong_env_pixi_missing.sh
 ```
 
-## What do you see?
+## Monitor it
 
-Read the output file once the job finishes:
+``` bash
+squeue --me
+```
+
+Once the job ends, read the output:
 
 ``` bash
 cat wrong_env_pixi_missing_<jobid>.out
 ```
 
-Look for an error like:
+## What do you see?
 
-    monte-carlo-pi-summary: command not found
+Read the error message in the `.out` (or `.err`) file.
 
-## Questions
+- What is the exact error message?
+- Which command does the shell say it cannot find?
+- That same command works on the login node. Why might the batch environment be different?
 
-1.  The command works on the login node. Why doesn’t it work in the batch job?
-2.  What is direnv doing when you `cd` into the project directory on the login node?
-3.  Does the compute node run `.envrc`? Why or why not?
-4.  What is `pixi shell-hook` doing, and why must it appear explicitly in the batch script?
+## Investigate
 
-## Key insight
+1.  What is different between running a command interactively on the login node and running it inside `sbatch`?
+2.  Does the compute node have access to the same software as the login node by default?
+3.  What sets up the project environment when you `cd` into this directory on the login node?
+4.  Does a Slurm batch job replicate that setup automatically?
 
-direnv only runs `.envrc` on interactive shell sessions when you change directory. Slurm batch jobs start a
-non-interactive bash shell on the compute node — no direnv, no `.envrc`, no pixi env. The environment from your login
-session does **not** transfer to the compute node.
+## Hints
 
-## How to fix
+> Try to debug it yourself first. Come back here if you’re stuck.
 
-Add the pixi activation line to the batch script, **before** the Python command:
-
-``` bash
-# shellcheck disable=SC2312
-eval "$(pixi shell-hook --environment hpc)"
-
-monte-carlo-pi-summary -d 2 -n 200000 -t ${NUM_THREADS}
-```
-
-This is the pattern used in
-`src/section_05_python_array_jobs_parallelism_strategies/ex01_monte_carlo_pi/sbatch_monte_carlo_pi_single.sh`.
-
-## Notes
-
-This is one of the most common mistakes HPC beginners make — assuming the interactive environment carries into batch
-jobs. It never does. Always activate your environment explicitly inside the batch script.
+- Look at `.envrc` in the project root. When does this file run? (See the direnv documentation.)
+- Compare `sbatch_wrong_env_pixi_missing.sh` to
+  `src/section_05_python_array_jobs_parallelism_strategies/ex01_monte_carlo_pi/sbatch_monte_carlo_pi_single.sh` — what
+  line is present in the Section 5 script but absent here?
+- What does `pixi shell-hook` do? What would happen if it is never called inside the batch script?

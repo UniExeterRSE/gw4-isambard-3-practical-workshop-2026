@@ -1,8 +1,7 @@
-# Oversubscription — Missing `--cpus-per-task`
+# Unexpected Performance in a Hybrid Sweep
 
-A hybrid MPI+OpenMP job has a subtle bug: the `srun` call inside the sweep loop is missing `--cpus-per-task`. The job
-submits and runs without error, but the performance numbers look wrong. Your task is to spot the bug, understand why it
-hurts, and fix it.
+A sweep job runs 15 MPI×thread configurations. The job completes without errors, but the wall-clock times across
+configurations don’t match what you’d expect from a well-tuned parallel job.
 
 ## Prerequisite
 
@@ -50,60 +49,32 @@ Replace `<jobid>` with the number printed by `sbatch`. Press `Ctrl-C` to stop fo
 ## What do you see?
 
 The script sweeps fifteen MPI-rank × OMP-thread combinations that all multiply to 144 (the full Grace CPU core count).
-In a correctly configured run the wall-clock time should be roughly constant across all fifteen rows — every physical
-core is doing the same amount of work regardless of how it is divided between ranks and threads.
 
 Look at the `time[s]` column as the output scrolls by:
 
-- Do the timings stay flat across configurations?
-- Does performance *degrade* as you move toward configurations with more threads per rank (e.g. 1 rank × 144 threads)?
-- Is the all-MPI configuration (144 ranks, 1 thread each) unexpectedly fast compared with configurations that use fewer,
+- Is the `time[s]` column roughly flat across all fifteen configurations?
+- Does the time change noticeably as you move toward configurations with more threads per rank?
+- Is the all-MPI configuration (144 ranks, 1 thread each) unusually fast compared with configurations that use fewer,
   larger ranks?
 
-Non-monotonic or strongly degrading timings in the many-threads-per-rank configurations are the symptom of
-oversubscription.
+## Investigate
 
-## Questions
+1.  Do timings improve, stay flat, or degrade as the thread count per rank increases?
+2.  Each configuration multiplies MPI ranks × threads to 144. Does the time you observe match what you’d expect if all
+    144 physical cores were equally utilised in every configuration?
+3.  What does the absolute wall-clock time tell you about how much of the node’s capacity is actually being used in the
+    slow configurations?
+4.  If a task is allocated fewer CPU slots than it spawns threads, where do those threads run?
 
-1.  **How many CPUs does Slurm allocate to each task by default?**
+## Hints
 
-    Open `sbatch_oversubscription.sh` and look at the `srun` line inside the loop. The working script in
-    `src/section_05_python_array_jobs_parallelism_strategies/ex02_monte_carlo_pi_c/sbatch_monte_carlo_pi_mpi_hybrid_c.sh`
-    passes `--cpus-per-task="${nthreads}"` to `srun`. This script does not. When `--cpus-per-task` is absent, Slurm
-    allocates **1 CPU per task** by default. How does that interact with a configuration like 1 rank × 144 threads?
+> Try to debug it yourself first. Come back here if you’re stuck.
 
-2.  **What does `OMP_NUM_THREADS=144` tell OpenMP to do? Where do those threads actually run?**
-
-    `OMP_NUM_THREADS` is still exported before each `srun` call, so OpenMP tries to launch as many threads as the
-    variable says. Because Slurm has allocated only 1 CPU-slot to that task, all 144 threads are fighting over one
-    hardware core. What do you expect that to do to performance?
-
-3.  **What is oversubscription, and why does it hurt?**
-
-    Oversubscription occurs when more threads (or processes) are runnable than there are physical CPU cores available to
-    run them. The OS scheduler must time-slice them onto the available core(s), causing context-switch overhead and
-    preventing the CPU from running at full throughput. In HPC workloads — especially tight numerical loops — this
-    almost always causes a large slowdown rather than the parallelism benefit you were hoping for.
-
-## How to fix it
-
-Add `--cpus-per-task="${nthreads}"` back to the `srun` call in the loop:
-
-``` bash
-srun -n "${nproc}" --cpus-per-task="${nthreads}" --cpu_bind=cores monte_carlo_pi_mpi_hybrid -d 2 -n "${N}"
-```
-
-This tells Slurm to reserve `nthreads` CPU-slots for each MPI rank, so when OpenMP spawns that many threads they each
-land on a distinct physical core. The corrected script is at:
-
-    src/section_05_python_array_jobs_parallelism_strategies/ex02_monte_carlo_pi_c/sbatch_monte_carlo_pi_mpi_hybrid_c.sh
-
-Submit that version and compare the timings. The fifteen configurations should now produce similar wall-clock times.
-
-## A note on `--exclusive` and CPU binding
-
-The job requests `#SBATCH --exclusive`, which means the entire node is reserved for this job — no other jobs share the
-144 physical Grace cores. However, `--exclusive` alone does not tell Slurm how to divide those cores among tasks.
-`--cpu_bind=cores` controls *how* each task is pinned to cores, but the binding is relative to the CPU-slot allocation
-that `--cpus-per-task` defines. Without `--cpus-per-task`, every task’s allocation is 1 core, so `--cpu_bind=cores` pins
-all threads of a task to that single core — exactly the oversubscription scenario described above.
+- Compare this script line-by-line to the working version at
+  `src/section_05_python_array_jobs_parallelism_strategies/ex02_monte_carlo_pi_c/sbatch_monte_carlo_pi_mpi_hybrid_c.sh`
+  — focus on the `srun` invocation inside the loop. What flag is present in the reference script but absent here?
+- Slurm documentation: when `--cpus-per-task` is absent from `srun`, what is the default number of CPUs allocated to
+  each task?
+- If Slurm allocates N CPUs to a task and OpenMP sets `OMP_NUM_THREADS=M` where M \> N, what happens to the extra
+  threads?
+- Re-read the `--cpu_bind=cores` flag. What does it pin threads to, and relative to what allocation?
