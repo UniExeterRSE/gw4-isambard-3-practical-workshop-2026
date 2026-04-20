@@ -1,13 +1,7 @@
-# Exercise 7 — Race Condition: Missing OpenMP Reduction (C and Numba)
+# A Job That Gives Wrong Answers
 
-------------------------------------------------------------------------------------------------------------------------
-
-## The scenario
-
-You write a parallel loop to count matching elements. The code looks correct — the outer loop is parallelized, and you
-accumulate results locally before adding to the total. But the results are wrong and change between runs.
-
-This exercise shows the same bug in two languages: C with OpenMP and Python with Numba.
+Two programs exit with code 0, no errors, no crashes — yet the results are wrong and change between runs. This exercise
+asks you to find out why.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -64,30 +58,24 @@ Instead you will see output like:
 
 Three runs, three different wrong answers — all lower than expected.
 
-### Questions
+### Investigate
 
-1.  Look at `race_condition.c`. Where is `hits` modified? Is it a private or shared variable across threads?
+- Is the result consistent between runs? What does inconsistency tell you about what is happening during execution?
+- Where in `race_condition.c` is `hits` updated? Can multiple threads reach that line simultaneously?
+- OpenMP variables are either **shared** (one copy, visible to all threads) or **private** (one copy per thread). Which
+  is `hits` here?
+- Run `OMP_NUM_THREADS=1 ./race_condition`. Does the answer become correct? What does that tell you?
 
-2.  What does “data race” mean? What can happen when two threads read, modify, and write the same variable
-    simultaneously without synchronisation?
+### Hints
 
-3.  Why is the result *usually* too low rather than too high? Think about what happens when two threads both read
-    `hits`, add their `row_hits`, and write back — whose update survives?
+> Try to debug it yourself first. Come back here if you’re stuck.
 
-4.  What is an OpenMP `reduction` clause, and how does it eliminate the race?
-
-### How to fix it
-
-Add `reduction(+:hits)` to the `#pragma omp parallel for` directive:
-
-``` c
-/* Fixed */
-#pragma omp parallel for schedule(static) reduction(+:hits)
-```
-
-With `reduction(+:hits)`, each thread gets its own **private** copy of `hits`, initialised to 0. At the end of the
-parallel region, OpenMP sums all private copies into the shared `hits`. No two threads ever write to the same variable
-at the same time.
+- Search for “OpenMP reduction clause” in the OpenMP 5.x spec or any tutorial. What problem does it solve?
+- The `#pragma omp parallel for` directive accepts optional clauses. Which clause makes a variable thread-private and
+  then combines the per-thread values at the end of the parallel region?
+- Compare the parallel loop in `race_condition.c` to the one in
+  `src/section_05_python_array_jobs_parallelism_strategies/ex02_monte_carlo_pi_c/monte_carlo_pi_mpi_hybrid.c` — what
+  clause is present there that is missing here?
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -113,35 +101,23 @@ The same non-deterministic wrong results, this time in Python:
     Run 2: threads=8  expected≈5333333  got=5198456  correct? NO — race condition detected!
     Run 3: threads=8  expected≈5333333  got=4823901  correct? NO — race condition detected!
 
-### Questions
+### Investigate
 
-1.  In `race_condition_numba.py`, why is `counts = np.zeros(1, dtype=np.int64)` a problem? What makes it different from
-    a plain scalar variable?
+- Is the result consistent between runs?
+- In `race_condition_numba.py`, `counts` is a NumPy array. When multiple threads execute `counts[0] += row_hits`, what
+  individual operations are involved under the hood — read, add, write? What can go wrong when two threads do this
+  simultaneously?
+- Run `NUMBA_NUM_THREADS=1 python race_condition_numba.py`. Does the answer become correct?
+- Numba handles `prange` scalar reductions automatically. Is `counts[0]` a scalar?
 
-2.  Numba *does* handle scalar reductions in `prange` automatically — so why doesn’t that help here? (Hint: look at what
-    `counts[0] += row_hits` compiles to versus `hits += row_hits` where `hits` is a scalar.)
+### Hints
 
-3.  What would the correct scalar accumulation pattern look like?
+> Try to debug it yourself first. Come back here if you’re stuck.
 
-### How to fix it
-
-Replace the shared array with a scalar accumulator and let Numba handle the `prange` reduction:
-
-``` python
-@njit(parallel=True, cache=True)
-def count_divisible_correct(n: int, m: int) -> int:
-    hits = np.int64(0)           # scalar — Numba handles prange reduction automatically
-    for i in prange(n):
-        row_hits = np.int64(0)
-        for j in range(m):
-            if (i * m + j) % 3 == 0:
-                row_hits += 1
-        hits += row_hits          # Numba correctly reduces this in prange
-    return int(hits)
-```
-
-Numba’s parallel transform recognises `hits += row_hits` as a reduction on a scalar and inserts the necessary
-thread-local copies and final summation — exactly what `reduction(+:hits)` does in OpenMP.
+- Read the Numba documentation on `prange` reductions: what patterns does Numba reduce automatically?
+- What is the difference between accumulating into a scalar (`hits = np.int64(0); hits += x`) versus an array element
+  (`counts[0] += x`) inside a `prange` loop?
+- If you changed `counts = np.zeros(1, dtype=np.int64)` to a plain scalar variable, would the race disappear? Try it.
 
 ------------------------------------------------------------------------------------------------------------------------
 

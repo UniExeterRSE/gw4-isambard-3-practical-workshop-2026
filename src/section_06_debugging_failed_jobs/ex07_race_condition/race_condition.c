@@ -6,9 +6,7 @@
  * reduction clause.
  *
  * Expected result: N * M / 3  (approximately)
- * Actual result:   non-deterministic, usually wrong
- *
- * Result: non-deterministic — almost always gives the wrong answer.
+ * Actual result:   non-deterministic — almost always gives the wrong answer.
  */
 #define _POSIX_C_SOURCE 200809L
 
