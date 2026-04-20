@@ -1,0 +1,170 @@
+# Section 5: Maintainer Notes
+
+This document records the steps needed to verify that Section 5 is working correctly on GW4 Isambard 3 (Grace CPU
+partition). All commands assume you are working inside the section directory unless otherwise noted.
+
+``` sh
+cd src/section_05_python_array_jobs_parallelism_strategies
+```
+
+## Prerequisites
+
+The Pixi `hpc` environment must be installed and the `hpc` feature must resolve. The `default` environment works for
+local testing (no MPI required).
+
+``` sh
+pixi install --environment hpc
+pixi run format                 # must be idempotent — CI enforces this
+pixi run docs                   # slide HTML must build cleanly
+```
+
+## ex01 — Monte Carlo Pi (Python, single job)
+
+Run all Python variants in one job (pure Python, NumPy, Numba, Numba-parallel, MPI-hybrid):
+
+``` sh
+# Quick local smoke test (no Slurm needed):
+pixi run monte-carlo-pi-summary -d 2 -n 100000 -t 4
+
+# On a compute node:
+cd ex01_monte_carlo_pi
+sbatch sbatch_monte_carlo_pi_single.sh
+```
+
+Check `mc_pi_single_<JOBID>.out`: all variants should print a results table with `pi_hat` close to 3.14159. Elapsed
+times should rank pure-python \>\> numpy \> numba ≈ numba-parallel.
+
+MPI hybrid (Python, single node):
+
+``` sh
+sbatch sbatch_monte_carlo_pi_mpi_hybrid.sh
+```
+
+Check `mc_pi_py.out`: each `srun` block runs a different (ranks × threads) decomposition. All `pi_hat` values should
+agree to ~5 significant figures.
+
+## ex02 — Monte Carlo Pi (C, stretch)
+
+Build first, then submit:
+
+``` sh
+cd ex02_monte_carlo_pi_c
+bash make.sh                    # compiles monte_carlo_pi_mpi_hybrid
+sbatch sbatch_monte_carlo_pi_mpi_hybrid_c.sh
+```
+
+Check the output file: the C binary should report the same `pi_hat` as the Python MPI-hybrid variant (same algorithm,
+same default seed). Elapsed time should be significantly shorter.
+
+## ex03 — Slurm job array pipeline
+
+Submit pre → array → post chain from the login node:
+
+``` sh
+cd ex03_job_array
+bash run_array_pipeline.sh
+```
+
+This runs:
+
+``` sh
+sbatch sbatch_pre_array.sh
+sbatch --dependency=afterok:<PRE_ID> sbatch_monte_carlo_pi_array.sh
+sbatch --dependency=afterok:<ARRAY_ID> sbatch_post_array.sh
+```
+
+Monitor progress:
+
+``` sh
+squeue --me
+```
+
+**Checking output:**
+
+- `mc_pi_pre_array_<JOBID>.out` — should print `Results directory ready.`
+
+- `mc_pi_array_<ARRAY_JOB_ID>_<TASK_ID>.out` (10 files, one per task) — each should contain a results table with
+  `pi_hat` ≈ 3.14. Seeds 1–10 give slightly different estimates; that is expected.
+
+- `mc_pi_post_array_<JOBID>.out` — the reducer prints per-task hits and a combined estimate. The reduced `pi_hat` should
+  be more accurate than any individual task (law of large numbers). Example expected output:
+
+      Per-task results:
+        results/mc_pi_<ID>_1.txt: hits=…  n=…  pi_hat=3.14…
+        …
+      Reduced total: hits=…  n=…
+        pi_hat = 3.14159…  (true pi = 3.14159265)
+        error  = <1e-3
+
+## ex04 — GNU parallel pipeline
+
+``` sh
+cd ex04_gnu_parallel
+bash run_gnu_parallel_pipeline.sh
+```
+
+This runs:
+
+``` sh
+sbatch sbatch_pre_gnu_parallel.sh
+sbatch --dependency=afterok:<PRE_ID> sbatch_gnu_parallel.sh
+sbatch --dependency=afterok:<MAIN_ID> sbatch_post_gnu_parallel.sh
+```
+
+**Checking output:**
+
+- `mc_pi_pre_gnu_<JOBID>.out` — should report `Generated 10 tasks in tasks.txt` and show the first `taskset -c …`
+  command for sanity-checking CPU binding.
+- `mc_pi_gnu_<JOBID>.out` — GNU parallel interleaves output from all 10 tasks. Look for 10 separate `/usr/bin/time -v`
+  blocks; each should contain `Elapsed (wall clock) time` and the pi estimate line. No task should time out or print a
+  traceback.
+- `mc_pi_post_gnu_<JOBID>.out` — same format as ex03 post; combined `pi_hat` should match ex03 closely (same 10 seeds,
+  same sample count per task).
+
+Wall-clock time for the GNU parallel job should be comparable to the array job (both run 10 tasks simultaneously with 4
+threads each).
+
+## ex05 — mpi4py.futures
+
+``` sh
+cd ex05_mpi4py_futures
+sbatch sbatch_mpi4py_futures.sh
+```
+
+**Checking output (`mc_pi_futures_<JOBID>.out`):**
+
+    === mpi4py.futures MPIPoolExecutor: 10 workers, 20 tasks ===
+    Controller: 10 workers, 20 tasks, 1000000 samples/task
+    total_n=20,000,000  hits=…
+    pi_estimate=3.14159…  error=<1e-3  time=…s
+
+The 20 tasks are distributed across 10 workers in two batches. Wall-clock time should be roughly twice the per-task
+time, not 20×.
+
+## ex06 — Python multiprocessing
+
+``` sh
+cd ex06_multiprocessing
+sbatch sbatch_multiprocessing.sh
+```
+
+**Checking output (`mc_pi_mp_<JOBID>.out`):**
+
+    === multiprocessing: 10 workers, 20 tasks ===
+    Workers: 10  Tasks: 20  Samples/task: 1,000,000
+    total_n=20,000,000  hits=…
+    pi_estimate=3.14159…  error=<1e-3  time=…s
+
+Verify that `Workers: 10` appears (confirming `os.sched_getaffinity` read the Slurm `--cpus-per-task=10` allocation
+correctly). If it prints a different count, the cgroup binding is not being respected.
+
+## Common failure modes
+
+| Symptom | Likely cause |
+|----|----|
+| `pixi shell-hook: environment hpc not found` | Run `pixi install --environment hpc` first |
+| Array post job starts before array tasks finish | Check `--dependency=afterok:<ARRAY_JOB_ID>` syntax — the full array ID (no `:`) is required |
+| `reduce-mc-pi-results: command not found` | Package not installed in hpc env; run `pixi install --environment hpc` |
+| mpi4py import error in workers | `LD_LIBRARY_PATH` not set; check `sbatch_mpi4py_futures.sh` `MPICH_DIR` block |
+| `RuntimeError: … at least 2 MPI processes` | `--ntasks=11` not reaching srun; check PrgEnv-gnu is loaded |
+| `sched_getaffinity` returns 1 worker | Job was not submitted via sbatch; `--cpus-per-task` not inherited |
