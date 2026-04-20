@@ -19,11 +19,11 @@ def _worker(args: tuple[int, int, int, int]) -> tuple[int, int]:
     import numba
 
     numba.set_num_threads(num_threads)
-    from section_05_python_array_jobs_parallelism_strategies.ex01_monte_carlo_pi.monte_carlo_pi_numba import (
-        count_hits_kernel,
+    from section_05_python_array_jobs_parallelism_strategies.ex01_monte_carlo_pi.monte_carlo_pi_numba_parallel import (
+        count_hits_parallel,
     )
 
-    hits = int(count_hits_kernel(n, d, seed))
+    hits = int(count_hits_parallel(n, d, seed, num_threads))
     return hits, n
 
 
@@ -36,7 +36,7 @@ def main() -> None:
         )
     )
     parser.add_argument("-d", "--dimension", dest="d", type=int, default=2)
-    parser.add_argument("-n", "--num-samples", dest="n", type=int, default=1_048_576, help="Samples per task.")
+    parser.add_argument("-n", "--num-samples", dest="n", type=int, default=2**20, help="Samples per thread.")
     parser.add_argument(
         "-t", "--num-threads", dest="num_threads", type=int, default=1, help="Numba threads per worker."
     )
@@ -50,6 +50,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    if args.num_threads < 1:
+        raise ValueError("num_threads must be a positive integer.")
+
     from mpi4py import MPI
     from mpi4py.futures import MPIPoolExecutor
 
@@ -58,10 +61,15 @@ def main() -> None:
         raise RuntimeError("Need at least 2 MPI processes (1 controller + 1+ workers).")
 
     n_tasks = args.n_tasks if args.n_tasks is not None else n_workers
+    if n_tasks < 1:
+        raise ValueError("n_tasks must be a positive integer.")
+    task_n = args.n * args.num_threads
 
-    task_args = [(args.n, args.d, args.seed + task_id, args.num_threads) for task_id in range(n_tasks)]
+    task_args = [(task_n, args.d, args.seed + task_id, args.num_threads) for task_id in range(n_tasks)]
 
-    print(f"Controller: {n_workers} workers, {n_tasks} tasks, {args.n} samples/task")
+    print(
+        f"Controller: {n_workers} workers, {n_tasks} tasks, {args.n:,} samples/thread, {args.num_threads} threads/task"
+    )
 
     start = time.perf_counter()
     with MPIPoolExecutor() as executor:

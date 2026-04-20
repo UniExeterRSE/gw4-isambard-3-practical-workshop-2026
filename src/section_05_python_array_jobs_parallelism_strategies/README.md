@@ -49,7 +49,7 @@ parallel.
 - `ex03_job_array/03-job-array.md` — walkthrough
 - `ex03_job_array/reduce_results.py` — reduce step (entry point: `reduce-mc-pi-results`)
 - `ex03_job_array/sbatch_pre_array.sh` — pre: create `results/`
-- `ex03_job_array/sbatch_monte_carlo_pi_array.sh` — main: `--array=1-10`
+- `ex03_job_array/sbatch_monte_carlo_pi_array.sh` — main: `--array=1-36%36`, 4 threads/task
 - `ex03_job_array/sbatch_post_array.sh` — post: reduce
 - `ex03_job_array/run_array_pipeline.sh` — pipeline runner (login node)
 
@@ -67,11 +67,12 @@ parallel.
 - `ex05_mpi4py_futures/05-mpi4py-futures.md` — walkthrough
 - `ex05_mpi4py_futures/monte_carlo_pi_mpi4py_futures.py` — single script: controller dispatches tasks via
   `MPIPoolExecutor`, reduces results inline; launched with `python -m mpi4py.futures -m <module>`
-- `ex05_mpi4py_futures/sbatch_mpi4py_futures.sh` — `--ntasks=11` (1 controller + 10 workers), PrgEnv-gnu + hpc env
+- `ex05_mpi4py_futures/sbatch_mpi4py_futures.sh` — `--ntasks=36`, `--cpus-per-task=4`; 35 workers + 1 controller on one
+  node
 
 ### ex06 — Python multiprocessing
 
 - `ex06_multiprocessing/06-multiprocessing.md` — walkthrough
 - `ex06_multiprocessing/monte_carlo_pi_multiprocessing.py` — `mp.set_start_method("spawn")`, `os.sched_getaffinity(0)`,
   `OMP_NUM_THREADS=1`, `Pool.map`
-- `ex06_multiprocessing/sbatch_multiprocessing.sh` — `--cpus-per-task=10`, single `python` call (no srun)
+- `ex06_multiprocessing/sbatch_multiprocessing.sh` — `--cpus-per-task=144`; 36 worker processes with 4 threads each

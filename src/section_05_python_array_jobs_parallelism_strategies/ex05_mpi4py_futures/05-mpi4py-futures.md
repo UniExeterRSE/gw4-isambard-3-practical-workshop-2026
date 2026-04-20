@@ -25,8 +25,9 @@ sbatch sbatch_mpi4py_futures.sh
 cat mc_pi_futures_<jobid>.out
 ```
 
-The script requests 11 MPI tasks (1 controller + 10 workers) and submits 20 MC tasks. Each worker runs one task at a
-time; the executor queues the overflow.
+The script requests `36` MPI ranks with `4` CPUs each. Rank `0` is the controller, so `35` worker ranks run the `36`
+Monte Carlo tasks. Each task uses `2^29` samples per thread and `4` threads, matching the array and GNU parallel
+examples while leaving one 4-core slot for the controller.
 
 ## Key code pattern
 
@@ -47,7 +48,7 @@ from mpi4py import MPI
 n_workers = MPI.COMM_WORLD.Get_size() - 1
 ```
 
-Always N-1 (rank 0 is reserved as controller). Size your `--ntasks` accordingly: `--ntasks = n_workers + 1`.
+Always `N-1` (rank `0` is reserved as controller). Size your `--ntasks` accordingly: `--ntasks = n_workers + 1`.
 
 ## Comparison with job arrays and GNU parallel
 

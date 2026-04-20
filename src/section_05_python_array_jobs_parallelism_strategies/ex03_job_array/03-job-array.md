@@ -26,9 +26,13 @@ sbatch --dependency=afterok:${MAIN} --export=ALL,ARRAY_JOB_ID=${MAIN} sbatch_pos
 ## Monitor
 
 ``` bash
-squeue --me                       # see <jobid>_1 ... <jobid>_10
+squeue --me                       # see <jobid>_1 ... <jobid>_36
 sacct -j <MAIN> --format=JobID,State,ExitCode,Elapsed
 ```
+
+This array uses `36` tasks with `4` threads per task, so the main stage can occupy all `144` Grace CPU cores when all
+array elements are running at once. Each task uses `2^29` samples per thread for a runtime that is long enough to
+measure cleanly.
 
 Each array task writes `results/mc_pi_<jobid>_<taskid>.txt` (`hits n` on one line). The post job reduces them
 automatically.
