@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-find . -type f \( \
+find "$@" -type f \( \
     -iname "*.c" -o \
     -iname "*.cpp" -o \
     -iname "*.h" -o \
