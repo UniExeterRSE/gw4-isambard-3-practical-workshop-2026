@@ -17,7 +17,7 @@ Arena, SWIoT, Exeter.
 To make the most of our time together, please complete the following three setup steps before you arrive. Full
 instructions are on our pre-session page:
 
-<https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html>
+<https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop/section_01_welcome_login_overview/00-pre-session.html>
 
 1.  **Initial account setup** — create your account on the Isambard 3 portal and accept the workshop project invitation
     (watch your email — the invitation will arrive shortly).

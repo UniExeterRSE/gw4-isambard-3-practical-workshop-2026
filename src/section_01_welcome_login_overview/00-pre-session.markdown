@@ -22,7 +22,7 @@ Doors open 09:30 --- workshop teaching starts at 10:00
 
 ::: docs-qr-block
 ![[This
-page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html)](../assets/pre-session-qr.png){alt="Pre-session QR code"}
+page](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop/section_01_welcome_login_overview/00-pre-session.html)](../assets/pre-session-qr.png){alt="Pre-session QR code"}
 :::
 
 ::: presenter-line
@@ -100,7 +100,7 @@ at the workshop; see README "Out of Scope".
 **Install Clifton on macOS/Linux:**
 
 ``` bash
-bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/clifton.sh) install
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop/refs/heads/main/bootstrap/install/clifton.sh) install
 ```
 
 Then authenticate and connect:
@@ -162,7 +162,7 @@ the presenter moves on.
 **Install the VS Code CLI** on Isambard 3 (do this once, before the workshop):
 
 ``` bash
-bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/code.sh) install
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop/refs/heads/main/bootstrap/install/code.sh) install
 ```
 
 **Launch a browser tunnel** (run this each session from the login node):

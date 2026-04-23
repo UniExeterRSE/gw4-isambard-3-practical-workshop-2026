@@ -8,9 +8,9 @@ apply-qr: apply-qr.png  ## Generate Apply QR code
 docs-qr.png:
 	qr --output=$@ 'https://docs.isambard.ac.uk'
 workshop-qr.png:
-	qr --output=$@ 'https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/'
+	qr --output=$@ 'https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop/'
 pre-session-qr.png:
-	qr --output=$@ 'https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/section_01_welcome_login_overview/00-pre-session.html'
+	qr --output=$@ 'https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop/section_01_welcome_login_overview/00-pre-session.html'
 apply-qr.png:
 	qr --output=$@ 'https://forms.office.com/e/URU1YTnpq1'
 

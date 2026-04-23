@@ -22,7 +22,7 @@ supercomputing on Isambard 3
 
 ::: docs-qr-block
 ![[Workshop
-site](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop-2026/)](../assets/workshop-qr.png){alt="Workshop QR code"}
+site](https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop/)](../assets/workshop-qr.png){alt="Workshop QR code"}
 :::
 
 ::: presenter-line

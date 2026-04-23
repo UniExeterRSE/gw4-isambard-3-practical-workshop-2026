@@ -192,7 +192,7 @@ known package names) and pin versions in production.
 Get the bootstrap scripts onto Isambard 3
 :::
 
-Go to <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026> and click **Fork**
+Go to <https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop> and click **Fork**
 
 ``` bash
 # Generate an SSH key and load the agent:
@@ -200,13 +200,13 @@ ssh-keygen -t ssh-ed25519 -C "${ISAMBARD_HOST}"
 . <(ssh-agent -s)
 ssh-add ~/.ssh/id_ed25519
 # Install `gh` and authenticate:
-bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026/refs/heads/main/bootstrap/install/gh.sh) install
+bash <(curl -L https://raw.githubusercontent.com/UniExeterRSE/gw4-isambard-3-practical-workshop/refs/heads/main/bootstrap/install/gh.sh) install
 gh auth login --git-protocol ssh --web
 # clone (replace `UniExeterRSE` with your username)
 mkdir -p ~/git
 cd ~/git
-git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
-cd gw4-isambard-3-practical-workshop-2026
+git clone git@github.com:UniExeterRSE/gw4-isambard-3-practical-workshop.git
+cd gw4-isambard-3-practical-workshop
 pwd
 ```
 
@@ -225,8 +225,8 @@ Get the bootstrap scripts onto Isambard 3
 ``` bash
 mkdir -p ~/git
 cd ~/git
-git clone https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop-2026.git
-cd gw4-isambard-3-practical-workshop-2026
+git clone https://github.com/UniExeterRSE/gw4-isambard-3-practical-workshop.git
+cd gw4-isambard-3-practical-workshop
 # This is where your workshop repo is
 pwd
 ```
@@ -430,7 +430,7 @@ per project rather than globally. This workshop repo uses pixi + direnv internal
 **Beginners --- just run this once and you are done:**
 
 ``` bash
-cd gw4-isambard-3-practical-workshop-2026
+cd gw4-isambard-3-practical-workshop
 direnv allow          # activates the pixi env automatically every time you cd here
 ```
 
