@@ -65,6 +65,7 @@ monte-carlo-pi-summary = { cmd = "python -m section_05_python_array_jobs_paralle
 docs = { cmd = "cd src; make all", description = "Make HTMLs." }
 serve = { cmd = "python -m http.server $PRESENTATION_PORT --bind 127.0.0.1 --directory src", description = "Serve the presentation.", depends-on = ["docs"] }
 linkcheck = { cmd = "lychee --exclude-loopback --max-redirects 10 -v .", description = "Check links via lychee." }
+linkcheck-except-429 = { cmd = "lychee --accept '100..=299, 429' --exclude-loopback --max-redirects 10 -v .", description = "Check links via lychee, accept 429 (too many requests). Primarily for CI." }
 format = { depends-on = ["format-c", "format-markdown", "format-md", "format-py", "format-sh", "generate"], description = "Run all formatters and auto-generation scripts." }
 format-c = { cmd = "bash bin/c_formatter.sh bin bootstrap src", description = "Format C files using clang-format." }
 format-markdown = { cmd = "python bin/md_formatter.py '**/*.markdown' -t markdown", description = "Format .markdown files via pandoc." }

@@ -45,7 +45,7 @@ jobs:
       - name: Run docs build
         run: pixi run docs
       - name: Check links
-        run: pixi run linkcheck
+        run: pixi run linkcheck-except-429
       - name: Upload static files as artifact
         if: >-
           matrix.os == 'ubuntu-latest' && (
