@@ -167,7 +167,7 @@ open-ended custom environment debugging.
 Key files:
 
 - [src/section_04_installing_software/installing_software.markdown](src/section_04_installing_software/installing_software.markdown)
-- [src/section_04_installing_software/README.md](src/section_04_installing_software/README.md)
+- [src/section_04_installing_software/MAINTAINER.md](src/section_04_installing_software/MAINTAINER.md)
 - [bootstrap/conda/](bootstrap/conda/) — conda environment files for the taught path
 
 ### Section 5 — Python Example + Array Jobs + Parallelism Strategies (35 min, Active)
