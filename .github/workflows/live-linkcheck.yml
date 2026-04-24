@@ -1,0 +1,25 @@
+name: Live Link Check
+
+on:
+  workflow_run:
+    workflows:
+      - Docs
+    types:
+      - completed
+    branches:
+      - dev
+      - main
+  workflow_dispatch:
+
+jobs:
+  linkcheck:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check published site links
+        uses: filiph/linkcheck@3.0.0
+        with:
+          arguments: --external --show-redirects https://uniexeterrse.github.io/gw4-isambard-3-practical-workshop/
