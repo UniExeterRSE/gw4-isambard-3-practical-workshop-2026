@@ -44,6 +44,8 @@ jobs:
           activate-environment: true
       - name: Run docs build
         run: pixi run docs
+      - name: Check links
+        run: pixi run linkcheck
       - name: Upload static files as artifact
         if: >-
           matrix.os == 'ubuntu-latest' && (
